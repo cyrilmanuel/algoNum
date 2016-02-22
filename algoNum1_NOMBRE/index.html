@@ -195,6 +195,7 @@
             return res;
         }
         
+        
         function soustraction(){
             var nbDec1 = parseInt(document.getElementById("nb1").value);
             var nbDec2 = parseInt(document.getElementById("nb2").value);
@@ -204,9 +205,45 @@
             
             var tabBinaire1 = document.getElementById("bin1").value.split("").reverse();
             var tabBinaire2 = document.getElementById("bin2").value.split("").reverse();
-        
+            
+            var resultat = [];
+            resultat = somme(tabBinaire1, complementA2(tabBinaire2));
+            resultat.pop();
+            
+            document.getElementById("resBin").value = resultat.reverse().join("");
             
         }
+        
+        function complementA2(tab) {
+            var tab2=[];
+            //var tab3=[];
+            for(var j = 0; j < tab.length; j++) {
+                tab[j] = ~tab[j];
+                tab2[j]=0;
+            }
+            tab2[0]=1;
+            
+            tab3 = somme(tab, tab2);
+            tab3.pop();
+            
+            return tab3;
+        }
+        
+        /*function soustractionNbr(itab1,itab2){
+         var res = [];
+         if(itab1==itab2){
+         res.push(0);
+         res.push(0);
+         }else {
+         res.push(1);
+         if(itab1>itab2){
+         res.push(1);
+         }else {
+         res.push(0);
+         }
+         }
+         return res;
+         }*/
         
         function multiplication(){
             var nbDec1 = parseInt(document.getElementById("nb1").value);
