@@ -9,12 +9,12 @@
 		<h1>Convertisseur Decimal - Binaire</h1>
 		<p>
 		<label for="nBit">Codage sur </label> 
-		<input type="number" name="nBit" id="nBit" value="8"/>
+		<input type="number" name="nBit" id="nBit" value="8" min="1"/>
 		bits.
 		</P>
 		<p>
 		<label for="nb1">Premier nombre à convertir: </label>
-		<input type="number" name="nb1" id="nb1" value="0"/><sub>10</sub>
+		<input type="number" name="nb1" id="nb1" value="0" min="0"/><sub>10</sub>
 		<input type="text" name="bin1" id="bin1" /><sub>2</sub>
 		</p>
 		<p>
@@ -23,7 +23,7 @@
 		</p>
 		<p>
 		<label for="nb2">Second nombre à convertir: </label>
-		<input type="number" name="nb2" id="nb2" value="0"/><sub>10</sub>
+		<input type="number" name="nb2" id="nb2" value="0" min="0"/><sub>10</sub>
 		<input type="text" name="bin2" id="bin2" /><sub>2</sub>
 		</p>
 		<p>
@@ -38,9 +38,9 @@
 		</p>
 		<p>
 		Résultat du calcul: 
-		<input type="number" name="resDec" id="resDec" value="0" disabled/><sub>10</sub>
+		<input type="number" name="resDec" id="resDec" value="0" disabled="disabled"/><sub>10</sub>
 		&lt;=&gt;
-		<input type="text" name="resBin" id="resBin" disabled/><sub>2</sub>
+		<input type="text" name="resBin" id="resBin" disabled="disabled"/><sub>2</sub>
 		</p>
 		<script>
 		document.getElementById("conv1").addEventListener("click", function(){
@@ -92,16 +92,15 @@
 			var nbaconvertir = document.getElementById("nb"+id).value;
 			var nbBit = document.getElementById("nBit").value;
 			var res = [];
+			var res2 = [];
 			var quotient = 1;
 			var i = 0; 
 			
-			if(nbaconvertir >=0){
-				while(quotient !== 0){
-					quotient = parseInt(nbaconvertir / 2);
-					res[i] = nbaconvertir % 2;
-					nbaconvertir = quotient;
-					i++;
-				}
+			while(quotient !== 0){
+				quotient = parseInt(nbaconvertir / 2);
+				res[i] = nbaconvertir % 2;
+				nbaconvertir = quotient;
+				i++;
 			}
 			
 			if(res.length <= nbBit){
