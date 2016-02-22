@@ -41,3 +41,6 @@ soit remplacer la version master par celle de issue 53)
 pour les commits sur branches :
 
 git push origine NOMDELABRANCHEENCOURS
+
+
+//Ajout bidon important
