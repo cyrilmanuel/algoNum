@@ -17,7 +17,7 @@ qui t'indique l'état de tes fichiers (ajouté/modifiés/supprimés)
 mise en place du tag :
 git tag -fa version-2.5 -m "version-2.5" 75f5775e   (75f5775e = id commit)
 
-ensuite pour vaidé :
+ensuite pour valider :
 git push -f --tags
 
 vue des branches existante et branche active :
@@ -41,3 +41,6 @@ soit remplacer la version master par celle de issue 53)
 pour les commits sur branches :
 
 git push origine NOMDELABRANCHEENCOURS
+
+
+//Ajout bidon important
