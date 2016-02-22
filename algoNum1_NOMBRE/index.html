@@ -95,6 +95,11 @@
 			var res2 = [];
 			var quotient = 1;
 			var i = 0; 
+
+			if(nbaconvertir < 0){
+				nbaconvertir = 0;
+				document.getElementById("nb"+id).value = nbaconvertir;
+			}
 			
 			while(quotient !== 0){
 				quotient = parseInt(nbaconvertir / 2);
