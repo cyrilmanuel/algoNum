@@ -70,7 +70,23 @@
 		document.getElementById("mult").addEventListener("click", function(){
 			multiplication();
 		});
-		
+
+		document.getElementById("nb1").addEventListener("change", function(){
+			decimalToBinary(1);
+		});
+
+		document.getElementById("nb2").addEventListener("change", function(){
+			decimalToBinary(2);
+		});
+
+		document.getElementById("bin1").addEventListener("change", function(){
+			binaryToDecimal(1);
+		});
+
+		document.getElementById("bin2").addEventListener("change", function(){
+			binaryToDecimal(2);
+		});
+
 		
 		function decimalToBinary(id){
 			var nbaconvertir = document.getElementById("nb"+id).value;
@@ -120,7 +136,11 @@
 			var nbDec1= parseInt(document.getElementById("nb1").value);
 			var nbDec2= parseInt(document.getElementById("nb2").value);
 			var resDec= nbDec1 + nbDec2;
-			document.getElementById("resDec").value = resDec;	
+			document.getElementById("resDec").value = resDec;
+
+            var nbaconvertir = document.getElementById("bin"+id).value;
+            var tabBinaire = nbaconvertir.split("").reverse();
+
 		}
 
 		function soustraction(){
