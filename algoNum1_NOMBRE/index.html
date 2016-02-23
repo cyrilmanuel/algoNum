@@ -222,7 +222,7 @@
         
         function complementA2(tab) {
             var tab2=[];
-            //var tab3=[];
+            var tab3=[];
             
             for(var j = 0; j < tab.length; j++) {
                 
@@ -252,10 +252,40 @@
             var tabBinaire2 = document.getElementById("bin2").value.split("").reverse();
             
             var resultat = [];
+            var tabvide = [];
+            
+            for(var f = 0; f < tabBinaire2.length; f++) {
+                tabvide[f] = 0;
+            }
+            
             
             for(var k = 0; k < tabBinaire1.length; k++) {
-                
+                if(tabBinaire1[k] == 1){
+                    resultat[k] = tabBinaire2.slice(0);
+                }else {
+                    resultat[k] = tabvide.slice(0);
+                }
+                tabBinaire2.unshift(0);
+                tabvide.unshift(0);
+                alert("voila resultat tab " + resultat[k]);
             }
+            
+            var resultatIntermediaire = resultat[0];
+            
+            alert("intermediaire" + resultatIntermediaire);
+            
+            for(var l = 1; l < resultat.length; l++) {
+                
+                alert("resultat l " + resultat[l]);
+                
+                var temp = somme(resultatIntermediaire,resultat[l]);
+                temp.pop();
+                alert("valeur temp " + temp);
+                resultatIntermediaire = temp;
+            }
+            
+            //alert("resultat final " + resultatIntermediaire.reverse.join(""));
+            document.getElementById("resBin").value = resultatIntermediaire.reverse().join("");
         }
         </script>
     </body>
