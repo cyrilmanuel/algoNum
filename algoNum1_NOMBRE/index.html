@@ -267,26 +267,22 @@
                 }
                 tabBinaire2.unshift(0);
                 tabvide.unshift(0);
-                alert("voila resultat tab " + resultat[k]);
             }
             
             var resultatIntermediaire = resultat[0];
             
-            alert("intermediaire" + resultatIntermediaire);
-            
             for(var l = 1; l < resultat.length; l++) {
-                
-                alert("resultat l " + resultat[l]);
                 
                 var temp = somme(resultatIntermediaire,resultat[l]);
                 temp.pop();
-                alert("valeur temp " + temp);
                 resultatIntermediaire = temp;
             }
             
             //alert("resultat final " + resultatIntermediaire.reverse.join(""));
             document.getElementById("resBin").value = resultatIntermediaire.reverse().join("");
         }
+		
+		
         </script>
     </body>
 </html>
