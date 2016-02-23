@@ -252,11 +252,32 @@
             var tabBinaire2 = document.getElementById("bin2").value.split("").reverse();
             
             var resultat = [];
+			var tabASommer = [[]];
             
             for(var k = 0; k < tabBinaire1.length; k++) {
-                
+				var tabTempo = [];
+                if(tabBinaire1[k] == 1) {
+					tabTempo = tabBinaire2;
+					for(var j = 0; j < k; j++) {
+						tabTempo.push(0);
+					}
+				}
+				tabASommer.push(tabTempo);
             }
+			
+			var temp = [];
+			for(var i = 0; i < tabASommer.length - 1; i++) {
+				temp = somme(tabASommer[i], tabASommer[i+1]);
+				tabASommer[i+1] = temp;
+			}
+			
+			var resultat = tabASommer[tabASommer.length - 1];
+			
+			document.getElementById("resBin").value = resultat.reverse().join("");
+			
         }
+		
+		
         </script>
     </body>
 </html>
