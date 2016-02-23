@@ -222,7 +222,7 @@
         
         function complementA2(tab) {
             var tab2=[];
-            //var tab3=[];
+            var tab3=[];
             
             for(var j = 0; j < tab.length; j++) {
                 
@@ -252,11 +252,73 @@
             var tabBinaire2 = document.getElementById("bin2").value.split("").reverse();
             
             var resultat = [];
+            var tabvide = [];
+            
+            for(var f = 0; f < tabBinaire2.length; f++) {
+                tabvide[f] = 0;
+            }
+            
             
             for(var k = 0; k < tabBinaire1.length; k++) {
-                
+                if(tabBinaire1[k] == 1){
+                    resultat[k] = tabBinaire2.slice(0);
+                }else {
+                    resultat[k] = tabvide.slice(0);
+                }
+                tabBinaire2.unshift(0);
+                tabvide.unshift(0);
             }
+            
+            var resultatIntermediaire = resultat[0];
+            
+            for(var l = 1; l < resultat.length; l++) {
+                
+                var temp = somme(resultatIntermediaire,resultat[l]);
+                temp.pop();
+                resultatIntermediaire = temp;
+            }
+            
+            //alert("resultat final " + resultatIntermediaire.reverse.join(""));
+            document.getElementById("resBin").value = resultatIntermediaire.reverse().join("");
         }
+		
+		
         </script>
     </body>
+    
+    <h1>Convertisseur décimal ­ binaire </h1></br>
+    Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </br>
+    
+    <h2>But du programme</h2></br>
+    Le programme, écrit en HTML et en JavaScript, doit permettre de convertir des nombres de la base 10 à la base 2 et inversément. Il éxecute également l’addition, la soustraction et la multiplication des nombres rentrés, indépendamment de leurs base respectives.</br> </br>
+    
+    <h2>Structure du programme</h2></br>
+    
+    La page est écrite en philosophie “script unique”, c’est à dire que le code HTML est parsemé de code JavaScript.</br>
+    La première entrée demandée à l’utilisateur est le nombre de bits sur lequel devra être codé le nombre en binaire ( 8 par défaut).</br>
+    Les deuxièmes et troisièmes entrées sont des nombres respectivement décimaux et binaires. Ceux ci pourront être convertis par le biais de boutons, un pour la conversion décimale ­ binaire, l’autre pour la conversion inverse.</br>
+    Les quatrièmes et cinquièmes entrées sont les mêmes que les deuxièmes et troisièmes. Finalement, trois boutons sont présents pour additionner, soustraire ou multiplier les nombres issus des conversions et ce dans les deux bases présentes.</br> </br>
+    
+    <h2>Méthodes de conversion</h2></br>
+    
+    La méthode de conversion de décimal à binaire se base sur une suite de division et de modulo. Le chiffre de plus haut degré du nombre binaire est égal au modulo 2 du nombre à convertir. Le nombre à convertir subit ensuite une division entière par 2 avant de réitérer l’opération. Ceci continue jusqu’à ce que le nombre à convertir soir plus petit que 2 ou que le nombre de bits nécessaire à l’affichage en base 2 du nombre dépasse le nombre permis de bits.</br>
+    
+    La méthode de conversion de binaire à décimal est complètement différente. Le programme parcourt les bits du nombre binaire et fait la somme des puissances de 2 au degré du chiffre parcouru selon l’index du tableau. Par exemple, le nombre 1001 en binaire symbolise la somme de 2 puissance 0 avec 2 puissance 4 (les bits à 1 étant en position 0 et 4), ce qui est égal à 9.</br> </br>
+    
+    <h2>Méthode d’addition</h2></br>
+    
+    L’addition entre les deux nombres est relativement simple. Pour les nombres décimaux, les fonctions sont déjà implémentées tel quel. Pour les nombre binaires, l’addition est faite bit à bit,
+    c’est à dire que pour calculer le premier chiffre de notre somme, on fera la somme du premier chiffre de chaque nombre à additioner. 0 + 0 = 0, 0 + 1 = 1 et 1 + 1 = 0 avec une retenue sur le prochain chiffre à calculer.</br> </br>
+    
+    <h2>Méthode de soustraction</h2></br>
+    
+    La méthode de soustraction est complètementaire à celle d’addition. Pour éxecute une soustraction en binaire, on peut faire la somme d’un nombre avec le complément à 2 de l’autre nombre. Le complément à 2, c’est simplement tous les bits du nombre binaire inversés (les 1 deviennent 0 et inversément) auquel on ajoute 1.</br> </br>
+    
+    <h2>Méthode de multiplication</h2></br>
+    
+    Cette dernière méthode est la plus compliquée en binaire, mais reste triviale en décimal vu que c’est toujours l’opération déjà implémentée en JavaScript qui est utilisée. Le programme parcourt bit à bit un des deux nombre binaire à multiplier. Pour chaque chiffre 1 parcouru, il garde en mémoire le second nombre à multiplier décalé du même nombre de bits vers la gauche que le degré du chiffre actuellement en parcours. Tout ces nombres gardés en mémoire et décalés sont ensuite additionés les uns avec les autres pour donner le résultat.
+
 </html>
+
+
+
