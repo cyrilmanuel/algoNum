@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>AN_Labo1_Groupe3</title>
+	</head>
+
+	<body>
+		<h1>Convertisseur Decimal-Binaire flottant</h1>
+		<p>
+		<label for="nBit">Codage sur </label>
+		<input type="number" name="nBit" id="nBit" value="8" min="1"/>bits
+		</p>
+		<p>
+		<label for="nb1">Premier nombre a convertir: </label>
+		<input type="number" name="nb1" id="nb1" value="0"/><sub>10</sub>
+		&lt;=&gt;
+		<input type="text" name="bin1" id="bin1" /><sub>2</sub>
+		</p>
+		<p>
+		<button type="button" name="conv1" id="conv1">Decimal -> Binaire</button>
+		<button type="button" name="conve1" id="conve1">Binaire -> Decimal</button>
+		</p>
+		<p>
+		<label for="nb2">Second nombre à convertir: </label>
+		<input type="number" name="nb2" id="nb2" value="0" min="0"/><sub>10</sub>
+		&lt;=&gt;
+		<input type="text" name="bin2" id="bin2" /><sub>2</sub>
+		</p>
+		<p>
+		<button type="button" name="conv2" id="conv2">Decimal -> Binaire</button>
+		<button type="buton" name="conve2" id="conve2">Binaire -> Decimal</button>
+		</p>
+		<p>
+		<label for="add">Opération entre les nombres:</label>
+		<button type="button" name="add" id="add">Addition</button>
+		</p>
+		<p>
+		Résultat du calcul:
+		<input type="number" name="resDec" id="resDec" value="0" disabled="disabled"/><sub>10</sub>
+		&lt;=&gt;
+		<input type="text" name="resBin" id="resBin" disabled="disabled"/><sub>2</sub>
+		</p>
+			
+		<script>
+		document.getElementById("conv1").addEventListener("click", function(){decimalToBinary(1);});
+		document.getElementById("conve1").addEventListener("click",function(){binaryToDecimal(1);});
+		document.getElementById("conv2").addEventListener("click",function(){decimalToBinary(2);});
+		document.getElementById("conve2").addEventListener("click",function(){binaryToDecimal(2);});
+		document.getElementById("add").addEventListener("click",function(){addition();});
+		document.getElementById("nb1").addEventListener("change", function(){decimalToBinary(1);});
+		document.getElementById("nb2").addEventListener("change", function(){decimalToBinary(2);});
+		document.getElementById("bin1").addEventListener("change", function(){binaryToDecimal(1);});
+		document.getElementById("bin2").addEventListener("change", function(){binaryToDecimal(2);});
+
+		function decimalToBinary(id){
+			var nbaconvertir = document.getElementById("nb"+id).value;
+			var nbBit = document.getElementById("nBit").value;		
+		}
+		</script>
+	</body>
+</html>
