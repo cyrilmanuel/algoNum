@@ -9,13 +9,13 @@
 		<h1>Convertisseur Decimal-Binaire flottant</h1>
 		<p>
 		<label for="nBit">Codage sur </label>
-		<input type="number" name="nBit" id="nBit" value="8" min="1"/>bits
+		<input type="number" name="nBit" id="nBit" value="16" min="1"/>bits
 		</p>
 		<p>
 		<label for="nb1">Premier nombre a convertir: </label>
-		<input type="number" name="nb1" id="nb1" value="0"/>Base<sub>10</sub>
+		<input type="text" name="nb1" id="nb1" value="0"/><sub>10</sub>
 		&lt;=&gt;
-		<input type="text" name="bin1" id="bin1" required pattern="[0-1]{32}"/>Base<sub>2</sub>
+		<input type="text" name="bin1" id="bin1" /><sub>2</sub>
 		</p>
 		<p>
 		<button type="button" name="conv1" id="conv1">Decimal -> Binaire</button>
@@ -23,9 +23,9 @@
 		</p>
 		<p>
 		<label for="nb2">Second nombre à convertir: </label>
-		<input type="number" name="nb2" id="nb2" value="0" min="0"/>Base<sub>10</sub>
+		<input type="text" name="nb2" id="nb2" value="0"/><sub>10</sub>
 		&lt;=&gt;
-		<input type="number" name="bin2" id="bin2" required pattern="[0-1]{32}" />Base<sub>2</sub>
+		<input type="text" name="bin2" id="bin2" /><sub>2</sub>
 		</p>
 		<p>
 		<button type="button" name="conv2" id="conv2">Decimal -> Binaire</button>
@@ -37,9 +37,9 @@
 		</p>
 		<p>
 		Résultat du calcul:
-		<input type="number" name="resDec" id="resDec" value="0" disabled="disabled"/>Base<sub>10</sub>
+		<input type="number" name="resDec" id="resDec" value="0" disabled="disabled"/><sub>10</sub>
 		&lt;=&gt;
-		<input type="text" name="resBin" id="resBin" disabled="disabled"/>Base<sub>2</sub>
+		<input type="text" name="resBin" id="resBin" disabled="disabled"/><sub>2</sub>
 		</p>
 			
 		<script>
@@ -55,7 +55,86 @@
 
 		function decimalToBinary(id){
 			var nbaconvertir = document.getElementById("nb"+id).value;
-			var nbBit = document.getElementById("nBit").value;		
+			var nbBit = document.getElementById("nBit").value;	
+			var res = [];
+			var tabint = [];
+			var tabDec = [];
+			var mantisse = [];
+			var exposant = [];
+			var expo = 0;
+			var bitSigne = 0;
+			var partInt = 0;
+			var partDec = 0;
+
+			if(nbBit<16){
+				alert("Le nombre de bit minimum est de 16");
+			}
+		
+			if(nbaconvertir == 0){
+				//Si le nombre a convertir vaut 0 alors la sortie est un tableau de 0
+				for(var i = 0; i <= nbBit; i++){
+					res[i] = 0;				
+				}
+				document.getElementById("bin"+id).value = res.reverse().join("");
+			}else{
+				//Conversion si le nombre n'est pas égal à 0
+				//Test si le signe est positif ou négatif et assigne le bit de signe
+				if(nbaconvertir < 0){
+					bitSigne = 1;
+				}
+				else{
+					bitSigne = 0;
+				}
+				
+				//Calcul du nombre de bit d'exposant
+				var nbExpo = 5+3*(Math.log(nbBit/16)/Math.log(2));
+				//nbExpo = parseInt(nbExpo);
+				//Calcul du nombre de bit de la mantisse
+				var nbMantisse = nbBit - 1 - nbExpo;
+				
+				//Fabrication du tableau de la mantisse 
+				partInt = parseInt(nbaconvertir);
+				if(partInt < 0){
+					partInt = (-1)*partInt;
+				}
+
+				partDec = nbaconvertir - partint;
+				
+				i = 0;
+				while(parseInt(partInt/2) != 0){
+					tabInt[i] = parInt%2;
+					partInt = parseInt(partInt/2);					
+					i = i + 1;
+				}
+				tabInt = tabInt.reverse();
+				expo = (tabInt.length)-1;
+
+				i = 0;
+				while(partDec * 2 != 1){
+					if(partDec * 2 > 1){
+						tabDec[i] = 1;
+						partDec = partDec - 1; 
+					}else{
+						tabDec[i] = 0;
+					}
+					i = i+1;
+				}
+				mantisse = tabInt.concat(tabDec);
+				mantisse.shift();
+
+				expo = expo + (Math.pow(2,nbExpo-1)-1);
+				
+				i = 0; 
+				while(parseInt(expo/2) != 0){
+					exposant[i] = expo % 2; 
+					expo = expo / 2;
+					i = i + 1;
+				}
+				res = exposant.unshift(bitSigne); 
+				res = exposant.push(mantisse);
+				document.getElementById("bin"+id).value = res.join("");
+			}
+			
 		}
 		</script>
 	</body>
