@@ -13,7 +13,7 @@
 		</p>
 		<p>
 		<label for="nb1">Premier nombre a convertir: </label>
-		<input type="text" name="nb1" id="nb1" value="118.625"/><sub>10</sub>
+		<input type="text" name="nb1" id="nb1" value="0"/><sub>10</sub>
 		&lt;=&gt;
 		<input type="text" name="bin1" id="bin1" /><sub>2</sub>
 		</p>
@@ -89,11 +89,11 @@
 				//Calcul du nombre de bit d'exposant
 				var nbExpo = 5+3*(Math.log(nbBit/16)/Math.log(2));
 				nbExpo = parseInt(nbExpo);
-				
 				//Calcul du nombre de bit de la mantisse
 				var nbMantisse = nbBit - 1 - nbExpo;
 				
 				//Fabrication du tableau de la mantisse 
+
 				partInt = Math.abs(parseInt(nbaconvertir));
 				partDec = Math.abs(nbaconvertir) - partInt;
 				
@@ -149,7 +149,7 @@
 				for(i = res.length; i <= nbBit; i++){
 					res[i] = 0;
 				}
-				
+
 				document.getElementById("bin"+id).value = res.join("");
 			}
 			
