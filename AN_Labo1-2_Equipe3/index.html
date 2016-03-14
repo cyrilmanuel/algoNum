@@ -255,6 +255,8 @@
 
         var tabBinaire1 = nb1.split("");
         var tabBinaire2 = nb2.split("");
+        alert("test");
+        alert(tabBinaire2);
 
         var nbExpo = 5+3*(Math.log(tabBinaire1.length/16)/Math.log(2));
         var d = (Math.pow(2, nbExpo-1))-1;
@@ -465,5 +467,27 @@
 
 
 </script>
+
+<h1>Convertisseur float ­ binaire </h1></br>
+Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </br>
+
+<h2>But du programme</h2></br>
+Le programme, s'écrit en HTML et en JavaScript, il doit permettre de convertir des nombres floattant sur un nombre de bit définit, de la base 10 a la base 2 et inversement.
+Il doit également gérer l'addition entre 2 nombres codé sur le même nombre de bits.</br> </br>
+
+<h2>Structure du programme</h2></br>
+
+La page est écrite en philosophie “script unique”, c’est à dire que le code HTML est parsemé de code JavaScript.</br>
+La première entreé demandé à l’utilisateur est le nombre de bits sur lequel devra être codé le nombre en binaire ( 16 étant la valeur minimal).</br>
+Les deuxièmes et troisièmes entrées sont des nombres respectivement décimaux et binaires. Ceux ci pourront être convertis par le biais de boutons, un pour la conversion décimale ­ binaire, l’autre pour la conversion inverse.</br>
+Les quatrièmes et cinquièmes entrées sont les mêmes que les deuxièmes et troisièmes. Finalement, un bouton sera présents pour additionner, les nombres issus des conversions et ce dans les deux bases présentes.</br> </br>
+
+<h2>Méthodes de conversion</h2></br>
+
+
+<h2>Méthode d’addition</h2></br>
+
+L’addition entre les deux nombres est relativement simple. Pour les nombres deécimaux à virgule, les fonctions sont déjà implémentées tel quel.
+
 </body>
 </html>
