@@ -1,228 +1,469 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8"/>
-		<title>AN_Labo1_Groupe3</title>
-	</head>
+<head>
+    <meta charset="utf-8"/>
+    <title>AN_Labo1_Groupe3</title>
+</head>
 
-	<body>
-		<h1>Convertisseur Decimal-Binaire flottant</h1>
-		<p>
-		<label for="nBit">Codage sur </label>
-		<input type="number" name="nBit" id="nBit" value="16" min="1"/>bits
-		</p>
-		<p>
-		<label for="nb1">Premier nombre a convertir: </label>
-		<input type="text" name="nb1" id="nb1" value="0"/><sub>10</sub>
-		&lt;=&gt;
-		<input type="text" name="bin1" id="bin1" /><sub>2</sub>
-		</p>
-		<p>
-		<button type="button" name="conv1" id="conv1">Decimal -> Binaire</button>
-		<button type="button" name="conve1" id="conve1">Binaire -> Decimal</button>
-		</p>
-		<p>
-		<label for="nb2">Second nombre à convertir: </label>
-		<input type="text" name="nb2" id="nb2" value="0"/><sub>10</sub>
-		&lt;=&gt;
-		<input type="text" name="bin2" id="bin2" /><sub>2</sub>
-		</p>
-		<p>
-		<button type="button" name="conv2" id="conv2">Decimal -> Binaire</button>
-		<button type="buton" name="conve2" id="conve2">Binaire -> Decimal</button>
-		</p>
-		<p>
-		<label for="add">Opération entre les nombres:</label>
-		<button type="button" name="add" id="add">Addition</button>
-		</p>
-		<p>
-		Résultat du calcul:
-		<input type="number" name="resDec" id="resDec" value="0" disabled="disabled"/><sub>10</sub>
-		&lt;=&gt;
-		<input type="text" name="resBin" id="resBin" disabled="disabled"/><sub>2</sub>
-		</p>
+<body>
+<h1>Convertisseur Decimal-Binaire flottant</h1>
+<p>
+    <label for="nBit">Codage sur </label>
+    <input type="number" name="nBit" id="nBit" value="16" min="1"/>bits
+</p>
+<p>
+    <label for="nb1">Premier nombre a convertir: </label>
+    <input type="text" name="nb1" id="nb1" value="0"/><sub>10</sub>
+    &lt;=&gt;
+    <input type="text" name="bin1" id="bin1"/><sub>2</sub>
+</p>
+<p>
+    <button type="button" name="conv1" id="conv1">Decimal -> Binaire</button>
+    <button type="button" name="conve1" id="conve1">Binaire -> Decimal</button>
+</p>
+<p>
+    <label for="nb2">Second nombre à convertir: </label>
+    <input type="text" name="nb2" id="nb2" value="0"/><sub>10</sub>
+    &lt;=&gt;
+    <input type="text" name="bin2" id="bin2"/><sub>2</sub>
+</p>
+<p>
+    <button type="button" name="conv2" id="conv2">Decimal -> Binaire</button>
+    <button type="buton" name="conve2" id="conve2">Binaire -> Decimal</button>
+</p>
+<p>
+    <label for="add">Opération entre les nombres:</label>
+    <button type="button" name="add" id="add">Addition</button>
+</p>
+<p>
+    Résultat du calcul:
+    <input type="number" name="nb3" id="nb3" value="0" disabled="disabled"/><sub>10</sub>
+    &lt;=&gt;
+    <input type="text" name="bin3" id="bin3" disabled="disabled"/><sub>2</sub>
+</p>
 
-		<script>
-		document.getElementById("conv1").addEventListener("click", function(){decimalToBinary(1);});
-		document.getElementById("conve1").addEventListener("click",function(){binaryToDecimal(1);});
-		document.getElementById("conv2").addEventListener("click",function(){decimalToBinary(2);});
-		document.getElementById("conve2").addEventListener("click",function(){binaryToDecimal(2);});
-		document.getElementById("add").addEventListener("click",function(){addition();});
-		document.getElementById("nb1").addEventListener("change", function(){decimalToBinary(1);});
-		document.getElementById("nb2").addEventListener("change", function(){decimalToBinary(2);});
-		document.getElementById("bin1").addEventListener("change", function(){binaryToDecimal(1);});
-		document.getElementById("bin2").addEventListener("change", function(){binaryToDecimal(2);});
+<script>
+    document.getElementById("conv1").addEventListener("click", function () {
+        decimalToBinary(1);
+    });
+    document.getElementById("conve1").addEventListener("click", function () {
+        binaryToDecimal(1);
+    });
+    document.getElementById("conv2").addEventListener("click", function () {
+        decimalToBinary(2);
+    });
+    document.getElementById("conve2").addEventListener("click", function () {
+        binaryToDecimal(2);
+    });
+    document.getElementById("add").addEventListener("click", function () {
+        addition();
+    });
+    document.getElementById("nb1").addEventListener("change", function () {
+        decimalToBinary(1);
+    });
+    document.getElementById("nb2").addEventListener("change", function () {
+        decimalToBinary(2);
+    });
+    document.getElementById("bin1").addEventListener("change", function () {
+        binaryToDecimal(1);
+    });
+    document.getElementById("bin2").addEventListener("change", function () {
+        binaryToDecimal(2);
+    });
 
-		function binaryToDecimal(id){
-			var nbaconvertir = document.getElementById("bin"+id).value;
-			var tabBinaire = nbaconvertir.split("");
+    function binaryToDecimal(id) {
+        var nbaconvertir = document.getElementById("bin" + id).value;
+        var tabBinaire = nbaconvertir.split("");
 
-			var nbExpo = 5+3*(Math.log(tabBinaire.length/16)/Math.log(2));
-			var d = (Math.pow(2, nbExpo-1))-1;
-			var signe = 0;
+        var nbExpo = 5 + 3 * (Math.log(tabBinaire.length / 16) / Math.log(2));
+        var d = (Math.pow(2, nbExpo - 1)) - 1;
+        var signe = 0;
 
-			for(var i = 0; i < tabBinaire.length; i++){
-				if(!(tabBinaire[i]==0 || tabBinaire[i]==1)){
-					alert("Veuillez entrer un nombre binaire dans les cases prévu a cet effet");
-					return false;
-				}
-			}
-			if(tabBinaire.length < 16){
-				alert("Veuillez entrer un nombre binaire d'au moins 16 bits");
-				return false;
-			}
+        for (var i = 0; i < tabBinaire.length; i++) {
+            if (!(tabBinaire[i] == 0 || tabBinaire[i] == 1)) {
+                alert("Veuillez entrer un nombre binaire dans les cases prévu a cet effet");
+                return false;
+            }
+        }
+        if (tabBinaire.length < 16) {
+            alert("Veuillez entrer un nombre binaire d'au moins 16 bits");
+            return false;
+        }
 
-			if(tabBinaire[0]==1){
-				signe = -1;
-			}else{
-				signe = 1;
-			}
+        if (tabBinaire[0] == 1) {
+            signe = -1;
+        } else {
+            signe = 1;
+        }
 
-			var tabExpo = [];
-			var tabMantisse = [];
-			var c = 0;
-			for (i = 1; i <= nbExpo; i++){
-				tabExpo[c] = tabBinaire[i];
-				c++;
-			}
-			c = 0;
-			for(i = nbExpo+1; i < tabBinaire.length; i++){
-				tabMantisse[c] = tabBinaire[i]
-				c++;
-			}
-			tabMantisse.unshift(1);
-			var m = 0;
-			for(i = 0; i < tabMantisse.length; i++){
-				m += 1/(Math.pow(2,i))*tabMantisse[i];
-				//alert(m);
-			}
-			//var m = m/Math.pow(2,tabBinaire.length);
-			var e = conv(tabExpo);
-			var r = e-d;
-			var result = signe * m * Math.pow(2, r);
-			//var result = r;
-			document.getElementById("nb"+id).value = result;
-		}
+        var tabExpo = [];
+        var tabMantisse = [];
+        var c = 0;
+        for (i = 1; i <= nbExpo; i++) {
+            tabExpo[c] = tabBinaire[i];
+            c++;
+        }
+        c = 0;
+        for (i = nbExpo + 1; i < tabBinaire.length; i++) {
+            tabMantisse[c] = tabBinaire[i]
+            c++;
+        }
+        tabMantisse.unshift(1);
+        var m = 0;
+        for (i = 0; i < tabMantisse.length; i++) {
+            m += 1 / (Math.pow(2, i)) * tabMantisse[i];
+            //alert(m);
+        }
+        //var m = m/Math.pow(2,tabBinaire.length);
+        var e = conv(tabExpo);
+        var r = e - d;
+        var result = signe * m * Math.pow(2, r);
+        //var result = r;
+        document.getElementById("nb" + id).value = result;
+    }
 
-		function conv(tab){
-			var res = 0;
-			tab.reverse();
-			for(var i = 0; i < tab.length; i++){
-				res += tab[i]*Math.pow(2,i);
-			}
-			//alert(res);
-			return res;
-		}
+    function conv(tab) {
+        var res = 0;
+        tab.reverse();
+        for (var i = 0; i < tab.length; i++) {
+            res += tab[i] * Math.pow(2, i);
+        }
+        //alert(res);
+        return res;
+    }
 
-		function decimalToBinary(id){
-			var nbaconvertir = parseFloat(document.getElementById("nb"+id).value);
-			var nbBit = parseInt(document.getElementById("nBit").value);
-			var res = [];
-			var tabInt = [];
-			var tabDec = [];
-			var mantisse = [];
-			var exposant = [];
-			var expo = 0;
-			var bitSigne = 0;
-			var partInt = 0;
-			var partDec = 0;
+    function decimalToBinary(id) {
+        var nbaconvertir = parseFloat(document.getElementById("nb" + id).value);
+        var nbBit = parseInt(document.getElementById("nBit").value);
+        var res = [];
+        var tabInt = [];
+        var tabDec = [];
+        var mantisse = [];
+        var exposant = [];
+        var expo = 0;
+        var bitSigne = 0;
+        var partInt = 0;
+        var partDec = 0;
 
-			if(nbBit<16){
-				alert("Le nombre de bit minimum est de 16");
-			}
+        if (nbBit < 16) {
+            alert("Le nombre de bit minimum est de 16");
+        }
 
-			if(nbaconvertir == 0){
-				//Si le nombre a convertir vaut 0 alors la sortie est un tableau de 0
-				for(var i = 0; i < nbBit; i++){
-					res[i] = 0;
-				}
-				document.getElementById("bin"+id).value = res.reverse().join("");
-			}else{
-				//Conversion si le nombre n'est pas égal à 0
-				//Test si le signe est positif ou négatif et assigne le bit de signe
-				if(nbaconvertir < 0){
-					bitSigne = 1;
-				}
-				else{
-					bitSigne = 0;
-				}
+        if (nbaconvertir == 0) {
+            //Si le nombre a convertir vaut 0 alors la sortie est un tableau de 0
+            for (var i = 0; i < nbBit; i++) {
+                res[i] = 0;
+            }
+            document.getElementById("bin" + id).value = res.reverse().join("");
+        } else {
+            //Conversion si le nombre n'est pas égal à 0
+            //Test si le signe est positif ou négatif et assigne le bit de signe
+            if (nbaconvertir < 0) {
+                bitSigne = 1;
+            }
+            else {
+                bitSigne = 0;
+            }
 
-				//Calcul du nombre de bit d'exposant
-				var nbExpo = 5+3*(Math.log(nbBit/16)/Math.log(2));
-				nbExpo = parseInt(nbExpo);
-				//Calcul du nombre de bit de la mantisse
-				var nbMantisse = nbBit - 1 - nbExpo;
+            //Calcul du nombre de bit d'exposant
+            var nbExpo = 5 + 3 * (Math.log(nbBit / 16) / Math.log(2));
+            nbExpo = parseInt(nbExpo);
+            //Calcul du nombre de bit de la mantisse
+            var nbMantisse = nbBit - 1 - nbExpo;
 
-				//Fabrication du tableau de la mantisse
-				partInt = Math.abs(parseInt(nbaconvertir));
-				partDec = Math.abs(nbaconvertir) - partInt;
+            //Fabrication du tableau de la mantisse
+            partInt = Math.abs(parseInt(nbaconvertir));
+            partDec = Math.abs(nbaconvertir) - partInt;
 
-				//Calcul de la partie entiere
-				i = 0;
-				var quotient = 1;
-				while((quotient != 0) && (nbMantisse - tabInt.length > 0)){
-					tabInt[i] = partInt%2;
-					partInt = parseInt(partInt/2);
-					quotient = partInt;
-					i = i + 1;
-				}
-				tabInt = tabInt.reverse();
+            //Calcul de la partie entiere
+            i = 0;
+            var quotient = 1;
+            while ((quotient != 0) && (nbMantisse - tabInt.length > 0)) {
+                tabInt[i] = partInt % 2;
+                partInt = parseInt(partInt / 2);
+                quotient = partInt;
+                i = i + 1;
+            }
+            tabInt = tabInt.reverse();
 
-				//Calcul de la partie decimal
-				i = 0;
-				var result = partDec;
-				while((result != 1) && (tabDec.length < nbMantisse*2)){
-						result = result*2;
-						if (result < 1) {
-							tabDec[i] = 0;
-						}
-						else{
-							tabDec[i] = 1;
-							result = result -1;
-						}
-						i = i+1;
-				}
-				//tabDec = tabDec.reverse();
-				//Creation de la mantisse
-				mantisse = tabInt.concat(tabDec);
-				while(mantisse[0] != 1){
-					mantisse.shift();
-				}
-				mantisse.shift();
+            //Calcul de la partie decimal
+            i = 0;
+            var result = partDec;
+            while ((result != 1) && (tabDec.length < nbMantisse * 2)) {
+                result = result * 2;
+                if (result < 1) {
+                    tabDec[i] = 0;
+                }
+                else {
+                    tabDec[i] = 1;
+                    result = result - 1;
+                }
+                i = i + 1;
+            }
+            //tabDec = tabDec.reverse();
+            //Creation de la mantisse
+            mantisse = tabInt.concat(tabDec);
+            while (mantisse[0] != 1) {
+                mantisse.shift();
+            }
+            mantisse.shift();
 
-				var arrondi = 0;
-				while(mantisse.length > nbMantisse){
-					arrondi = mantisse.pop();
-				}
+            var arrondi = 0;
+            while (mantisse.length > nbMantisse) {
+                arrondi = mantisse.pop();
+            }
 
-				if(arrondi == 1){
-					mantisse[nbMantisse-1] = arrondi;
-				}
+            if (arrondi == 1) {
+                mantisse[nbMantisse - 1] = arrondi;
+            }
 
-				expo = (Math.pow(2,nbExpo-1))-1 + (Math.floor(Math.log(Math.abs(nbaconvertir))/Math.log(2)));
+            expo = (Math.pow(2, nbExpo - 1)) - 1 + (Math.floor(Math.log(Math.abs(nbaconvertir)) / Math.log(2)));
 
-				i = 0;
-				quotient = 1;
-				while(quotient != 0){
-					exposant[i] = expo%2;
-					expo = parseInt(expo/2);
-					quotient = expo;
-					i = i + 1;
-				}
-				exposant = exposant.reverse();
-				while(exposant.length < nbExpo){
-						exposant.unshift(0);
-				}
+            i = 0;
+            quotient = 1;
+            while (quotient != 0) {
+                exposant[i] = expo % 2;
+                expo = parseInt(expo / 2);
+                quotient = expo;
+                i = i + 1;
+            }
+            exposant = exposant.reverse();
+            while (exposant.length < nbExpo) {
+                exposant.unshift(0);
+            }
 
 
-				res[0] = bitSigne;
-				res = res.concat(exposant);
-				res = res.concat(mantisse);
+            res[0] = bitSigne;
+            res = res.concat(exposant);
+            res = res.concat(mantisse);
 
-				document.getElementById("bin"+id).value = res.join("");
-			}
+            document.getElementById("bin" + id).value = res.join("");
+        }
 
-		}
-		</script>
-	</body>
+    }
+
+    function addition(){
+        var nb1 = document.getElementById("bin1").value;
+        var nb2 = document.getElementById("bin2").value;
+
+        //var nb1 ="0 10000010 10001110101110000101000";   // 12.46
+        //          0 10000010 10111110101110000100111
+
+        //var nb2 ="10111111010101000111101011100001";   // 0.83
+        //var nb1 ="01000001010101001010001111010110";   // 13.29
+
+
+        var tabBinaire1 = nb1.split("");
+        var tabBinaire2 = nb2.split("");
+
+        var nbExpo = 5+3*(Math.log(tabBinaire1.length/16)/Math.log(2));
+        var d = (Math.pow(2, nbExpo-1))-1;
+        var signe1 = 0;
+        var signe2 = 0;
+
+        if(tabBinaire1[0]==1){
+            signe1 = -1;
+        }else{
+            signe1 = 1;
+        }
+        if(tabBinaire2[0]==1){
+            signe2 = -1;
+        }else{
+            signe2 = 1;
+        }
+
+        var tabExpo1 = [];
+        var tabMantisse1 = [];
+        var tabExpo2 = [];
+        var tabMantisse2 = [];
+
+        var c = 0;
+
+        for (i = 1; i <= nbExpo; i++){
+            tabExpo1[c] = tabBinaire1[i];
+            tabExpo2[c] = tabBinaire2[i];
+            c++;
+        }
+
+        c = 0;
+        for(i = nbExpo+1; i < tabBinaire1.length; i++){
+            tabMantisse1[c] = tabBinaire1[i];
+            tabMantisse2[c] = tabBinaire2[i];
+            c++;
+        }
+
+        var expoBase = [];
+        var answerIsNegative = false;
+
+        var mantisseTmp = [];
+
+        if(signe1 * signe2 > 0) {
+            if(signe1 < 0) answerIsNegative = true;
+        }
+        else {
+            if(signe1 < 0) tabMantisse1 = complementA2Mantisse(tabMantisse1);
+            else tabMantisse2 = complementA2Mantisse(tabMantisse2);
+        }
+        alert(tabMantisse2);
+        tabMantisse1.unshift(1);
+        tabMantisse2.unshift(1);
+
+
+        if(binaryToDecimalExpo(tabExpo1.join("")) > binaryToDecimalExpo(tabExpo2.join(""))){
+            expoBase = tabExpo1;
+            shiftIt(tabExpo1, tabExpo2, tabMantisse2);
+
+        }else {
+            expoBase = tabExpo2;
+            shiftIt(tabExpo2, tabExpo1, tabMantisse1);
+        }
+        expoBase.reverse();
+        var mantisseResultat = somme(tabMantisse1, tabMantisse2);
+
+        var retenue = [];
+        retenue[0] = 1;
+        if(mantisseResultat[0] == 1) {
+            expoBase = somme(tabExpo1, retenue);
+            expoBase.shift();
+        }
+        mantisseResultat.shift();
+        mantisseResultat.shift();
+
+        var res = [];
+        if(answerIsNegative) res[0] = 1;
+        else res[0] = 0;
+        res = res.concat(expoBase);
+        res = res.concat(mantisseResultat);
+        document.getElementById("bin3").value = res.join("");
+        binaryToDecimal(3);
+    }
+
+    function complementA2(tab) {
+        var tab2=[];
+        var tab3=[];
+
+        for(var j = 0; j < tab.length; j++) {
+
+            if(tab[j]==1){
+                tab[j] = 0;
+            }else {
+                tab[j]=1;
+            }
+            tab2[j]=0;
+        }
+
+        tab2[tab.length - 1]=1;
+        tab3 = somme(tab, tab2);
+        alert(tab3);
+        tab3.pop();
+        return tab3;
+    }
+
+    function complementA2Mantisse(tab) {
+        var tab2=[];
+        var tab3=[];
+
+        for(var j = 0; j < tab.length; j++) {
+
+            if(tab[j]==1){
+                tab[j] = 0;
+            }else {
+                tab[j]=1;
+            }
+            tab2[j]=0;
+        }
+
+        tab2[tab.length - 1]=1;
+        tab3 = somme(tab, tab2);
+        alert(tab3);
+        tab3.shift();
+        return tab3;
+    }
+
+    function somme(tab1,tab2){
+
+        var nbBit = 0;
+        var retenue = 0;
+        var res = [];
+
+
+        tab1.reverse();
+        tab2.reverse();
+
+
+        if(tab1.length > tab2.length){
+            nbBit = tab1.length;
+        }else {
+            nbBit = tab2.length;
+        }
+
+        for(var i = 0; i < nbBit; i++){
+
+            // 1+0 ou 0+1
+            if(tab1[i]^tab2[i]==1){
+                if(retenue==1)
+                {
+                    res[i]=0;
+                    retenue=1;
+                }else {
+                    res[i]=1;
+                }
+            } else{
+                if(tab1[i]==1 && tab2[i]==1){
+                    if(retenue==1){
+                        res[i]=1;
+                        retenue=1;
+                    }else {
+                        res[i]=0;
+                        retenue=1;
+                    }
+                }else {
+                    res[i] = retenue;
+                    retenue=0;
+                }
+            }
+        }
+        res[nbBit] = retenue;
+        res.reverse();
+        return res;
+    }
+
+    function binaryToDecimalExpo(nbaconvertir){
+        var tabBinaire = nbaconvertir.split("").reverse();
+        var result = 0;
+
+        for(var i = 0; i < tabBinaire.length; i++){
+            if(tabBinaire[i]==1 || tabBinaire[i]==0){
+                result += tabBinaire[i] * Math.pow(2,i);
+            }
+        }
+        return result;
+    }
+    function soustraction(tabBinaire1,tabBinaire2){
+        var resultat = [];
+        var expoTemp = complementA2(tabBinaire2);
+        expoTemp.reverse();
+        resultat = somme(tabBinaire1, expoTemp);
+        resultat.shift();
+        return resultat;
+    }
+
+    function shiftIt(expo1, expo2, mantisse2) {
+        var shift = soustraction(expo1,expo2);
+        shift.reverse();
+
+        var numShift = 0;
+        for(var k = 0; k < shift.length; k++) {
+            numShift += shift[k]*Math.pow(2, k);
+        }
+
+        for(d=0; d<numShift; d++){
+            mantisse2.unshift(0);
+            mantisse2.pop();
+        }
+    }
+
+
+</script>
+</body>
 </html>
