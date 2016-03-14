@@ -67,6 +67,10 @@
 					return false;
 				}
 			}
+			if(tabBinaire.length < 16){
+				alert("Veuillez entrer un nombre binaire d'au moins 16 bits");
+				return false;
+			}
 
 			if(tabBinaire[0]==1){
 				signe = -1;
@@ -112,7 +116,7 @@
 
 		function decimalToBinary(id){
 			var nbaconvertir = parseFloat(document.getElementById("nb"+id).value);
-			var nbBit = document.getElementById("nBit").value;
+			var nbBit = parseInt(document.getElementById("nBit").value);
 			var res = [];
 			var tabInt = [];
 			var tabDec = [];
@@ -129,7 +133,7 @@
 
 			if(nbaconvertir == 0){
 				//Si le nombre a convertir vaut 0 alors la sortie est un tableau de 0
-				for(var i = 0; i <= nbBit; i++){
+				for(var i = 0; i < nbBit; i++){
 					res[i] = 0;
 				}
 				document.getElementById("bin"+id).value = res.reverse().join("");
@@ -150,10 +154,10 @@
 				var nbMantisse = nbBit - 1 - nbExpo;
 
 				//Fabrication du tableau de la mantisse
-
 				partInt = Math.abs(parseInt(nbaconvertir));
 				partDec = Math.abs(nbaconvertir) - partInt;
 
+				//Calcul de la partie entiere
 				i = 0;
 				var quotient = 1;
 				while((quotient != 0) && (nbMantisse - tabInt.length > 0)){
@@ -163,49 +167,57 @@
 					i = i + 1;
 				}
 				tabInt = tabInt.reverse();
-				expo = (tabInt.length)-1;
 
+				//Calcul de la partie decimal
 				i = 0;
-				var result = partDec *2;
-				while((result != 1) && (nbMantisse - tabInt.length - tabDec.length > 0)){
-					if(result > 1){
-						tabDec[i] = 1;
-						result = result - 1;
-					}else{
-						tabDec[i] = 0;
-					}
-					result = result*2;
-					i = i+1;
+				var result = partDec;
+				while((result != 1) && (tabDec.length < nbMantisse*2)){
+						result = result*2;
+						if (result < 1) {
+							tabDec[i] = 0;
+						}
+						else{
+							tabDec[i] = 1;
+							result = result -1;
+						}
+						i = i+1;
 				}
-				i = i+1;
-				tabDec[i] = 1;
-				tabInt.shift();
+				//tabDec = tabDec.reverse();
+				//Creation de la mantisse
 				mantisse = tabInt.concat(tabDec);
+				while(mantisse[0] != 1){
+					mantisse.shift();
+				}
+				mantisse.shift();
 
-				expo += (Math.pow(2,nbExpo-1)-1);
+				var arrondi = 0;
+				while(mantisse.length > nbMantisse){
+					arrondi = mantisse.pop();
+				}
+
+				if(arrondi == 1){
+					mantisse[nbMantisse-1] = arrondi;
+				}
+
+				expo = (Math.pow(2,nbExpo-1))-1 + (Math.floor(Math.log(Math.abs(nbaconvertir))/Math.log(2)));
 
 				i = 0;
 				quotient = 1;
-				while(quotient!= 0){
+				while(quotient != 0){
 					exposant[i] = expo%2;
 					expo = parseInt(expo/2);
 					quotient = expo;
 					i = i + 1;
 				}
-				if(exposant.length < nbExpo){
-					for(i=exposant.length; i < nbExpo; i++){
-						exposant[i]=0;
-					}
-				}
 				exposant = exposant.reverse();
+				while(exposant.length < nbExpo){
+						exposant.unshift(0);
+				}
+
 
 				res[0] = bitSigne;
 				res = res.concat(exposant);
 				res = res.concat(mantisse);
-
-				for(i = res.length; i <= nbBit; i++){
-					res[i] = 0;
-				}
 
 				document.getElementById("bin"+id).value = res.join("");
 			}
