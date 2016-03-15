@@ -9,7 +9,7 @@
 <h1>Convertisseur Decimal-Binaire flottant</h1>
 <p>
     <label for="nBit">Codage sur </label>
-    <input type="number" name="nBit" id="nBit" value="16" min="1"/>bits
+    <input type="number" name="nBit" id="nBit" value="16" min="16" onchange="changeSize()"/>bits
 </p>
 <p>
     <label for="nb1">Premier nombre a convertir: </label>
@@ -70,6 +70,13 @@
     document.getElementById("bin2").addEventListener("change", function () {
         binaryToDecimal(2);
     });
+
+    function changeSize(){
+      var nb = parseInt(document.getElementById("nBit").value);
+      document.getElementById("nb1").maxLength = nb;
+      document.getElementById("bin1").maxLength = nb;
+      document.getElementById("bin2").maxLength = nb;
+    }
 
     function binaryToDecimal(id) {
         var nbaconvertir = document.getElementById("bin" + id).value;
@@ -243,20 +250,22 @@
     }
 
     function addition(){
-        var nb1 = document.getElementById("bin1").value;
-        var nb2 = document.getElementById("bin2").value;
+        var nombre1 = document.getElementById("bin1").value;
+        var nombre2 = document.getElementById("bin2").value;
 
-        //var nb1 ="0 10000010 10001110101110000101000";   // 12.46
+        /*var dec1 = parseFloat(document.getElementById("nb1").value);
+        var dec2 = parseFloat(document.getElementById("nb2").value);
+        var dec3 = dec1 + dec2;
+        document.getElementById("nb3").value = dec3;*/
+        //var nombre1 ="0 10000010 10001110101110000101000";   // 12.46
         //          0 10000010 10111110101110000100111
 
-        //var nb2 ="10111111010101000111101011100001";   // 0.83
-        //var nb1 ="01000001010101001010001111010110";   // 13.29
+        //var nombre2 ="10111111010101000111101011100001";   // 0.83
+        //var nombre1 ="01000001010101001010001111010110";   // 13.29
 
 
-        var tabBinaire1 = nb1.split("");
-        var tabBinaire2 = nb2.split("");
-        alert("test");
-        alert(tabBinaire2);
+        var tabBinaire1 = nombre1.split("");
+        var tabBinaire2 = nombre2.split("");
 
         var nbExpo = 5+3*(Math.log(tabBinaire1.length/16)/Math.log(2));
         var d = (Math.pow(2, nbExpo-1))-1;
@@ -332,8 +341,12 @@
         mantisseResultat.shift();
 
         var res = [];
-        if(answerIsNegative) res[0] = 1;
-        else res[0] = 0;
+        if(answerIsNegative){
+          res[0] = 1;
+        }
+        else{
+          res[0] = 0;
+        }
         res = res.concat(expoBase);
         res = res.concat(mantisseResultat);
         document.getElementById("bin3").value = res.join("");
@@ -469,11 +482,11 @@
 </script>
 
 <h1>Convertisseur float ­ binaire </h1></br>
-Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </br>
+<p>Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </br></p>
 
 <h2>But du programme</h2></br>
-Le programme, s'écrit en HTML et en JavaScript, il doit permettre de convertir des nombres floattant sur un nombre de bit définit, de la base 10 a la base 2 et inversement.
-Il doit également gérer l'addition entre 2 nombres codé sur le même nombre de bits.</br> </br>
+<p>Le programme, s'écrit en HTML et en JavaScript, il doit permettre de convertir des nombres floattant sur un nombre de bit définit, de la base 10 a la base 2 et inversement.
+Il doit également gérer l'addition entre 2 nombres codé sur le même nombre de bits.</br> </br></p>
 
 <h2>Structure du programme</h2></br>
 
@@ -483,7 +496,7 @@ Les deuxièmes et troisièmes entrées sont des nombres respectivement décimaux
 Les quatrièmes et cinquièmes entrées sont les mêmes que les deuxièmes et troisièmes. Finalement, un bouton sera présents pour additionner, les nombres issus des conversions et ce dans les deux bases présentes.</br> </br>
 
 <h2>Méthodes de conversion</h2></br>
-
+<p>
 
 <h2>Méthode d’addition</h2></br>
 
