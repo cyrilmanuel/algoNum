@@ -492,13 +492,27 @@ Il doit également gérer l'addition entre 2 nombres codé sur le même nombre d
 
 <h2>Structure du programme</h2></br>
 
-La page est écrite en philosophie “script unique”, c’est à dire que le code HTML est parsemé de code JavaScript.</br>
+<p>La page est écrite en philosophie “script unique”, c’est à dire que le code HTML est parsemé de code JavaScript.</br>
 La première entreé demandé à l’utilisateur est le nombre de bits sur lequel devra être codé le nombre en binaire ( 16 étant la valeur minimal).</br>
 Les deuxièmes et troisièmes entrées sont des nombres respectivement décimaux et binaires. Ceux ci pourront être convertis par le biais de boutons, un pour la conversion décimale ­ binaire, l’autre pour la conversion inverse.</br>
-Les quatrièmes et cinquièmes entrées sont les mêmes que les deuxièmes et troisièmes. Finalement, un bouton sera présents pour additionner, les nombres issus des conversions et ce dans les deux bases présentes.</br> </br>
+Les quatrièmes et cinquièmes entrées sont les mêmes que les deuxièmes et troisièmes. Finalement, un bouton sera présents pour additionner, les nombres issus des conversions et ce dans les deux bases présentes.</br> </br></p>
 
 <h2>Méthodes de conversion</h2></br>
-<p>
+<p>La conversion du nombre décimal vers le nombre binaire se fait en lisant, dans un premier temps, le champ correspondant (ID = nb1 ou nb2) et en stockant la valeur lu dans une variable. Cette variable est ensuite testé. Si sa valeur est de 0
+alors notre application fixe tout de suite le résultat de la conversion dans un nombre binaire ne contenant que des 0. Toutefois, si la valeur de la variable ne vaut pas 0, nous allons teste si celle-ci est plus petite ou plus grande que 0.
+Ceci nous permet déjà de calculer le bit de signe de notre nombre binaire. Une fois cette opération effectué nous calculons le nombre que vaudra le biais. Pour se faire nous calculons le nombre de bit d'exposant dont nous aurons besoin a l'aide
+de la formule suivante: 5 + 3 * (log(nombre de bit dans lequel on doit coder / 16)/log(2)). Cette formule a été trouvé en regardant les normes en vigueur IEE-754 pour un nombre de bit allant de 16 jusqu'à 128. Nous avons remarqué une progression logarithmique
+et avons donc tenté de la traduire en une formule mathématique relativement simple. Nous pouvons alors sans autre calculé la taille en bit de notre mantisse. Nous séparons ensuite notre nombre décimal en deux partie, la partie entière et la partie décimale.
+Chacune de ces partie est ensuite convertie en binaire (pour la partie entière avec la technique de division successive et pour la partie entière par la technique de la multiplication successive) et stocke dans des tableaux. Le tableau stockant la valeur binaire du nombre
+décimale est plus grand que nécessaire car la mantisse sera amputé lors du décalage de la virgule. En ayant un tableau plu grand que nécessaire on prévient ce problème ainsi que le problème de l'arrondi. La mantisse peut alors être créé.
+Pour se faire, nous allons concaténer le tableau binaire de la valeur entière avec le tableau de le tableau binaire de la valeur décimale. On décale ensuite notre virgule jusqu au fameux bit caché (celui-ci sera alors également supprimer du tableau de la mantisse).
+La mantisse est alors couper pour ne contenir que le nombre de bit possible et fixé par nos calculs précédents. Pour l'arrondie du dernier bit de la mantisse on verifie si le bit qui le suit est à 1 ou 0 avant de le supprimer.
+Une fois la mantisse conçu, on va s'attaquer au calcul de l'exposant. Pour se faire on se sert de la formule vu en cours (Valeur de l'exposant = ((2^nombre de bit d'exposant-1)-1)+(log(nombre a convertir)/log(2)). Puis l'on convertit ce nombre en binaire par la technique
+de la division successive en binaire. Nos trois parties sont alors concaténer (notre bit de signe, notre tableau de l'exposant en binaire et le tableau de la mantisse en binaire). Le résultat est alors affiché à l'utilisateur.</P>
+<p>La conversion du nombre binaire vers le nombre décimal se fait en lisant la valeur des champs respectifs (bin1, bin2 et bin3) et en stokant ces champs dans des tableaux. On calcul ensuite le nombre de bit d'exposant en fonction de la taille des tableaux récupéré avec
+la formule vu plus haut. Le bit de signe étant le premier du tableau il est extrait selon sa valeur un variable de signe est mis à 1 ou à -1. Ensuite on lis les bits d'exposant. La valeur de l'exposant est alors convertit en une valeur entière et stocké dans une variable.
+Puis on lit le tableau de la mantisse. A ce tableau on concaténera un premier bit à 1 (le bit caché), puis nous le convertissons en entier. Nous calculons encore d (qui est égal à (2^nombre de bit d exposant-1)-1). Puis nous allons effectuer le calcul final de la valeur, toute
+les variables du calcul ayant été trouvé. Ce calucl est celui vu en cours, à savoir S*M*2^(exposant - biais). La valeur convertie peut alors être affiché à l'utilisateur.</p>
 
 <h2>Méthode d’addition</h2></br>
 
