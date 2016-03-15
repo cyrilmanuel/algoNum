@@ -319,11 +319,11 @@
 
         if(binaryToDecimalExpo(tabExpo1.join("")) > binaryToDecimalExpo(tabExpo2.join(""))){
             expoBase = tabExpo1;
-            //shiftIt(tabExpo1, tabExpo2, tabMantisse2);
+            shiftIt(tabExpo1, tabExpo2, tabMantisse2);
 
         }else {
             expoBase = tabExpo2;
-            //shiftIt(tabExpo2, tabExpo1, tabMantisse1);
+            shiftIt(tabExpo2, tabExpo1, tabMantisse1);
         }
         expoBase.reverse();
 
