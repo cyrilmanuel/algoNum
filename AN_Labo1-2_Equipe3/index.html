@@ -306,8 +306,6 @@
         var expoBase = [];
         var answerIsNegative = false;
 
-        var mantisseTmp = [];
-
         if(signe1 * signe2 > 0) {
             if(signe1 < 0) answerIsNegative = true;
         }
@@ -315,28 +313,35 @@
             if(signe1 < 0) tabMantisse1 = complementA2Mantisse(tabMantisse1);
             else tabMantisse2 = complementA2Mantisse(tabMantisse2);
         }
-        alert(tabMantisse2);
         tabMantisse1.unshift(1);
         tabMantisse2.unshift(1);
 
 
         if(binaryToDecimalExpo(tabExpo1.join("")) > binaryToDecimalExpo(tabExpo2.join(""))){
             expoBase = tabExpo1;
-            shiftIt(tabExpo1, tabExpo2, tabMantisse2);
+            //shiftIt(tabExpo1, tabExpo2, tabMantisse2);
 
         }else {
             expoBase = tabExpo2;
-            shiftIt(tabExpo2, tabExpo1, tabMantisse1);
+            //shiftIt(tabExpo2, tabExpo1, tabMantisse1);
         }
         expoBase.reverse();
+
         var mantisseResultat = somme(tabMantisse1, tabMantisse2);
 
         var retenue = [];
         retenue[0] = 1;
+        for(var it = 1; it < nbExpo; it++) {
+            retenue[it] = 0;
+        }
+        retenue.reverse();
         if(mantisseResultat[0] == 1) {
+            alert(expoBase + " + " + retenue);
             expoBase = somme(tabExpo1, retenue);
             expoBase.shift();
+            alert("Resultat : " + expoBase);
         }
+
         mantisseResultat.shift();
         mantisseResultat.shift();
 
@@ -369,7 +374,6 @@
 
         tab2[tab.length - 1]=1;
         tab3 = somme(tab, tab2);
-        alert(tab3);
         tab3.pop();
         return tab3;
     }
@@ -401,10 +405,8 @@
         var retenue = 0;
         var res = [];
 
-
         tab1.reverse();
         tab2.reverse();
-
 
         if(tab1.length > tab2.length){
             nbBit = tab1.length;
