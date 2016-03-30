@@ -517,6 +517,11 @@ les variables du calcul ayant été trouvé. Ce calucl est celui vu en cours, à
 <h2>Méthode d’addition</h2></br>
 
 L’addition entre les deux nombres est relativement simple. Pour les nombres deécimaux à virgule, les fonctions sont déjà implémentées tel quel.
+pour l'addition binaire, nous commencons par mettre le nombre sur le même exposant en applicant un shift sur celui étant le plus faible. la différence
+entre les deux puissance d'exposant nous indique le décalage que nous devons appliqué au plus petit des deux. une fois réalisé, nous additionnons les mantisses
+des 2 nombres puis la retenue se met si elle existe avec le nombre caché. grâce a celui-ci, nous modifions les exposant en les additionnant afin d'obtenir l'exposant
+résultant ce qui fera notre normalisation. Dans le cas d'un nombre négatif, nous effectuons un test afin de détérminer si il faut ou non utiliser un complement a 2 et une soustraction
+avans d'éfféctuer l'aditions de nos mantisses et exposants.
 
 </body>
 </html>
