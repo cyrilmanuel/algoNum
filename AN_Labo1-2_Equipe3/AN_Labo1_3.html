@@ -42,6 +42,8 @@
     <input type="text" name="bin3" id="bin3" disabled="disabled"/><sub>2</sub>
 </p>
 
+
+
 <script>
     document.getElementById("conv1").addEventListener("click", function () {
         decimalToBinary(1);
@@ -82,9 +84,10 @@
         var nbaconvertir = document.getElementById("bin" + id).value;
         var tabBinaire = nbaconvertir.split("");
 
-        var nbExpo = 5 + 3 * (Math.log(tabBinaire.length / 16) / Math.log(2));
+        var nbExpo = parseInt(5 + 3 * (Math.log(tabBinaire.length / 16) / Math.log(2)));
         var d = (Math.pow(2, nbExpo - 1)) - 1;
         var signe = 0;
+
 
         for (var i = 0; i < tabBinaire.length; i++) {
             if (!(tabBinaire[i] == 0 || tabBinaire[i] == 1)) {
@@ -316,7 +319,6 @@
         tabMantisse1.unshift(1);
         tabMantisse2.unshift(1);
 
-
         if(binaryToDecimalExpo(tabExpo1.join("")) > binaryToDecimalExpo(tabExpo2.join(""))){
             expoBase = tabExpo1;
             shiftIt(tabExpo1, tabExpo2, tabMantisse2);
@@ -326,7 +328,6 @@
             shiftIt(tabExpo2, tabExpo1, tabMantisse1);
         }
         expoBase.reverse();
-
         var mantisseResultat = somme(tabMantisse1, tabMantisse2);
 
         var retenue = [];
@@ -335,11 +336,12 @@
             retenue[it] = 0;
         }
         retenue.reverse();
+
         if(mantisseResultat[0] == 1) {
-            alert(expoBase + " + " + retenue);
-            expoBase = somme(tabExpo1, retenue);
+            expoBase = somme(expoBase, retenue);
             expoBase.shift();
-            alert("Resultat : " + expoBase);
+            mantisseResultat.unshift(0);
+            mantisseResultat.pop();
         }
 
         mantisseResultat.shift();
@@ -394,7 +396,6 @@
 
         tab2[tab.length - 1]=1;
         tab3 = somme(tab, tab2);
-        alert(tab3);
         tab3.shift();
         return tab3;
     }
@@ -466,15 +467,22 @@
     }
 
     function shiftIt(expo1, expo2, mantisse2) {
-        var shift = soustraction(expo1,expo2);
-        shift.reverse();
+        var expo1Dec = 0;
+        var expo2Dec = 0;
+        var k = 0;
 
-        var numShift = 0;
-        for(var k = 0; k < shift.length; k++) {
-            numShift += shift[k]*Math.pow(2, k);
+        var numShift;
+        expo1.reverse();
+        for(k; k < expo1.length; k++) {
+            expo1Dec += expo1[k]*Math.pow(2, k);
         }
+        expo2.reverse();
+        for(k = 0; k < expo1.length; k++) {
+            expo2Dec += expo2[k]*Math.pow(2, k);
+        }
+        numShift = expo1Dec - expo2Dec;
 
-        for(d=0; d<numShift; d++){
+        for(k=0; k<numShift; k++){
             mantisse2.unshift(0);
             mantisse2.pop();
         }
@@ -521,7 +529,9 @@ pour l'addition binaire, nous commencons par mettre le nombre sur le même expos
 entre les deux puissance d'exposant nous indique le décalage que nous devons appliqué au plus petit des deux. une fois réalisé, nous additionnons les mantisses
 des 2 nombres puis la retenue se met si elle existe avec le nombre caché. grâce a celui-ci, nous modifions les exposant en les additionnant afin d'obtenir l'exposant
 résultant ce qui fera notre normalisation. Dans le cas d'un nombre négatif, nous effectuons un test afin de détérminer si il faut ou non utiliser un complement a 2 et une soustraction
-avans d'éfféctuer l'aditions de nos mantisses et exposants.
+avant d'efféctuer l'addition de nos mantisse et exposant.
+
+A l'heure actuelle, l'addtion ne fonctionne que quand les signes des nombres sont les mêmes.
 
 </body>
 </html>
