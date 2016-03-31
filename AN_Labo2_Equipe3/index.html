@@ -2,41 +2,60 @@
 <html>
     <head>
         <meta charset="utf-8"/>
+        <style>
+            input[type=number] {
+                width:50px;
+            }
+            .topleftConfig {
+                position: relative;
+                float: left;
+            }
+            .topleftInfo {
+                position: relative;
+                float: left;
+                margin-left:50px;
+            }
+        </style>
         <title> Labo1- Convertisseur</title>
     </head>
     
     <body>
         <h1>Résolution d’équations</h1>
+      <div class="topleftConfig">
         <p>
             <label for="minAxeX">Valeur min axe X </label>
             <input type="number" name="minAxeX" id="minAxeX" value="-10"/>
-        </p>
-        <p>
+
             <label for="maxAxeX">Valeur max axe X </label>
             <input type="number" name="maxAxeX" id="maxAxeX" value="10"/>
         </p>
         <p>
             <label for="minAxeY">Valeur min axe Y </label>
-            <input type="number" name="minAxeY" id="minAxeY" value="-20"/>
-        </p>
-        <p>
+            <input type="number" name="minAxeY" id="minAxeY" value="-10"/>
+
             <label for="maxAxeY">Valeur max axe Y </label>
             <input type="number" name="maxAxeY" id="maxAxeY" value="10"/>
         </p>
         <p>
-            <label for="HEQUARTDGRASDUASION">écart de graduation</label>
+            <label for="HEQUARTDGRASDUASION">Écart de graduation</label>
             <input type="number" name="HEQUARTDGRASDUASION" id="HEQUARTDGRASDUASION" value="1"/>
-        </p>
 
-        <p>
             <label for="choixGraine">Valeur de la graine </label>
-            <input type="number" name="choixGraine" id="choixGraine" value="5"/>
+            <input type="number" name="choixGraine" id="choixGraine" value="0.5"/>
         </p>
-
         <p>
             <button type="button" name="dessinerFonction1" id="dessinerFonction1">Dessiner f1(x)</button>
             <button type="button" name="dessinerFonction2" id="dessinerFonction2">Dessiner f2(x)</button>
+            <button type="button" name="dessinerAnimation" id="dessinerAnimation">Dessiner Animation</button>
         </p>
+      </div>
+
+        <div class="topleft">
+            <p>
+            <textarea rows="4" cols="50" name="textarea" id="textarea" readonly> modifier les axes et choisisez la fonctions.
+            </textarea>
+            </p>
+        </div>
 
         <canvas id="myCanvas" width="1000" height="500">
             <!-- Message pour les navigateurs ne supportant pas encore canvas. -->
@@ -58,6 +77,9 @@
             document.getElementById("dessinerFonction2").addEventListener("click", function () {
                 myGraph.function1Draw = false;
                 cleartout();
+            });
+            document.getElementById("dessinerAnimation").addEventListener("click", function () {
+                dessinerAnimation();
             });
             document.getElementById("minAxeX").addEventListener("change", function () {
                 cleartout();
@@ -280,6 +302,7 @@
                 this.transformContext();
                 context.beginPath();
                 if(equation(this.minX) != null) context.moveTo(this.minX, equation(this.minX));
+
                 // dessin de la fonction de x depuis Xmin jusqu'au Xmax
                 for(var x = this.minX + this.iteration; x <= this.maxX; x += this.iteration) {
                     if(equation(x) != null) context.lineTo(x, equation(x));
@@ -293,7 +316,8 @@
                 context.restore();
 
                // récupération du tableau contenant les différents x a dessinér pour l'animation.
-                this.tabXanimation = Graph.prototype.newton(equation);
+                var test = Graph.prototype.newton(equation);
+                alert(test.length);
             };
 
             //-------------------------------------------------------------------
@@ -306,6 +330,9 @@
                 //doit Ítre rentrÈ par l'utilisateur
                 var ecartMin = 0.0000001;
                 var graine = document.getElementById("choixGraine").value;  // nb a choisir
+
+                alert("la graine recup : " + graine);
+                //var graine = 4;
                 var nbMaxOcu = 10;
 
                 var occurence = 0;
@@ -323,14 +350,16 @@
                 var graineFinale = tabGraines[tabGraines.length - 1];
                 if(graineFinale == null) {
                     if(occurence > nbMaxOcu) {
-                        alert("N'a pas convergÈ assez vite.");
+                        //alert("N'a pas convergÈ assez vite.");
+                        document.getElementById("textarea").value = "N'a pas convergÈ assez vite.";
                     }
                     else {
-                        alert("Un graine n'Ètait pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de dÈfinition).");
+                        document.getElementById("textarea").value = "Un graine n'Ètait pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de dÈfinition).";
                     }
                 }
                 else {
-                    alert("Graine finale : " + Math.round(graineFinale/ecartMin)*ecartMin + " +/- " + ecartMin);
+                    document.getElementById("textarea").value = "Graine finale : " + Math.round(graineFinale/ecartMin)*ecartMin + " +/- " + ecartMin;
+                    //alert("Graine finale : " + Math.round(graineFinale/ecartMin)*ecartMin + " +/- " + ecartMin);
                 }
                 return tabGraines;
             }
@@ -343,7 +372,8 @@
 
             Graph.prototype.newtonRecursive = function(graine, fonction, tabGraine, occurence, ecartMin) {
                 occurence++;
-                if(graine == null) return null; //mauvaise entrÈe
+                alert("min x et max x " + this.minX + " " + this.maxX);
+                if(graine == null || graine < this.minX || graine > this.maxX) return null; //mauvaise entrÈe
                 else {
                     var sideGraine = graine + ecartMin;
                     var fGraine = fonction(graine);
@@ -375,7 +405,14 @@
             //-------------------------------------------------------------------
 
             Graph.prototype.Animation = function() {
-                
+
+                this.context.beginPath();
+                this.context.moveTo(this.tabXanimation[0], this.tabXanimation[0]/(1-Math.pow(this.tabXanimation[0],2)));
+                // dessin de la methode de newton
+                for(var i = 1; i <= this.tabXanimation.length; i += 1) {
+                    alert("dessin"+this.tabXanimation.length);
+                   this.context.lineTo(this.tabXanimation[i],this.tabXanimation[i]/(1-Math.pow(this.tabXanimation[i],2)));
+                }
             }
 
             //-------------------------------------------------------------------
@@ -432,9 +469,13 @@
                     }
                 },'red',3);
             }
+             dessinerFonc2 = function(){
 
-            dessinerFonc2 = function(){
                 myGraph.drawEquation(function(x){return Math.sin(x)-x/13;},'blue',3);
+            }
+
+            dessinerAnimation = function () {
+                myGraph.Animation();
             }
         </script>
     </body>
