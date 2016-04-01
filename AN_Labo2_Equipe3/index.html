@@ -316,8 +316,7 @@
                 context.restore();
 
                // récupération du tableau contenant les différents x a dessinér pour l'animation.
-                var test = Graph.prototype.newton(equation);
-                alert(test.length);
+                this.tabXanimation = Graph.prototype.newton(equation);
             };
 
             //-------------------------------------------------------------------
@@ -372,15 +371,14 @@
 
             Graph.prototype.newtonRecursive = function(graine, fonction, tabGraine, occurence, ecartMin) {
                 occurence++;
-                alert("min x et max x " + this.minX + " " + this.maxX);
-                if(graine == null || graine < this.minX || graine > this.maxX) return null; //mauvaise entrÈe
+                if(graine == null || graine < myGraph.minX || graine > myGraph.maxX) return null; //mauvaise entrÈe
                 else {
                     var sideGraine = graine + ecartMin;
                     var fGraine = fonction(graine);
                     var fSideGraine = fonction(sideGraine);
 
                     if(Math.abs(fGraine) <= ecartMin) return graine; //trouvÈ la racine
-                    else if(fGraine == null || fSideGraine == null) return null; //graine pas dans domaine de dÈfinition
+                    else if(fGraine == null || fSideGraine == null || fGraine > myGraph.maxY || fGraine< myGraph.minY) return null; //graine pas dans domaine de dÈfinition
                     else {
                         var newGraine, a, b; //y = a*x + b
                         if(Math.abs(sideGraine - graine) < ecartMin / 2) return null; //si ecartMin trop petit pour machine
@@ -405,14 +403,21 @@
             //-------------------------------------------------------------------
 
             Graph.prototype.Animation = function() {
-
-                this.context.beginPath();
-                this.context.moveTo(this.tabXanimation[0], this.tabXanimation[0]/(1-Math.pow(this.tabXanimation[0],2)));
+                var context = this.context;
+                context.save();
+                this.transformContext();
+                context.beginPath();
+                var graine = document.getElementById("choixGraine").value;
+                context.moveTo(graine, graine/(1-Math.pow(graine,2)));
                 // dessin de la methode de newton
-                for(var i = 1; i <= this.tabXanimation.length; i += 1) {
-                    alert("dessin"+this.tabXanimation.length);
-                   this.context.lineTo(this.tabXanimation[i],this.tabXanimation[i]/(1-Math.pow(this.tabXanimation[i],2)));
+                for(var i = 0; i <= myGraph.tabXanimation.length; i += 1) {
+                    alert("dessin"+myGraph.tabXanimation[i]);
+                   context.lineTo(myGraph.tabXanimation[i],myGraph.tabXanimation[i]/(1-Math.pow(myGraph.tabXanimation[i],2)));
                 }
+                context.restore();
+                context.lineWidth = 3;
+                context.strokeStyle = 'green';
+                context.stroke();
             }
 
             //-------------------------------------------------------------------
