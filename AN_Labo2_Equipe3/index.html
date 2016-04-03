@@ -424,21 +424,22 @@
             if(this.function1Draw == true) {
                 context.lineTo(graine, graine / (1 - Math.pow(graine, 2)));
                 // dessin de la methode de newton
-                for (var i = 0; i < myGraph.tabXanimation.length; i += 1) {
-                    // alert("dessin" + myGraph.tabXanimation[i]);
-                    context.lineTo(myGraph.tabXanimation[i], 0);
-                    if (i != (myGraph.tabXanimation.length - 1)) {
-                        context.lineTo(myGraph.tabXanimation[i], graine / (1 - Math.pow(myGraph.tabXanimation[i], 2)));
-                    }
+                alert(this.tabXanimation.length);
+                for (var i = 0; i < this.tabXanimation.length; i += 1) {
+                        //sleep(1000);
+                        context.lineTo(this.tabXanimation[i], 0);
+                        if (i != (this.tabXanimation.length - 1)) {
+                            context.lineTo(this.tabXanimation[i], graine / (1 - Math.pow(this.tabXanimation[i], 2)));
+                        }
                 }
             }else {
                 context.lineTo(graine, Math.sin(graine)-graine/13);
                 // dessin de la methode de newton
-                for (var i = 0; i < myGraph.tabXanimation.length; i += 1) {
-                    // alert("dessin" + myGraph.tabXanimation[i]);
-                    context.lineTo(myGraph.tabXanimation[i],0);
-                    if (i != (myGraph.tabXanimation.length - 1)) {
-                        context.lineTo(myGraph.tabXanimation[i], Math.sin(myGraph.tabXanimation[i])-myGraph.tabXanimation[i]/13);
+                for (var i = 0; i < this.tabXanimation.length; i += 1) {
+                   // sleep(1000);
+                    context.lineTo(this.tabXanimation[i],0);
+                    if (i != (this.tabXanimation.length - 1)) {
+                        context.lineTo(this.tabXanimation[i], Math.sin(this.tabXanimation[i])-this.tabXanimation[i]/13);
                     }
                 }
             }
@@ -451,6 +452,14 @@
         }
     }
 
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+                break;
+            }
+        }
+    }
     //-------------------------------------------------------------------
     //-------------------------------------------------------------------
     //------------------ UTILISATION ET AFFICHAGE -----------------------
