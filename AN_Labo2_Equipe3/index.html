@@ -1,500 +1,535 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <style>
-            input[type=number] {
-                width:50px;
-            }
-            .topleftConfig {
-                position: relative;
-                float: left;
-            }
-            .topleftInfo {
-                position: relative;
-                float: left;
-                margin-left:50px;
-            }
-        </style>
-        <title> Labo1- Convertisseur</title>
-    </head>
-    
-    <body>
-        <h1>Résolution d’équations</h1>
-      <div class="topleftConfig">
-        <p>
-            <label for="minAxeX">Valeur min axe X </label>
-            <input type="number" name="minAxeX" id="minAxeX" value="-10"/>
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        input[type=number] {
+            width: 50px;
+        }
 
-            <label for="maxAxeX">Valeur max axe X </label>
-            <input type="number" name="maxAxeX" id="maxAxeX" value="10"/>
-        </p>
-        <p>
-            <label for="minAxeY">Valeur min axe Y </label>
-            <input type="number" name="minAxeY" id="minAxeY" value="-10"/>
+        .topleftConfig {
+            position: relative;
+            float: left;
+        }
 
-            <label for="maxAxeY">Valeur max axe Y </label>
-            <input type="number" name="maxAxeY" id="maxAxeY" value="10"/>
-        </p>
-        <p>
-            <label for="HEQUARTDGRASDUASION">Écart de graduation</label>
-            <input type="number" name="HEQUARTDGRASDUASION" id="HEQUARTDGRASDUASION" value="1"/>
+        .topleftInfo {
+            position: relative;
+            float: left;
+            margin-left: 50px;
+        }
+    </style>
+    <title> Labo1- Convertisseur</title>
+</head>
 
-            <label for="choixGraine">Valeur de la graine </label>
-            <input type="number" name="choixGraine" id="choixGraine" value="0.5"/>
-        </p>
-        <p>
-            <button type="button" name="dessinerFonction1" id="dessinerFonction1">Dessiner f1(x)</button>
-            <button type="button" name="dessinerFonction2" id="dessinerFonction2">Dessiner f2(x)</button>
-            <button type="button" name="dessinerAnimation" id="dessinerAnimation">Dessiner Animation</button>
-        </p>
-      </div>
+<body>
+<h1>Résolution d’équations</h1>
+<div class="topleftConfig">
+    <p>
+        <label for="minAxeX">Valeur min axe X </label>
+        <input type="number" name="minAxeX" id="minAxeX" value="-10"/>
 
-        <div class="topleft">
-            <p>
-            <textarea rows="4" cols="50" name="textarea" id="textarea" readonly> modifier les axes et choisisez la fonctions.
+        <label for="maxAxeX">Valeur max axe X </label>
+        <input type="number" name="maxAxeX" id="maxAxeX" value="10"/>
+    </p>
+    <p>
+        <label for="minAxeY">Valeur min axe Y </label>
+        <input type="number" name="minAxeY" id="minAxeY" value="-10"/>
+
+        <label for="maxAxeY">Valeur max axe Y </label>
+        <input type="number" name="maxAxeY" id="maxAxeY" value="10"/>
+    </p>
+    <p>
+        <label for="HEQUARTDGRASDUASION">Écart de graduation</label>
+        <input type="number" name="HEQUARTDGRASDUASION" id="HEQUARTDGRASDUASION" value="1"/>
+
+        <label for="choixGraine">Valeur de la graine </label>
+        <input type="number" name="choixGraine" id="choixGraine" value="0.5"/>
+    </p>
+    <p>
+        <button type="button" name="dessinerFonction1" id="dessinerFonction1">Dessiner f1(x)</button>
+        <button type="button" name="dessinerFonction2" id="dessinerFonction2">Dessiner f2(x)</button>
+        <button type="button" name="dessinerAnimation" id="dessinerAnimation">Dessiner Animation</button>
+    </p>
+</div>
+
+<div class="topleft">
+    <p>
+            <textarea rows="4" cols="50" name="textarea" id="textarea" readonly> modifier les axes et choisisez la fonction.
             </textarea>
-            </p>
-        </div>
+    </p>
+</div>
 
-        <canvas id="myCanvas" width="1000" height="500">
-            <!-- Message pour les navigateurs ne supportant pas encore canvas. -->
-            Votre navigateur ne supporte pas encore les canvas. Essayez de metre-à-jour votre navigateur
-            ou de changer de navigateur.
-        </canvas>
-        <script>
+<canvas id="myCanvas" width="1000" height="500">
+    <!-- Message pour les navigateurs ne supportant pas encore canvas. -->
+    Votre navigateur ne supporte pas encore les canvas. Essayez de metre-à-jour votre navigateur
+    ou de changer de navigateur.
+</canvas>
+<script>
 
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //----------- DEFINITION DES FONCTIONS CLICK ET CHANGE --------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //----------- DEFINITION DES FONCTIONS CLICK ET CHANGE --------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
 
-            document.getElementById("dessinerFonction1").addEventListener("click", function () {
-                myGraph.function1Draw = true;
-                cleartout();
-            });
-            document.getElementById("dessinerFonction2").addEventListener("click", function () {
-                myGraph.function1Draw = false;
-                cleartout();
-            });
-            document.getElementById("dessinerAnimation").addEventListener("click", function () {
-                dessinerAnimation();
-            });
-            document.getElementById("minAxeX").addEventListener("change", function () {
-                cleartout();
-            });
-            document.getElementById("minAxeY").addEventListener("change", function () {
-                cleartout();
-            });
-            document.getElementById("maxAxeX").addEventListener("change", function () {
-                cleartout();
-            });
-            document.getElementById("maxAxeY").addEventListener("change", function () {
-                cleartout();
-            });
-            document.getElementById("HEQUARTDGRASDUASION").addEventListener("change", function () {
-                cleartout();
-            });
+    document.getElementById("dessinerFonction1").addEventListener("click", function () {
+        myGraph.function1Draw = true;
+        cleartout();
+    });
+    document.getElementById("dessinerFonction2").addEventListener("click", function () {
+        myGraph.function1Draw = false;
+        cleartout();
+    });
+    document.getElementById("dessinerAnimation").addEventListener("click", function () {
+        dessinerAnimation();
+    });
+    document.getElementById("minAxeX").addEventListener("change", function () {
+        cleartout();
+    });
+    document.getElementById("minAxeY").addEventListener("change", function () {
+        cleartout();
+    });
+    document.getElementById("maxAxeX").addEventListener("change", function () {
+        cleartout();
+    });
+    document.getElementById("maxAxeY").addEventListener("change", function () {
+        cleartout();
+    });
+    document.getElementById("choixGraine").addEventListener("change", function () {
+        cleartout();
+    });
+    document.getElementById("HEQUARTDGRASDUASION").addEventListener("change", function () {
+        cleartout();
+    });
 
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //-------------------- CREATION DU GRAPHIQUE ------------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------- CREATION DU GRAPHIQUE ------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
 
-            function Graph(config) {
+    function Graph(config) {
 
-                // teste si le canvas et le context sont OK
-                var canvas = document.getElementById('myCanvas');
-                if(!canvas) alert("Impossible de récupérer le canvas");
+        // teste si le canvas et le context sont OK
+        var canvas = document.getElementById('myCanvas');
+        if (!canvas) alert("Impossible de récupérer le canvas");
 
-                var context = canvas.getContext('2d');
-                if(!context) alert("Impossible de récupérer le context du canvas");
-
-
-                // Definition des propriété du graphique
-                this.canvas = document.getElementById(config.canvasId);
-                this.minX = config.minX;
-                this.minY = config.minY;
-                this.maxX = config.maxX;
-                this.maxY = config.maxY;
-                this.unitsPerTick = config.unitsPerTick;   // définition de l'écart des unitées affichées
-                this.function1Draw = config.function1Draw;   // null si aucune, true si f1 dessiner, false si f2 dessiner
-                this.tabXanimation = [];
+        var context = canvas.getContext('2d');
+        if (!context) alert("Impossible de récupérer le context du canvas");
 
 
-                // execution des calculs et affichages des 2 axes
-                this.drawAllAxes();
+        // Definition des propriété du graphique
+        this.canvas = document.getElementById(config.canvasId);
+        this.minX = config.minX;
+        this.minY = config.minY;
+        this.maxX = config.maxX;
+        this.maxY = config.maxY;
+        this.unitsPerTick = config.unitsPerTick;   // définition de l'écart des unitées affichées
+        this.function1Draw = config.function1Draw;   // null si aucune, true si f1 dessiner, false si f2 dessiner
+        this.tabXanimation = [];
+
+        // execution des calculs et affichages des 2 axes
+        this.drawAllAxes();
+    }
+
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //------------- METHODE CALCUL ET DESSIN DES AXES -------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+
+    Graph.prototype.drawAllAxes = function () {
+
+        // constants pour les axes taille et police
+        this.axisColor = '#aaa';
+        this.font = '8pt Calibri';
+        this.tickSize = 20;
+
+        // récupération du contexte et calcul des valeurs utiles au dessin
+        this.context = this.canvas.getContext('2d');
+        this.rangeX = this.maxX - this.minX;
+        this.rangeY = this.maxY - this.minY;
+
+        // définition des pas de graduations
+        this.unitX = this.canvas.width / this.rangeX;
+        this.unitY = this.canvas.height / this.rangeY;
+
+        // définition du centrage des axes X Y sur le canevas.
+        this.centerY = Math.round(Math.abs(this.maxY / this.rangeY) * this.canvas.height);
+        this.centerX = Math.round(Math.abs(this.minX / this.rangeX) * this.canvas.width);
+        this.iteration = (this.maxX - this.minX) / 1000;
+        this.scaleX = this.canvas.width / this.rangeX;
+        this.scaleY = this.canvas.height / this.rangeY;
+
+        // draw x and y axis
+        this.drawXAxis();
+        this.drawYAxis();
+    }
+
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //------------- DESSIN DE L'AXE X ET DES GRADUATION -----------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+
+    Graph.prototype.drawXAxis = function () {
+        var context = this.context;
+        context.save();
+        context.beginPath();
+        context.moveTo(0, this.centerY);
+        context.lineTo(this.canvas.width, this.centerY);
+        context.strokeStyle = this.axisColor;
+        context.lineWidth = 2;
+        context.stroke();
+
+        // draw tick marks
+        var xPosIncrement = this.unitsPerTick * this.unitX;
+        var xPos, unit;
+        context.font = this.font;
+        context.textAlign = 'center';
+        context.textBaseline = 'top';
+
+        // draw left tick marks
+        xPos = this.centerX - xPosIncrement;
+        unit = -1 * this.unitsPerTick;
+        while (xPos > 0) {
+            context.moveTo(xPos, this.centerY - this.tickSize / 2);
+            context.lineTo(xPos, this.centerY + this.tickSize / 2);
+            context.stroke();
+            context.fillText(unit, xPos, this.centerY + this.tickSize / 2 + 3);
+            unit -= this.unitsPerTick;
+            xPos = Math.round(xPos - xPosIncrement);
+        }
+        // draw right tick marks
+        xPos = this.centerX + xPosIncrement;
+        unit = this.unitsPerTick;
+        while (xPos < this.canvas.width) {
+            context.moveTo(xPos, this.centerY - this.tickSize / 2);
+            context.lineTo(xPos, this.centerY + this.tickSize / 2);
+            context.stroke();
+            context.fillText(unit, xPos, this.centerY + this.tickSize / 2 + 3);
+            unit += this.unitsPerTick;
+            xPos = Math.round(xPos + xPosIncrement);
+        }
+        context.restore();
+    };
+
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //------------- DESSIN DE L'AXE Y ET DES GRADUATION -----------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+
+    Graph.prototype.drawYAxis = function () {
+        var context = this.context;
+        context.save();
+        context.beginPath();
+        context.moveTo(this.centerX, 0);
+        context.lineTo(this.centerX, this.canvas.height);
+        context.strokeStyle = this.axisColor;
+        context.lineWidth = 2;
+        context.stroke();
+
+        // draw tick marks
+        var yPosIncrement = this.unitsPerTick * this.unitY;
+        var yPos, unit;
+        context.font = this.font;
+        context.textAlign = 'right';
+        context.textBaseline = 'middle';
+
+        // draw top tick marks
+        yPos = this.centerY - yPosIncrement;
+        unit = this.unitsPerTick;
+        while (yPos > 0) {
+            context.moveTo(this.centerX - this.tickSize / 2, yPos);
+            context.lineTo(this.centerX + this.tickSize / 2, yPos);
+            context.stroke();
+            context.fillText(unit, this.centerX - this.tickSize / 2 - 3, yPos);
+            unit += this.unitsPerTick;
+            yPos = Math.round(yPos - yPosIncrement);
+        }
+
+        // draw bottom tick marks
+        yPos = this.centerY + yPosIncrement;
+        unit = -1 * this.unitsPerTick;
+        while (yPos < this.canvas.height) {
+            context.moveTo(this.centerX - this.tickSize / 2, yPos);
+            context.lineTo(this.centerX + this.tickSize / 2, yPos);
+            context.stroke();
+            context.fillText(unit, this.centerX - this.tickSize / 2 - 3, yPos);
+            unit -= this.unitsPerTick;
+            yPos = Math.round(yPos + yPosIncrement);
+        }
+        context.restore();
+    };
+
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //--------------- SUPPRESSION DES OBJETS DU CANVAS ------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+
+    Graph.prototype.clearGraph = function () {
+        // suppression des elements du canvas
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //--------------- TRANSFORMATION DES COORDONNEES --------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+
+    Graph.prototype.transformContext = function () {
+        var context = this.context;
+        // move context to center of canvas
+        this.context.translate(this.centerX, this.centerY);
+        /*
+         * stretch grid to fit the canvas window, and
+         * invert the y scale so that that increments
+         * as you move upwards
+         */
+        context.scale(this.scaleX, -this.scaleY);
+    };
+
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //------------------ DESSIN D'UNE EQUATION DE X ---------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+
+    Graph.prototype.drawEquation = function (equation, color, thickness) {
+
+        var context = this.context;
+        context.save();
+        context.save();
+        this.transformContext();
+        context.beginPath();
+        if (equation(this.minX) != null) context.moveTo(this.minX, equation(this.minX));
+
+        // dessin de la fonction de x depuis Xmin jusqu'au Xmax
+        for (var x = this.minX + this.iteration; x <= this.maxX; x += this.iteration) {
+            if (equation(x) != null) context.lineTo(x, equation(x));
+        }
+
+        context.restore();
+        context.lineJoin = 'round';
+        context.lineWidth = thickness;
+        context.strokeStyle = color;
+        context.stroke();
+        context.restore();
+
+        // récupération du tableau contenant les différents x a dessinér pour l'animation.
+        this.tabXanimation = Graph.prototype.newton(equation);
+    };
+
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+
+    Graph.prototype.newton = function (equation) {
+        //doit Ítre rentrÈ par l'utilisateur
+        var ecartMin = 0.0000001;
+        var graine = document.getElementById("choixGraine").value;  // nb a choisir
+        var nbMaxOcu = 10;
+
+        var occurence = 0;
+        var tabGraines = [];
+
+        Graph.prototype.newtonRecursive(graine, equation, tabGraines, occurence, ecartMin);
+
+        // pour afficher le tableau de graines
+        /*
+         for(var i = 0; i < tabGraines.length; i++) {
+         alert("Graine : " + tabGraines[i]);
+         }
+         */
+
+        var graineFinale = tabGraines[tabGraines.length - 1];
+        if (graineFinale == null) {
+            if (occurence > nbMaxOcu) {
+                //alert("N'a pas convergÈ assez vite.");
+                document.getElementById("textarea").value = "N'a pas convergÈ assez vite.";
             }
-
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //------------- METHODE CALCUL ET DESSIN DES AXES -------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-
-            Graph.prototype.drawAllAxes = function() {
-
-                // constants pour les axes taille et police
-                this.axisColor = '#aaa';
-                this.font = '8pt Calibri';
-                this.tickSize = 20;
-
-                // récupération du contexte et calcul des valeurs utiles au dessin
-                this.context = this.canvas.getContext('2d');
-                this.rangeX = this.maxX - this.minX;
-                this.rangeY = this.maxY - this.minY;
-
-                // définition des pas de graduations
-                this.unitX = this.canvas.width / this.rangeX;
-                this.unitY = this.canvas.height / this.rangeY;
-
-                // définition du centrage des axes X Y sur le canevas.
-                this.centerY = Math.round(Math.abs(this.maxY / this.rangeY) * this.canvas.height);
-                this.centerX = Math.round(Math.abs(this.minX / this.rangeX) * this.canvas.width);
-                this.iteration = (this.maxX - this.minX) / 1000;
-                this.scaleX = this.canvas.width / this.rangeX;
-                this.scaleY = this.canvas.height / this.rangeY;
-
-                // draw x and y axis
-                this.drawXAxis();
-                this.drawYAxis();
+            else {
+                document.getElementById("textarea").value = "Un graine n'Ètait pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de dÈfinition).";
             }
+        }
+        else {
+            document.getElementById("textarea").value = "Graine finale : " + Math.round(graineFinale / ecartMin) * ecartMin + " +/- " + ecartMin;
+            //alert("Graine finale : " + Math.round(graineFinale/ecartMin)*ecartMin + " +/- " + ecartMin);
+        }
+        return tabGraines;
+    }
 
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //------------- DESSIN DE L'AXE X ET DES GRADUATION -----------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
 
-            Graph.prototype.drawXAxis = function() {
-                var context = this.context;
-                context.save();
-                context.beginPath();
-                context.moveTo(0, this.centerY);
-                context.lineTo(this.canvas.width, this.centerY);
-                context.strokeStyle = this.axisColor;
-                context.lineWidth = 2;
-                context.stroke();
+    Graph.prototype.newtonRecursive = function (graine, fonction, tabGraine, occurence, ecartMin) {
+        occurence++;
+        if (graine == null || graine < myGraph.minX || graine > myGraph.maxX) {
 
-                // draw tick marks
-                var xPosIncrement = this.unitsPerTick * this.unitX;
-                var xPos, unit;
-                context.font = this.font;
-                context.textAlign = 'center';
-                context.textBaseline = 'top';
+            document.getElementById("textarea").value = "Mauvais choix de la graine. ";
+            return null; //mauvaise entrÈe
+        }
+        else {
+            var sideGraine = graine + ecartMin;
+            var fGraine = fonction(graine);
+            var fSideGraine = fonction(sideGraine);
 
-                // draw left tick marks
-                xPos = this.centerX - xPosIncrement;
-                unit = -1 * this.unitsPerTick;
-                while(xPos > 0) {
-                    context.moveTo(xPos, this.centerY - this.tickSize / 2);
-                    context.lineTo(xPos, this.centerY + this.tickSize / 2);
-                    context.stroke();
-                    context.fillText(unit, xPos, this.centerY + this.tickSize / 2 + 3);
-                    unit -= this.unitsPerTick;
-                    xPos = Math.round(xPos - xPosIncrement);
-                }
-
-                // draw right tick marks
-                xPos = this.centerX + xPosIncrement;
-                unit = this.unitsPerTick;
-                while(xPos < this.canvas.width) {
-                    context.moveTo(xPos, this.centerY - this.tickSize / 2);
-                    context.lineTo(xPos, this.centerY + this.tickSize / 2);
-                    context.stroke();
-                    context.fillText(unit, xPos, this.centerY + this.tickSize / 2 + 3);
-                    unit += this.unitsPerTick;
-                    xPos = Math.round(xPos + xPosIncrement);
-                }
-                context.restore();
-            };
-
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //------------- DESSIN DE L'AXE Y ET DES GRADUATION -----------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-
-            Graph.prototype.drawYAxis = function() {
-                var context = this.context;
-                context.save();
-                context.beginPath();
-                context.moveTo(this.centerX, 0);
-                context.lineTo(this.centerX, this.canvas.height);
-                context.strokeStyle = this.axisColor;
-                context.lineWidth = 2;
-                context.stroke();
-
-                // draw tick marks
-                var yPosIncrement = this.unitsPerTick * this.unitY;
-                var yPos, unit;
-                context.font = this.font;
-                context.textAlign = 'right';
-                context.textBaseline = 'middle';
-
-                // draw top tick marks
-                yPos = this.centerY - yPosIncrement;
-                unit = this.unitsPerTick;
-                while(yPos > 0) {
-                    context.moveTo(this.centerX - this.tickSize / 2, yPos);
-                    context.lineTo(this.centerX + this.tickSize / 2, yPos);
-                    context.stroke();
-                    context.fillText(unit, this.centerX - this.tickSize / 2 - 3, yPos);
-                    unit += this.unitsPerTick;
-                    yPos = Math.round(yPos - yPosIncrement);
-                }
-
-                // draw bottom tick marks
-                yPos = this.centerY + yPosIncrement;
-                unit = -1 * this.unitsPerTick;
-                while(yPos < this.canvas.height) {
-                    context.moveTo(this.centerX - this.tickSize / 2, yPos);
-                    context.lineTo(this.centerX + this.tickSize / 2, yPos);
-                    context.stroke();
-                    context.fillText(unit, this.centerX - this.tickSize / 2 - 3, yPos);
-                    unit -= this.unitsPerTick;
-                    yPos = Math.round(yPos + yPosIncrement);
-                }
-                context.restore();
-            };
-
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //--------------- SUPPRESSION DES OBJETS DU CANVAS ------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-
-            Graph.prototype.clearGraph = function() {
-                // suppression des elements du canvas
-                this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+            if (Math.abs(fGraine) <= ecartMin) return graine; //trouvÈ la racine
+            else if (fGraine == null || fSideGraine == null || fGraine > myGraph.maxY || fGraine < myGraph.minY) {
+                return null; //graine pas dans domaine de dÈfinition
+                document.getElementById("textarea").value = "Graine hors du domaine de définition. ";
             }
-
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //--------------- TRANSFORMATION DES COORDONNEES --------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-
-            Graph.prototype.transformContext = function() {
-                var context = this.context;
-                // move context to center of canvas
-                this.context.translate(this.centerX, this.centerY);
-                /*
-                 * stretch grid to fit the canvas window, and
-                 * invert the y scale so that that increments
-                 * as you move upwards
-                 */
-                context.scale(this.scaleX, -this.scaleY);
-            };
-
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //------------------ DESSIN D'UNE EQUATION DE X ---------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-
-            Graph.prototype.drawEquation = function(equation, color, thickness) {
-                var context = this.context;
-                context.save();
-                context.save();
-                this.transformContext();
-                context.beginPath();
-                if(equation(this.minX) != null) context.moveTo(this.minX, equation(this.minX));
-
-                // dessin de la fonction de x depuis Xmin jusqu'au Xmax
-                for(var x = this.minX + this.iteration; x <= this.maxX; x += this.iteration) {
-                    if(equation(x) != null) context.lineTo(x, equation(x));
-                }
-
-                context.restore();
-                context.lineJoin = 'round';
-                context.lineWidth = thickness;
-                context.strokeStyle = color;
-                context.stroke();
-                context.restore();
-
-               // récupération du tableau contenant les différents x a dessinér pour l'animation.
-                this.tabXanimation = Graph.prototype.newton(equation);
-            };
-
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-
-            Graph.prototype.newton = function(equation){
-                //doit Ítre rentrÈ par l'utilisateur
-                var ecartMin = 0.0000001;
-                var graine = document.getElementById("choixGraine").value;  // nb a choisir
-
-                alert("la graine recup : " + graine);
-                //var graine = 4;
-                var nbMaxOcu = 10;
-
-                var occurence = 0;
-                var tabGraines = [];
-
-                Graph.prototype.newtonRecursive(graine, equation, tabGraines, occurence, ecartMin);
-
-                // pour afficher le tableau de graines
-                /*
-                 for(var i = 0; i < tabGraines.length; i++) {
-                 alert("Graine : " + tabGraines[i]);
-                 }
-                 */
-
-                var graineFinale = tabGraines[tabGraines.length - 1];
-                if(graineFinale == null) {
-                    if(occurence > nbMaxOcu) {
-                        //alert("N'a pas convergÈ assez vite.");
-                        document.getElementById("textarea").value = "N'a pas convergÈ assez vite.";
+            else {
+                var newGraine, a, b; //y = a*x + b
+                if (Math.abs(sideGraine - graine) < ecartMin / 2) return null; //si ecartMin trop petit pour machine
+                else {
+                    a = (fSideGraine - fGraine) / (sideGraine - graine);
+                    if (Math.abs(a) <= ecartMin) {
+                        document.getElementById("textarea").value = "point stationnaire ou asymptote horizontale. ";
+                        return null; //point stationnaire ou asymptote horizontale
                     }
                     else {
-                        document.getElementById("textarea").value = "Un graine n'Ètait pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de dÈfinition).";
-                    }
-                }
-                else {
-                    document.getElementById("textarea").value = "Graine finale : " + Math.round(graineFinale/ecartMin)*ecartMin + " +/- " + ecartMin;
-                    //alert("Graine finale : " + Math.round(graineFinale/ecartMin)*ecartMin + " +/- " + ecartMin);
-                }
-                return tabGraines;
-            }
-
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-
-            Graph.prototype.newtonRecursive = function(graine, fonction, tabGraine, occurence, ecartMin) {
-                occurence++;
-                if(graine == null || graine < myGraph.minX || graine > myGraph.maxX) return null; //mauvaise entrÈe
-                else {
-                    var sideGraine = graine + ecartMin;
-                    var fGraine = fonction(graine);
-                    var fSideGraine = fonction(sideGraine);
-
-                    if(Math.abs(fGraine) <= ecartMin) return graine; //trouvÈ la racine
-                    else if(fGraine == null || fSideGraine == null || fGraine > myGraph.maxY || fGraine< myGraph.minY) return null; //graine pas dans domaine de dÈfinition
-                    else {
-                        var newGraine, a, b; //y = a*x + b
-                        if(Math.abs(sideGraine - graine) < ecartMin / 2) return null; //si ecartMin trop petit pour machine
-                        else {
-                            a = (fSideGraine - fGraine) / (sideGraine - graine);
-                            if(Math.abs(a) <= ecartMin) return null; //point stationnaire ou asymptote horizontale
-                            else {
-                                b = fGraine - a*graine;
-                                newGraine = -(b/a);
-                                tabGraine.unshift(Graph.prototype.newtonRecursive(newGraine, fonction, tabGraine, occurence, ecartMin));
-                                return graine; //un graine dans le processus
-                            }
-                        }
+                        b = fGraine - a * graine;
+                        newGraine = -(b / a);
+                        tabGraine.unshift(Graph.prototype.newtonRecursive(newGraine, fonction, tabGraine, occurence, ecartMin));
+                        return graine; //une graine dans le processus
                     }
                 }
             }
+        }
+    }
 
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //------------ ANIMATION DE LA METHODE DE NEWTON --------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //------------ ANIMATION DE LA METHODE DE NEWTON --------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
 
-            Graph.prototype.Animation = function() {
-                var context = this.context;
-                context.save();
-                this.transformContext();
-                context.beginPath();
-                var graine = document.getElementById("choixGraine").value;
-                context.moveTo(graine, graine/(1-Math.pow(graine,2)));
+    Graph.prototype.Animation = function () {
+
+        if (this.function1Draw != null) {
+            var context = this.context;
+            context.save();
+            this.transformContext();
+            context.beginPath();
+            var graine = document.getElementById("choixGraine").value;
+            context.moveTo(graine, 0);
+            if(this.function1Draw == true) {
+                context.lineTo(graine, graine / (1 - Math.pow(graine, 2)));
                 // dessin de la methode de newton
-                for(var i = 0; i <= myGraph.tabXanimation.length; i += 1) {
-                    alert("dessin"+myGraph.tabXanimation[i]);
-                   context.lineTo(myGraph.tabXanimation[i],myGraph.tabXanimation[i]/(1-Math.pow(myGraph.tabXanimation[i],2)));
-                }
-                context.restore();
-                context.lineWidth = 3;
-                context.strokeStyle = 'green';
-                context.stroke();
-            }
-
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-            //------------------ UTILISATION ET AFFICHAGE -----------------------
-            //-------------------------------------------------------------------
-            //-------------------------------------------------------------------
-
-            var recupMinX = parseInt(document.getElementById("minAxeX").value);
-            var recupMinY = parseInt(document.getElementById("minAxeY").value);
-            var recupMaxX = parseInt(document.getElementById("maxAxeX").value);
-            var recupMaxY = parseInt(document.getElementById("maxAxeY").value);
-            var recupGraduation = parseInt(document.getElementById("HEQUARTDGRASDUASION").value);
-
-            var myGraph = new Graph({
-                canvasId: 'myCanvas',
-                minX: recupMinX,
-                minY: recupMinY,
-                maxX: recupMaxX,
-                maxY: recupMaxY,
-                unitsPerTick: 1,
-                function1Draw: null
-            });
-
-
-            cleartout = function(){
-                myGraph.clearGraph();
-                myGraph.minX = parseInt(document.getElementById("minAxeX").value);
-                myGraph.minY = parseInt(document.getElementById("minAxeY").value);
-                myGraph.maxX = parseInt(document.getElementById("maxAxeX").value);
-                myGraph.maxY = parseInt(document.getElementById("maxAxeY").value);
-                myGraph.unitsPerTick = parseInt(document.getElementById("HEQUARTDGRASDUASION").value);
-                myGraph.drawAllAxes();
-
-                switch (myGraph.function1Draw){
-                    case true:
-                            dessinerFonc1();
-                        break;
-                    case false:
-                            dessinerFonc2();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            dessinerFonc1 = function() {
-                myGraph.drawEquation(function(x) {
-                    var ecartMin = myGraph.iteration;
-                    if(Math.abs(1-Math.pow(x,2)) <= ecartMin) {
-                        return null;
-                    } else {
-                        return (x/(1-Math.pow(x,2)));
+                for (var i = 0; i < myGraph.tabXanimation.length; i += 1) {
+                    // alert("dessin" + myGraph.tabXanimation[i]);
+                    context.lineTo(myGraph.tabXanimation[i], 0);
+                    if (i != (myGraph.tabXanimation.length - 1)) {
+                        context.lineTo(myGraph.tabXanimation[i], graine / (1 - Math.pow(myGraph.tabXanimation[i], 2)));
                     }
-                },'red',3);
+                }
+            }else {
+                context.lineTo(graine, Math.sin(graine)-graine/13);
+                // dessin de la methode de newton
+                for (var i = 0; i < myGraph.tabXanimation.length; i += 1) {
+                    // alert("dessin" + myGraph.tabXanimation[i]);
+                    context.lineTo(myGraph.tabXanimation[i],0);
+                    if (i != (myGraph.tabXanimation.length - 1)) {
+                        context.lineTo(myGraph.tabXanimation[i], Math.sin(myGraph.tabXanimation[i])-myGraph.tabXanimation[i]/13);
+                    }
+                }
             }
-             dessinerFonc2 = function(){
+            context.restore();
+            context.lineWidth = 3;
+            context.strokeStyle = 'green';
+            context.stroke();
+        } else {
+            document.getElementById("textarea").value = "Veuillez séléctionner une fonction !";
+        }
+    }
 
-                myGraph.drawEquation(function(x){return Math.sin(x)-x/13;},'blue',3);
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+    //------------------ UTILISATION ET AFFICHAGE -----------------------
+    //-------------------------------------------------------------------
+    //-------------------------------------------------------------------
+
+    var recupMinX = parseInt(document.getElementById("minAxeX").value);
+    var recupMinY = parseInt(document.getElementById("minAxeY").value);
+    var recupMaxX = parseInt(document.getElementById("maxAxeX").value);
+    var recupMaxY = parseInt(document.getElementById("maxAxeY").value);
+    var recupGraduation = parseInt(document.getElementById("HEQUARTDGRASDUASION").value);
+
+    var myGraph = new Graph({
+        canvasId: 'myCanvas',
+        minX: recupMinX,
+        minY: recupMinY,
+        maxX: recupMaxX,
+        maxY: recupMaxY,
+        unitsPerTick: 1,
+        function1Draw: null
+    });
+
+
+    cleartout = function () {
+        myGraph.clearGraph();
+        myGraph.minX = parseInt(document.getElementById("minAxeX").value);
+        myGraph.minY = parseInt(document.getElementById("minAxeY").value);
+        myGraph.maxX = parseInt(document.getElementById("maxAxeX").value);
+        myGraph.maxY = parseInt(document.getElementById("maxAxeY").value);
+        myGraph.unitsPerTick = parseInt(document.getElementById("HEQUARTDGRASDUASION").value);
+        myGraph.drawAllAxes();
+
+        switch (myGraph.function1Draw) {
+            case true:
+                dessinerFonc1();
+                break;
+            case false:
+                dessinerFonc2();
+                break;
+            default:
+                break;
+        }
+    }
+
+    dessinerFonc1 = function () {
+        myGraph.drawEquation(function (x) {
+            var ecartMin = myGraph.iteration;
+            if (Math.abs(1 - Math.pow(x, 2)) <= ecartMin) {
+                return null;
+            } else {
+                return (x / (1 - Math.pow(x, 2)));
             }
+        }, 'red', 3);
+    }
+    dessinerFonc2 = function () {
 
-            dessinerAnimation = function () {
-                myGraph.Animation();
-            }
-        </script>
-    </body>
-    <h1>Résolution d’équations </h1></br>
-    Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </br>
+        myGraph.drawEquation(function (x) {
+            return Math.sin(x) - x / 13;
+        }, 'blue', 3);
+    }
 
-    source pour du code pour la création du canevas de dessin : <a href="http://www.html5canvastutorials.com/labs/html5-canvas-graphing-an-equation/"> HTML5 CANEVAS</a>
+    dessinerAnimation = function () {
+        myGraph.Animation();
+    }
+</script>
+</body>
+<h1>Résolution d’équations </h1></br>
+Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </br>
 
-    <h2>But du programme</h2></br>
+source pour du code pour la création du canevas de dessin : <a
+        href="http://www.html5canvastutorials.com/labs/html5-canvas-graphing-an-equation/"> HTML5 CANEVAS</a>
 
-    notre programme doit pouvoir afficher sous forme graphique, 2 fonctions définit dans le cours.
-    <h2>Structure du programme</h2></br>
+<h2>But du programme</h2></br>
 
-    <h2>Méthode de la tangente</h2></br>
+notre programme doit pouvoir afficher sous forme graphique, 2 fonctions définit dans le cours.
+<h2>Structure du programme</h2></br>
+
+<h2>Méthode de la tangente</h2></br>
 </html>
 
 
