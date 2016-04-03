@@ -74,32 +74,32 @@
 
     document.getElementById("dessinerFonction1").addEventListener("click", function () {
         myGraph.function1Draw = true;
-        cleartout();
+        clearAllGraph();
     });
     document.getElementById("dessinerFonction2").addEventListener("click", function () {
         myGraph.function1Draw = false;
-        cleartout();
+        clearAllGraph();
     });
     document.getElementById("dessinerAnimation").addEventListener("click", function () {
-        dessinerAnimation();
+        drawAnimation();
     });
     document.getElementById("minAxeX").addEventListener("change", function () {
-        cleartout();
+        clearAllGraph();
     });
     document.getElementById("minAxeY").addEventListener("change", function () {
-        cleartout();
+        clearAllGraph();
     });
     document.getElementById("maxAxeX").addEventListener("change", function () {
-        cleartout();
+        clearAllGraph();
     });
     document.getElementById("maxAxeY").addEventListener("change", function () {
-        cleartout();
+        clearAllGraph();
     });
     document.getElementById("choixGraine").addEventListener("change", function () {
-        cleartout();
+        clearAllGraph();
     });
     document.getElementById("HEQUARTDGRASDUASION").addEventListener("change", function () {
-        cleartout();
+        clearAllGraph();
     });
 
     //-------------------------------------------------------------------
@@ -359,7 +359,6 @@
         }
         else {
             document.getElementById("textarea").value = "Graine finale : " + Math.round(graineFinale / ecartMin) * ecartMin + " +/- " + ecartMin;
-            //alert("Graine finale : " + Math.round(graineFinale/ecartMin)*ecartMin + " +/- " + ecartMin);
         }
         return tabGraines;
     }
@@ -475,7 +474,7 @@
     });
 
 
-    cleartout = function () {
+    clearAllGraph = function () {
         myGraph.clearGraph();
         myGraph.minX = parseInt(document.getElementById("minAxeX").value);
         myGraph.minY = parseInt(document.getElementById("minAxeY").value);
@@ -486,17 +485,17 @@
 
         switch (myGraph.function1Draw) {
             case true:
-                dessinerFonc1();
+                drawFonc1();
                 break;
             case false:
-                dessinerFonc2();
+                drawFonc2();
                 break;
             default:
                 break;
         }
     }
 
-    dessinerFonc1 = function () {
+    drawFonc1 = function () {
         myGraph.drawEquation(function (x) {
             var ecartMin = myGraph.iteration;
             if (Math.abs(1 - Math.pow(x, 2)) <= ecartMin) {
@@ -506,14 +505,14 @@
             }
         }, 'red', 3);
     }
-    dessinerFonc2 = function () {
+    drawFonc2 = function () {
 
         myGraph.drawEquation(function (x) {
             return Math.sin(x) - x / 13;
         }, 'blue', 3);
     }
 
-    dessinerAnimation = function () {
+    drawAnimation = function () {
         myGraph.Animation();
     }
 </script>
