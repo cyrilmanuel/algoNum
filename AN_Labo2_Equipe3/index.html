@@ -26,24 +26,31 @@
 <div class="topleftConfig">
     <p>
         <label for="minAxeX">Valeur min axe X </label>
-        <input type="number" name="minAxeX" id="minAxeX" value="-10"/>
+        <input type="number" name="minAxeX" id="minAxeX" value="-5"/>
 
         <label for="maxAxeX">Valeur max axe X </label>
-        <input type="number" name="maxAxeX" id="maxAxeX" value="10"/>
+        <input type="number" name="maxAxeX" id="maxAxeX" value="5"/>
     </p>
     <p>
         <label for="minAxeY">Valeur min axe Y </label>
-        <input type="number" name="minAxeY" id="minAxeY" value="-10"/>
+        <input type="number" name="minAxeY" id="minAxeY" value="-5"/>
 
         <label for="maxAxeY">Valeur max axe Y </label>
-        <input type="number" name="maxAxeY" id="maxAxeY" value="10"/>
+        <input type="number" name="maxAxeY" id="maxAxeY" value="5"/>
     </p>
     <p>
         <label for="HEQUARTDGRASDUASION">Écart de graduation</label>
         <input type="number" name="HEQUARTDGRASDUASION" id="HEQUARTDGRASDUASION" value="1"/>
 
         <label for="choixGraine">Valeur de la graine </label>
-        <input type="number" name="choixGraine" id="choixGraine" value="0.5"/>
+        <input type="number" name="choixGraine" id="choixGraine" value="0.9"/>
+    </p>
+    <p>
+        <label for="precision">Précision du calcul </label>
+        <input type="number" name="precision" id="precision" value="1e-8"/>
+
+        <label for="nbMaxOcu">Nombre maximum d'occurrences </label>
+        <input type="number" name="nbMaxOcu" id="nbMaxOcu" value="10"/>
     </p>
     <p>
         <button type="button" name="dessinerFonction1" id="dessinerFonction1">Dessiner f1(x)</button>
@@ -99,6 +106,12 @@
         clearAllGraph();
     });
     document.getElementById("HEQUARTDGRASDUASION").addEventListener("change", function () {
+        clearAllGraph();
+    });
+    document.getElementById("precision").addEventListener("change", function () {
+        clearAllGraph();
+    });
+    document.getElementById("nbMaxOcu").addEventListener("change", function () {
         clearAllGraph();
     });
 
@@ -330,10 +343,9 @@
     //-------------------------------------------------------------------
 
     Graph.prototype.newton = function (equation) {
-        //doit Ítre rentrÈ par l'utilisateur
-        var ecartMin = 0.0000001;
-        var graine = parseFloat(document.getElementById("choixGraine").value);  // nb a choisir
-        var nbMaxOcu = 10;
+        var ecartMin = parseFloat(document.getElementById("precision").value);
+        var graine = parseFloat(document.getElementById("choixGraine").value);
+        var nbMaxOcu = parseInt(document.getElementById("nbMaxOcu").value);
 
         var occurence = 0;
         var tabGraines = [];
@@ -350,11 +362,10 @@
         var graineFinale = tabGraines[tabGraines.length - 1];
         if (graineFinale == null) {
             if (occurence > nbMaxOcu) {
-                //alert("N'a pas convergÈ assez vite.");
-                document.getElementById("textarea").value = "N'a pas convergÈ assez vite.";
+                document.getElementById("textarea").value = "N'a pas convergé assez vite.";
             }
             else {
-                document.getElementById("textarea").value = "Un graine n'Ètait pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de dÈfinition).";
+                document.getElementById("textarea").value = "Un graine n'était pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de définition).";
             }
         }
         else {
