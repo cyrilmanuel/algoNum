@@ -526,19 +526,23 @@
     }
 </script>
 </body>
-<h1>Résolution d’équations </h1></br>
-Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </br>
+<h1>Résolution d’équations </h1>
+<p>Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </p>
 
-source pour du code pour la création du canevas de dessin : <a
-        href="http://www.html5canvastutorials.com/labs/html5-canvas-graphing-an-equation/"> HTML5 CANEVAS</a>
+<p>Source pour du code pour la création du canevas de dessin : <a
+        href="http://www.html5canvastutorials.com/labs/html5-canvas-graphing-an-equation/"> HTML5 CANEVAS</a><p>
 
-<h2>But du programme</h2></br>
+<h2>But du programme</h2>
+<p>Notre programme doit pouvoir afficher sous forme graphique, 2 fonctions définit dans le cours et trouver leur racines en utilisant la méthode de Newton</p>
+<h2>Structure du programme</h2>
 
-notre programme doit pouvoir afficher sous forme graphique, 2 fonctions définit dans le cours.
-<h2>Structure du programme</h2></br>
-
-<h2>Méthode de la tangente</h2></br>
+<h2>Méthode de la tangente ou méthode de Newton</h2>
+<p>L'algorithme de la méthode de Newton est le suivant : </p>
+<p>Pour toute fonction f(x) on peut choisir un point sur l'abscisse et trouver son image.
+On cherche ensuite la pente au niveau de ce point (par la dérivée ou par la méthode de Lagrange).
+On prolonge cette pente (qui deviendra donc une tangente au point f(x)) jusqu'à croiser à nouveau l'abscisse et l'on recommence les étapes précédentes jusqu'à trouver une image f(x) qui soit égal à 0.
+Cette méthode à toutefois un énorme inconvénient. Il est possible qu'avec un mauvais choix de graine cette méthode ne converge pas ou même finisse par créer une boucle infini.
+Cela se produit notamment lorsque la graine donne une image f(x) ou la pente de la courbe est trop faible.</p>
+<p><strong>Précision sur la méthode de Lagrange qui a été utilisé dans ce programme: </strong></p>
+<p>Il s'agit d'une méthode d'approximation de la pente par calcul sans avoir a passer par la dérivée.La formule de cette méthode nous a été donnée dans le cours.</p>
 </html>
-
-
-
