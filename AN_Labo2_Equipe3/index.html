@@ -26,24 +26,31 @@
 <div class="topleftConfig">
     <p>
         <label for="minAxeX">Valeur min axe X </label>
-        <input type="number" name="minAxeX" id="minAxeX" value="-10"/>
+        <input type="number" name="minAxeX" id="minAxeX" value="-5"/>
 
         <label for="maxAxeX">Valeur max axe X </label>
-        <input type="number" name="maxAxeX" id="maxAxeX" value="10"/>
+        <input type="number" name="maxAxeX" id="maxAxeX" value="5"/>
     </p>
     <p>
         <label for="minAxeY">Valeur min axe Y </label>
-        <input type="number" name="minAxeY" id="minAxeY" value="-10"/>
+        <input type="number" name="minAxeY" id="minAxeY" value="-5"/>
 
         <label for="maxAxeY">Valeur max axe Y </label>
-        <input type="number" name="maxAxeY" id="maxAxeY" value="10"/>
+        <input type="number" name="maxAxeY" id="maxAxeY" value="5"/>
     </p>
     <p>
         <label for="HEQUARTDGRASDUASION">Écart de graduation</label>
         <input type="number" name="HEQUARTDGRASDUASION" id="HEQUARTDGRASDUASION" value="1"/>
 
         <label for="choixGraine">Valeur de la graine </label>
-        <input type="number" name="choixGraine" id="choixGraine" value="0.5"/>
+        <input type="number" name="choixGraine" id="choixGraine" value="0.9"/>
+    </p>
+    <p>
+        <label for="precision">Précision du calcul </label>
+        <input type="number" name="precision" id="precision" value="1e-8"/>
+
+        <label for="nbMaxOcu">Nombre maximum d'occurrences </label>
+        <input type="number" name="nbMaxOcu" id="nbMaxOcu" value="10"/>
     </p>
     <p>
         <button type="button" name="dessinerFonction1" id="dessinerFonction1">Dessiner f1(x)</button>
@@ -99,6 +106,12 @@
         clearAllGraph();
     });
     document.getElementById("HEQUARTDGRASDUASION").addEventListener("change", function () {
+        clearAllGraph();
+    });
+    document.getElementById("precision").addEventListener("change", function () {
+        clearAllGraph();
+    });
+    document.getElementById("nbMaxOcu").addEventListener("change", function () {
         clearAllGraph();
     });
 
@@ -330,10 +343,9 @@
     //-------------------------------------------------------------------
 
     Graph.prototype.newton = function (equation) {
-        //doit Ítre rentrÈ par l'utilisateur
-        var ecartMin = 0.0000001;
-        var graine = document.getElementById("choixGraine").value;  // nb a choisir
-        var nbMaxOcu = 10;
+        var ecartMin = parseFloat(document.getElementById("precision").value);
+        var graine = parseFloat(document.getElementById("choixGraine").value);
+        var nbMaxOcu = parseInt(document.getElementById("nbMaxOcu").value);
 
         var occurence = 0;
         var tabGraines = [];
@@ -345,21 +357,21 @@
          for(var i = 0; i < tabGraines.length; i++) {
          alert("Graine : " + tabGraines[i]);
          }
-         */
+        */
 
         var graineFinale = tabGraines[tabGraines.length - 1];
         if (graineFinale == null) {
             if (occurence > nbMaxOcu) {
-                //alert("N'a pas convergÈ assez vite.");
-                document.getElementById("textarea").value = "N'a pas convergÈ assez vite.";
+                document.getElementById("textarea").value = "N'a pas convergé assez vite.";
             }
             else {
-                document.getElementById("textarea").value = "Une graine n'Ètait pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de dÈfinition).";
+                document.getElementById("textarea").value = "Un graine n'était pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de définition).";
             }
         }
         else {
             document.getElementById("textarea").value = "Graine finale : " + Math.round(graineFinale / ecartMin) * ecartMin + " +/- " + ecartMin;
         }
+
         return tabGraines;
     }
 
@@ -371,8 +383,9 @@
 
     Graph.prototype.newtonRecursive = function (graine, fonction, tabGraine, occurence, ecartMin) {
         occurence++;
+        //alert("Entrée dans newtonRecursive. Graine : " + graine);
         if (graine == null || graine < myGraph.minX || graine > myGraph.maxX) {
-
+            //alert("Graine pas dans domaine du graph");
             document.getElementById("textarea").value = "Mauvais choix de la graine. ";
             return null; //mauvaise entrÈe
         }
@@ -381,23 +394,38 @@
             var fGraine = fonction(graine);
             var fSideGraine = fonction(sideGraine);
 
-            if (Math.abs(fGraine) <= ecartMin) return graine; //trouvÈ la racine
+            //alert("SideGraine : " + sideGraine);
+          //  alert("fGraine : " + fGraine);
+            //alert("fSideGraine : " + fSideGraine);
+
+            if (Math.abs(fGraine) <= ecartMin) {
+                //alert("Trouvé la racine : " + graine);
+                return graine;
+            } //trouvÈ la racine
             else if (fGraine == null || fSideGraine == null || fGraine > myGraph.maxY || fGraine < myGraph.minY) {
-                return null; //graine pas dans domaine de dÈfinition
+                //alert("Graine en dehors du domaine de définition de la fonction");
                 document.getElementById("textarea").value = "Graine hors du domaine de définition. ";
+                return null; //graine pas dans domaine de dÈfinition
             }
             else {
                 var newGraine, a, b; //y = a*x + b
-                if (Math.abs(sideGraine - graine) < ecartMin / 2) return null; //si ecartMin trop petit pour machine
+                if (Math.abs(sideGraine - graine) < ecartMin / 2) {
+                    //alert("Précision demandée trop élevée");
+                    return null;
+                } //si ecartMin trop petit pour machine
                 else {
                     a = (fSideGraine - fGraine) / (sideGraine - graine);
+                    //alert("pente : " + a);
                     if (Math.abs(a) <= ecartMin) {
+                        //alert("point stationnaire");
                         document.getElementById("textarea").value = "point stationnaire ou asymptote horizontale. ";
                         return null; //point stationnaire ou asymptote horizontale
                     }
                     else {
                         b = fGraine - a * graine;
+                        //alert("b (ordonnée) : " + b);
                         newGraine = -(b / a);
+                        //alert("Nouvelle graine : " + newGraine);
                         tabGraine.unshift(Graph.prototype.newtonRecursive(newGraine, fonction, tabGraine, occurence, ecartMin));
                         return graine; //une graine dans le processus
                     }
@@ -405,6 +433,7 @@
             }
         }
     }
+
 
     //-------------------------------------------------------------------
     //-------------------------------------------------------------------
@@ -419,32 +448,44 @@
             context.save();
             this.transformContext();
             context.beginPath();
-            var graine = document.getElementById("choixGraine").value;
+            var graine = parseFloat(document.getElementById("choixGraine").value);
             context.moveTo(graine, 0);
-            if(this.function1Draw == true) {
+            if (this.function1Draw == true) {
                 context.lineTo(graine, graine / (1 - Math.pow(graine, 2)));
                 // dessin de la methode de newton
-                alert(this.tabXanimation.length);
                 for (var i = 0; i < this.tabXanimation.length; i += 1) {
-                        //sleep(1000);
+                    if(this.tabXanimation[i] != null) {
+                        //dessine la pente
                         context.lineTo(this.tabXanimation[i], 0);
+
                         if (i != (this.tabXanimation.length - 1)) {
-                            context.lineTo(this.tabXanimation[i], graine / (1 - Math.pow(this.tabXanimation[i], 2)));
+                            context.lineTo(this.tabXanimation[i], this.tabXanimation[i] / (1 - Math.pow(this.tabXanimation[i], 2)));
                         }
+                    }
                 }
-            }else {
-                context.lineTo(graine, Math.sin(graine)-graine/13);
+            } else {
+                context.lineTo(graine, Math.sin(graine) - graine / 13);
                 // dessin de la methode de newton
                 for (var i = 0; i < this.tabXanimation.length; i += 1) {
-                   // sleep(1000);
-                    context.lineTo(this.tabXanimation[i],0);
-                    if (i != (this.tabXanimation.length - 1)) {
-                        context.lineTo(this.tabXanimation[i], Math.sin(this.tabXanimation[i])-this.tabXanimation[i]/13);
+                    // sleep(1000);
+
+                    if(this.tabXanimation[i] != null) {
+                        context.lineTo(this.tabXanimation[i], 0);
+                        if (i != (this.tabXanimation.length - 1)) {
+                            context.lineTo(this.tabXanimation[i], Math.sin(this.tabXanimation[i]) - this.tabXanimation[i] / 13);
+                        }
                     }
                 }
             }
+
+            //met en valeur le 0 toruvé avec un grande ligne verticale
+            if(this.tabXanimation[this.tabXanimation.length - 1] != null) {
+                context.lineTo(this.tabXanimation[this.tabXanimation.length - 1], this.maxY);
+                context.lineTo(this.tabXanimation[this.tabXanimation.length - 1], this.minY);
+            }
+
             context.restore();
-            context.lineWidth = 3;
+            context.lineWidth = 1;
             context.strokeStyle = 'green';
             context.stroke();
         } else {
@@ -455,7 +496,7 @@
     function sleep(milliseconds) {
         var start = new Date().getTime();
         for (var i = 0; i < 1e7; i++) {
-            if ((new Date().getTime() - start) > milliseconds){
+            if ((new Date().getTime() - start) > milliseconds) {
                 break;
             }
         }
@@ -512,13 +553,13 @@
             } else {
                 return (x / (1 - Math.pow(x, 2)));
             }
-        }, 'red', 3);
+        }, 'red', 1);
     }
     drawFonc2 = function () {
 
         myGraph.drawEquation(function (x) {
             return Math.sin(x) - x / 13;
-        }, 'blue', 3);
+        }, 'blue', 1);
     }
 
     drawAnimation = function () {
@@ -530,10 +571,12 @@
 <p>Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm­a</br> </p>
 
 <p>Source pour du code pour la création du canevas de dessin : <a
-        href="http://www.html5canvastutorials.com/labs/html5-canvas-graphing-an-equation/"> HTML5 CANEVAS</a><p>
+        href="http://www.html5canvastutorials.com/labs/html5-canvas-graphing-an-equation/"> HTML5 CANEVAS</a>
+<p>
 
 <h2>But du programme</h2>
-<p>Notre programme doit pouvoir afficher sous forme graphique, 2 fonctions définit dans le cours et trouver leur racines en utilisant la méthode de Newton</p>
+<p>Notre programme doit pouvoir afficher sous forme graphique, 2 fonctions définit dans le cours et trouver leur racines
+    en utilisant la méthode de Newton</p>
 <h2>Structure du programme</h2>
 <p>Sur cette page nous permettons à l'utilisateur de choisir la taille de son graphe sur un canvas html5. Les valeurs min axe X, max axe X, min axe Y et max axe Y donnent la fenêtre dans laquelle l'utilisateur
 veut dessiner son graphe. L'écart de graduation permet de choisir la graduation du graphe, la valeur de la graine donne le point de départ de l'animation et la précision permet de donner avec
