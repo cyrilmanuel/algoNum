@@ -170,7 +170,7 @@
         // définition du centrage des axes X Y sur le canevas.
         this.centerY = Math.round(Math.abs(this.maxY / this.rangeY) * this.canvas.height);
         this.centerX = Math.round(Math.abs(this.minX / this.rangeX) * this.canvas.width);
-        this.iteration = (this.maxX - this.minX) / 1000;
+        this.iteration = (this.maxX - this.minX) / 100000;
         this.scaleX = this.canvas.width / this.rangeX;
         this.scaleY = this.canvas.height / this.rangeY;
 
@@ -333,7 +333,8 @@
         context.restore();
 
         // récupération du tableau contenant les différents x a dessinér pour l'animation.
-        this.tabXanimation = Graph.prototype.newton(equation);
+        this.tabXanimation = this.newton(equation);
+
     };
 
     //-------------------------------------------------------------------
@@ -349,8 +350,10 @@
 
         var occurence = 0;
         var tabGraines = [];
+        var message="";
 
-        Graph.prototype.newtonRecursive(graine, equation, tabGraines, occurence, ecartMin);
+        alert(" salut : "+this.maxX)
+        this.newtonRecursive(graine, equation, tabGraines, occurence, ecartMin);
 
         // pour afficher le tableau de graines
         /*
@@ -362,16 +365,17 @@
         var graineFinale = tabGraines[tabGraines.length - 1];
         if (graineFinale == null) {
             if (occurence > nbMaxOcu) {
-                document.getElementById("textarea").value = "N'a pas convergé assez vite.";
+                message= "N'a pas convergé assez vite.";
             }
             else {
-                document.getElementById("textarea").value = "Un graine n'était pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de définition).";
+               message = "Un graine n'était pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de définition).";
             }
         }
         else {
-            document.getElementById("textarea").value = "Graine finale : " + Math.round(graineFinale / ecartMin) * ecartMin + " +/- " + ecartMin;
+           message = "Graine finale : " + Math.round(graineFinale / ecartMin) * ecartMin + " +/- " + ecartMin;
         }
 
+        document.getElementById("textarea").nodeValue = message;
         return tabGraines;
     }
 
@@ -384,6 +388,9 @@
     Graph.prototype.newtonRecursive = function (graine, fonction, tabGraine, occurence, ecartMin) {
         occurence++;
         //alert("Entrée dans newtonRecursive. Graine : " + graine);
+        alert("coucou : "+this.maxX);
+
+
         if (graine == null || graine < myGraph.minX || graine > myGraph.maxX) {
             //alert("Graine pas dans domaine du graph");
             document.getElementById("textarea").value = "Mauvais choix de la graine. ";
@@ -426,7 +433,7 @@
                         //alert("b (ordonnée) : " + b);
                         newGraine = -(b / a);
                         //alert("Nouvelle graine : " + newGraine);
-                        tabGraine.unshift(Graph.prototype.newtonRecursive(newGraine, fonction, tabGraine, occurence, ecartMin));
+                        tabGraine.unshift(this.newtonRecursive(newGraine, fonction, tabGraine, occurence, ecartMin));
                         return graine; //une graine dans le processus
                     }
                 }
@@ -448,35 +455,37 @@
             context.save();
             this.transformContext();
             context.beginPath();
-            var graine = parseFloat(document.getElementById("choixGraine").value);
-            context.moveTo(graine, 0);
-            if (this.function1Draw == true) {
-                context.lineTo(graine, graine / (1 - Math.pow(graine, 2)));
-                // dessin de la methode de newton
-                for (var i = 0; i < this.tabXanimation.length; i += 1) {
-                    if(this.tabXanimation[i] != null) {
-                        //dessine la pente
-                        context.lineTo(this.tabXanimation[i], 0);
 
-                        if (i != (this.tabXanimation.length - 1)) {
-                            context.lineTo(this.tabXanimation[i], this.tabXanimation[i] / (1 - Math.pow(this.tabXanimation[i], 2)));
+                var graine = parseFloat(document.getElementById("choixGraine").value);
+                context.moveTo(graine, 0);
+                if (this.function1Draw == true) {
+
+                    context.lineTo(graine, graine / (1 - Math.pow(graine, 2)));
+                    // dessin de la methode de newton
+                    for (var i = 0; i < this.tabXanimation.length; i += 1) {
+                        if (this.tabXanimation[i] != null) {
+                            //dessine la pente
+                            context.lineTo(this.tabXanimation[i], 0);
+
+                            if (i != (this.tabXanimation.length - 1)) {
+                                context.lineTo(this.tabXanimation[i], this.tabXanimation[i] / (1 - Math.pow(this.tabXanimation[i], 2)));
+                            }
+                        }
+                    }
+                } else {
+                    context.lineTo(graine, Math.sin(graine) - graine / 13);
+                    // dessin de la methode de newton
+                    for (var i = 0; i < this.tabXanimation.length; i += 1) {
+                        // sleep(1000);
+
+                        if (this.tabXanimation[i] != null) {
+                            context.lineTo(this.tabXanimation[i], 0);
+                            if (i != (this.tabXanimation.length - 1)) {
+                                context.lineTo(this.tabXanimation[i], Math.sin(this.tabXanimation[i]) - this.tabXanimation[i] / 13);
+                            }
                         }
                     }
                 }
-            } else {
-                context.lineTo(graine, Math.sin(graine) - graine / 13);
-                // dessin de la methode de newton
-                for (var i = 0; i < this.tabXanimation.length; i += 1) {
-                    // sleep(1000);
-
-                    if(this.tabXanimation[i] != null) {
-                        context.lineTo(this.tabXanimation[i], 0);
-                        if (i != (this.tabXanimation.length - 1)) {
-                            context.lineTo(this.tabXanimation[i], Math.sin(this.tabXanimation[i]) - this.tabXanimation[i] / 13);
-                        }
-                    }
-                }
-            }
 
             //met en valeur le 0 toruvé avec un grande ligne verticale
             if(this.tabXanimation[this.tabXanimation.length - 1] != null) {
@@ -488,19 +497,12 @@
             context.lineWidth = 1;
             context.strokeStyle = 'green';
             context.stroke();
+
         } else {
             document.getElementById("textarea").value = "Veuillez séléctionner une fonction !";
         }
     }
 
-    function sleep(milliseconds) {
-        var start = new Date().getTime();
-        for (var i = 0; i < 1e7; i++) {
-            if ((new Date().getTime() - start) > milliseconds) {
-                break;
-            }
-        }
-    }
     //-------------------------------------------------------------------
     //-------------------------------------------------------------------
     //------------------ UTILISATION ET AFFICHAGE -----------------------
