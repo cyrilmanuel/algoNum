@@ -535,14 +535,20 @@
 <h2>But du programme</h2>
 <p>Notre programme doit pouvoir afficher sous forme graphique, 2 fonctions définit dans le cours et trouver leur racines en utilisant la méthode de Newton</p>
 <h2>Structure du programme</h2>
-
+<p>Sur cette page nous permettons à l'utilisateur de choisir la taille de son graphe sur un canvas html5. Les valeurs min axe X, max axe X, min axe Y et max axe Y donnent la fenêtre dans laquelle l'utilisateur
+veut dessiner son graphe. L'écart de graduation permet de choisir la graduation du graphe, la valeur de la graine donne le point de départ de l'animation et la précision permet de donner avec
+quelle précision la pente sera calculé. "Dessiner f1(x)" permet de dessiner la courbe x/(1-x²) et "Dessiner f2(x)" permet le dessin de la courbe sin(x) - x/13. Dessiner l'animation va lancer l'algorithme
+de recherche de la racine et faire le dessin de cette recherche sur le graphe en fonction de la courbe choisie.Une fenêtre en haut a droite
+permet de communiquer des informations avec l'utilisateur.</p>
+<p>Suite a cela notre page va donc chercher ces informations dans les différents input et construire le graphe en fonction des informations demandé par l'utilisateur. A la demande de l'utilisateur la courbe sera dessiner
+sur le canvas et la recherche de la racine par la méthode de Newton pourra alors être lancé et l'animation dessinera la recherche. Chacune de ces étapes fait l'objet d'une fonction dans le code.</p>
 <h2>Méthode de la tangente ou méthode de Newton</h2>
 <p>L'algorithme de la méthode de Newton est le suivant : </p>
 <p>Pour toute fonction f(x) on peut choisir un point sur l'abscisse et trouver son image.
 On cherche ensuite la pente au niveau de ce point (par la dérivée ou par la méthode de Lagrange).
-On prolonge cette pente (qui deviendra donc une tangente au point f(x)) jusqu'à croiser à nouveau l'abscisse et l'on recommence les étapes précédentes jusqu'à trouver une image f(x) qui soit égal à 0.
-Cette méthode à toutefois un énorme inconvénient. Il est possible qu'avec un mauvais choix de graine cette méthode ne converge pas ou même finisse par créer une boucle infini.
-Cela se produit notamment lorsque la graine donne une image f(x) ou la pente de la courbe est trop faible.</p>
-<p><strong>Précision sur la méthode de Lagrange qui a été utilisé dans ce programme: </strong></p>
-<p>Il s'agit d'une méthode d'approximation de la pente par calcul sans avoir a passer par la dérivée.La formule de cette méthode nous a été donnée dans le cours.</p>
+On prolonge cette pente (qui deviendra donc une tangente au point (x,f(x))) jusqu'à croiser à nouveau l'abscisse et l'on recommence les étapes précédentes jusqu'à trouver une image f(x) qui soit égal à 0.
+Cette méthode à toutefois un énorme inconvénient, il est possible qu'avec un mauvais choix de graine cette méthode ne converge pas ou même finisse par créer une boucle infini.
+Ces problèmes de convergence se produisent notamment lorsque la graine donne une image f(x) ou la pente de la courbe est trop faible.</p>
+<p>Dans ce programme nous utilisons une méthode d'approximation de la pente plus simple. Dans notre cas nous demandons a l utilisateur d'entree la précision avec laquelle il aimerait estimer sa pente et la calculons en fonction de cela.
+Nous ajoutons a notre x la valeur de la précision et calculons la pente entre les deux points ainsi créer.</p>
 </html>
