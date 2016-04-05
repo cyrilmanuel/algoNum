@@ -352,7 +352,6 @@
         var tabGraines = [];
         var message="";
 
-        alert(" salut : "+this.maxX)
         this.newtonRecursive(graine, equation, tabGraines, occurence, ecartMin);
 
         // pour afficher le tableau de graines
@@ -375,7 +374,7 @@
            message = "Graine finale : " + Math.round(graineFinale / ecartMin) * ecartMin + " +/- " + ecartMin;
         }
 
-        document.getElementById("textarea").nodeValue = message;
+        document.getElementById("textarea").value = message;
         return tabGraines;
     }
 
@@ -504,70 +503,6 @@
         }
     }
 
-    Graph.prototype.drawLineAnimation=function(xStart,yStart,xFin,yFin){
-        var context = this.context;
-        context.save();
-        this.transformContext();
-        context.beginPath();
-        context.moveTo(xStart, yStart);
-        context.lineTo(xFin,yFin);
-        context.restore();
-        context.lineWidth = 1;
-        context.strokeStyle = 'green';
-        context.stroke();
-    }
-
-    Graph.prototype.Animation2 = function () {
-
-        if (this.function1Draw != null) {
-            var graine = parseFloat(document.getElementById("choixGraine").value);
-            var points = [{x:graine, y:0}];
-
-            if (this.function1Draw == true) {
-
-                points.push({x:graine, y: graine / (1 - Math.pow(graine, 2))});
-
-                // dessin de la methode de newton
-                for (var i = 0; i < this.tabXanimation.length; i += 1) {
-                    if (this.tabXanimation[i] != null) {
-                        //dessine la pente
-                        points.push({x:this.tabXanimation[i], y:0});
-                        if (i != (this.tabXanimation.length - 1)) {
-                            points.push({x:this.tabXanimation[i], y:this.tabXanimation[i] / (1 - Math.pow(this.tabXanimation[i], 2))});
-                        }
-                    }
-                }
-            } else {
-                points.push({x:graine, y: Math.sin(graine) - graine / 13});
-                // dessin de la methode de newton
-                for (var i = 0; i < this.tabXanimation.length; i += 1) {
-
-                    if (this.tabXanimation[i] != null) {
-                        points.push({x:this.tabXanimation[i], y:0});
-                        if (i != (this.tabXanimation.length - 1)) {
-                            points.push({x:this.tabXanimation[i], y:Math.sin(this.tabXanimation[i]) - this.tabXanimation[i] / 13});
-                        }
-                    }
-                }
-            }
-            var K = 0;
-
-
-                    this.drawLineAnimation(points[K].x, points[K].y, points[K+1].x, points[K+1].y);
-                    K = K + 2;
-                    this.drawLineAnimation(points[K].x, points[K].y, points[K+1].x, points[K+1].y);
-
-            //met en valeur le 0 toruvé avec un grande ligne verticale
-            if(this.tabXanimation[this.tabXanimation.length - 1] != null) {
-
-              //  context.lineTo(this.tabXanimation[this.tabXanimation.length - 1], this.maxY);
-              //  context.lineTo(this.tabXanimation[this.tabXanimation.length - 1], this.minY);
-            }
-
-        } else {
-            document.getElementById("textarea").value = "Veuillez séléctionner une fonction !";
-        }
-    }
 
     //-------------------------------------------------------------------
     //-------------------------------------------------------------------
