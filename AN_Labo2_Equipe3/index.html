@@ -388,10 +388,8 @@
     Graph.prototype.newtonRecursive = function (graine, fonction, tabGraine, occurence, ecartMin) {
         occurence++;
         //alert("Entrée dans newtonRecursive. Graine : " + graine);
-        alert("coucou : "+this.maxX);
 
-
-        if (graine == null || graine < myGraph.minX || graine > myGraph.maxX) {
+        if (graine == null || graine < this.minX || graine > this.maxX) {
             //alert("Graine pas dans domaine du graph");
             document.getElementById("textarea").value = "Mauvais choix de la graine. ";
             return null; //mauvaise entrÈe
@@ -409,7 +407,7 @@
                 //alert("Trouvé la racine : " + graine);
                 return graine;
             } //trouvÈ la racine
-            else if (fGraine == null || fSideGraine == null || fGraine > myGraph.maxY || fGraine < myGraph.minY) {
+            else if (fGraine == null || fSideGraine == null || fGraine > this.maxY || fGraine < this.minY) {
                 //alert("Graine en dehors du domaine de définition de la fonction");
                 document.getElementById("textarea").value = "Graine hors du domaine de définition. ";
                 return null; //graine pas dans domaine de dÈfinition
