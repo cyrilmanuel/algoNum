@@ -170,7 +170,7 @@
         // définition du centrage des axes X Y sur le canevas.
         this.centerY = Math.round(Math.abs(this.maxY / this.rangeY) * this.canvas.height);
         this.centerX = Math.round(Math.abs(this.minX / this.rangeX) * this.canvas.width);
-        this.iteration = (this.maxX - this.minX) / 1000;
+        this.iteration = (this.maxX - this.minX) / 100000;
         this.scaleX = this.canvas.width / this.rangeX;
         this.scaleY = this.canvas.height / this.rangeY;
 
@@ -333,7 +333,8 @@
         context.restore();
 
         // récupération du tableau contenant les différents x a dessinér pour l'animation.
-        this.tabXanimation = Graph.prototype.newton(equation);
+        this.tabXanimation = this.newton(equation);
+
     };
 
     //-------------------------------------------------------------------
@@ -349,8 +350,10 @@
 
         var occurence = 0;
         var tabGraines = [];
+        var message="";
 
-        Graph.prototype.newtonRecursive(graine, equation, tabGraines, occurence, ecartMin);
+        alert(" salut : "+this.maxX)
+        this.newtonRecursive(graine, equation, tabGraines, occurence, ecartMin);
 
         // pour afficher le tableau de graines
         /*
@@ -362,16 +365,17 @@
         var graineFinale = tabGraines[tabGraines.length - 1];
         if (graineFinale == null) {
             if (occurence > nbMaxOcu) {
-                document.getElementById("textarea").value = "N'a pas convergé assez vite.";
+                message= "N'a pas convergé assez vite.";
             }
             else {
-                document.getElementById("textarea").value = "Un graine n'était pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de définition).";
+               message = "Un graine n'était pas valide (point stationnaire / asymptote hotizontale ou hors du domaine de définition).";
             }
         }
         else {
-            document.getElementById("textarea").value = "Graine finale : " + Math.round(graineFinale / ecartMin) * ecartMin + " +/- " + ecartMin;
+           message = "Graine finale : " + Math.round(graineFinale / ecartMin) * ecartMin + " +/- " + ecartMin;
         }
 
+        document.getElementById("textarea").nodeValue = message;
         return tabGraines;
     }
 
@@ -384,7 +388,8 @@
     Graph.prototype.newtonRecursive = function (graine, fonction, tabGraine, occurence, ecartMin) {
         occurence++;
         //alert("Entrée dans newtonRecursive. Graine : " + graine);
-        if (graine == null || graine < myGraph.minX || graine > myGraph.maxX) {
+
+        if (graine == null || graine < this.minX || graine > this.maxX) {
             //alert("Graine pas dans domaine du graph");
             document.getElementById("textarea").value = "Mauvais choix de la graine. ";
             return null; //mauvaise entrÈe
@@ -402,7 +407,7 @@
                 //alert("Trouvé la racine : " + graine);
                 return graine;
             } //trouvÈ la racine
-            else if (fGraine == null || fSideGraine == null || fGraine > myGraph.maxY || fGraine < myGraph.minY) {
+            else if (fGraine == null || fSideGraine == null || fGraine > this.maxY || fGraine < this.minY) {
                 //alert("Graine en dehors du domaine de définition de la fonction");
                 document.getElementById("textarea").value = "Graine hors du domaine de définition. ";
                 return null; //graine pas dans domaine de dÈfinition
@@ -426,7 +431,7 @@
                         //alert("b (ordonnée) : " + b);
                         newGraine = -(b / a);
                         //alert("Nouvelle graine : " + newGraine);
-                        tabGraine.unshift(Graph.prototype.newtonRecursive(newGraine, fonction, tabGraine, occurence, ecartMin));
+                        tabGraine.unshift(this.newtonRecursive(newGraine, fonction, tabGraine, occurence, ecartMin));
                         return graine; //une graine dans le processus
                     }
                 }
@@ -445,38 +450,43 @@
 
         if (this.function1Draw != null) {
             var context = this.context;
+            var graine = parseFloat(document.getElementById("choixGraine").value);
             context.save();
             this.transformContext();
             context.beginPath();
-            var graine = parseFloat(document.getElementById("choixGraine").value);
-            context.moveTo(graine, 0);
-            if (this.function1Draw == true) {
-                context.lineTo(graine, graine / (1 - Math.pow(graine, 2)));
-                // dessin de la methode de newton
-                for (var i = 0; i < this.tabXanimation.length; i += 1) {
-                    if(this.tabXanimation[i] != null) {
-                        //dessine la pente
-                        context.lineTo(this.tabXanimation[i], 0);
 
-                        if (i != (this.tabXanimation.length - 1)) {
-                            context.lineTo(this.tabXanimation[i], this.tabXanimation[i] / (1 - Math.pow(this.tabXanimation[i], 2)));
+
+                context.moveTo(graine, 0);
+
+
+                if (this.function1Draw == true) {
+
+                    context.lineTo(graine, graine / (1 - Math.pow(graine, 2)));
+                    // dessin de la methode de newton
+                    for (var i = 0; i < this.tabXanimation.length; i += 1) {
+                        if (this.tabXanimation[i] != null) {
+                            //dessine la pente
+                            context.lineTo(this.tabXanimation[i], 0);
+
+                            if (i != (this.tabXanimation.length - 1)) {
+                                context.lineTo(this.tabXanimation[i], this.tabXanimation[i] / (1 - Math.pow(this.tabXanimation[i], 2)));
+                            }
+                        }
+                    }
+                } else {
+                    context.lineTo(graine, Math.sin(graine) - graine / 13);
+                    // dessin de la methode de newton
+                    for (var i = 0; i < this.tabXanimation.length; i += 1) {
+                        // sleep(1000);
+
+                        if (this.tabXanimation[i] != null) {
+                            context.lineTo(this.tabXanimation[i], 0);
+                            if (i != (this.tabXanimation.length - 1)) {
+                                context.lineTo(this.tabXanimation[i], Math.sin(this.tabXanimation[i]) - this.tabXanimation[i] / 13);
+                            }
                         }
                     }
                 }
-            } else {
-                context.lineTo(graine, Math.sin(graine) - graine / 13);
-                // dessin de la methode de newton
-                for (var i = 0; i < this.tabXanimation.length; i += 1) {
-                    // sleep(1000);
-
-                    if(this.tabXanimation[i] != null) {
-                        context.lineTo(this.tabXanimation[i], 0);
-                        if (i != (this.tabXanimation.length - 1)) {
-                            context.lineTo(this.tabXanimation[i], Math.sin(this.tabXanimation[i]) - this.tabXanimation[i] / 13);
-                        }
-                    }
-                }
-            }
 
             //met en valeur le 0 toruvé avec un grande ligne verticale
             if(this.tabXanimation[this.tabXanimation.length - 1] != null) {
@@ -488,19 +498,77 @@
             context.lineWidth = 1;
             context.strokeStyle = 'green';
             context.stroke();
+
         } else {
             document.getElementById("textarea").value = "Veuillez séléctionner une fonction !";
         }
     }
 
-    function sleep(milliseconds) {
-        var start = new Date().getTime();
-        for (var i = 0; i < 1e7; i++) {
-            if ((new Date().getTime() - start) > milliseconds) {
-                break;
+    Graph.prototype.drawLineAnimation=function(xStart,yStart,xFin,yFin){
+        var context = this.context;
+        context.save();
+        this.transformContext();
+        context.beginPath();
+        context.moveTo(xStart, yStart);
+        context.lineTo(xFin,yFin);
+        context.restore();
+        context.lineWidth = 1;
+        context.strokeStyle = 'green';
+        context.stroke();
+    }
+
+    Graph.prototype.Animation2 = function () {
+
+        if (this.function1Draw != null) {
+            var graine = parseFloat(document.getElementById("choixGraine").value);
+            var points = [{x:graine, y:0}];
+
+            if (this.function1Draw == true) {
+
+                points.push({x:graine, y: graine / (1 - Math.pow(graine, 2))});
+
+                // dessin de la methode de newton
+                for (var i = 0; i < this.tabXanimation.length; i += 1) {
+                    if (this.tabXanimation[i] != null) {
+                        //dessine la pente
+                        points.push({x:this.tabXanimation[i], y:0});
+                        if (i != (this.tabXanimation.length - 1)) {
+                            points.push({x:this.tabXanimation[i], y:this.tabXanimation[i] / (1 - Math.pow(this.tabXanimation[i], 2))});
+                        }
+                    }
+                }
+            } else {
+                points.push({x:graine, y: Math.sin(graine) - graine / 13});
+                // dessin de la methode de newton
+                for (var i = 0; i < this.tabXanimation.length; i += 1) {
+
+                    if (this.tabXanimation[i] != null) {
+                        points.push({x:this.tabXanimation[i], y:0});
+                        if (i != (this.tabXanimation.length - 1)) {
+                            points.push({x:this.tabXanimation[i], y:Math.sin(this.tabXanimation[i]) - this.tabXanimation[i] / 13});
+                        }
+                    }
+                }
             }
+            var K = 0;
+
+
+                    this.drawLineAnimation(points[K].x, points[K].y, points[K+1].x, points[K+1].y);
+                    K = K + 2;
+                    this.drawLineAnimation(points[K].x, points[K].y, points[K+1].x, points[K+1].y);
+
+            //met en valeur le 0 toruvé avec un grande ligne verticale
+            if(this.tabXanimation[this.tabXanimation.length - 1] != null) {
+
+              //  context.lineTo(this.tabXanimation[this.tabXanimation.length - 1], this.maxY);
+              //  context.lineTo(this.tabXanimation[this.tabXanimation.length - 1], this.minY);
+            }
+
+        } else {
+            document.getElementById("textarea").value = "Veuillez séléctionner une fonction !";
         }
     }
+
     //-------------------------------------------------------------------
     //-------------------------------------------------------------------
     //------------------ UTILISATION ET AFFICHAGE -----------------------
@@ -573,6 +641,7 @@
 <p>Source pour du code pour la création du canevas de dessin : <a
         href="http://www.html5canvastutorials.com/labs/html5-canvas-graphing-an-equation/"> HTML5 CANEVAS</a>
 <p>
+<<<<<<< HEAD
 
 <h2>But du programme</h2>
 <p>Notre programme doit pouvoir afficher sous forme graphique, 2 fonctions définies dans le cours et trouver leur racines
@@ -596,5 +665,26 @@ Ces problèmes de convergence se produisent notamment lorsque la graine donne un
 Nous ajoutons a notre x la valeur de la précision et calculons la pente entre les deux points ainsi créés.</p>
 <p>Afin de constater les conséquences que peut causer cette précision, vous pouvez tester les valeurs suivantes:
 sur la fonction 2 et pour une graine égale à 7.6, lancer "Dessiner animation" avec comme valeurs de précision 1e-1, 1e-2 et 1e-8.</p>
+=======
+<h2>Structure du programme</h2>
+<p>Sur cette page nous permettons à l'utilisateur de choisir la taille de son graphe sur un canvas html5. Les valeurs min axe X, max axe X, min axe Y et max axe Y donnent la fenêtre dans laquelle l'utilisateur
+    veut dessiner son graphe. L'écart de graduation permet de choisir la graduation du graphe, la valeur de la graine donne le point de départ de l'animation et la précision permet de donner avec
+    quelle précision la pente sera calculée. "Dessiner f1(x)" permet de dessiner la courbe x/(1-x²) et "Dessiner f2(x)" permet le dessin de la courbe sin(x) - x/13. Dessiner l'animation va lancer l'algorithme
+    de recherche de la racine et faire le dessin de cette recherche sur le graphe en fonction de la courbe choisie.Une fenêtre en haut a droite
+    permet de communiquer des informations avec l'utilisateur.</p>
+<p>Suite a cela notre page va donc chercher ces informations dans les différents input et construire le graphe en fonction des informations demandé par l'utilisateur. A la demande de l'utilisateur la courbe sera dessinée
+    sur le canvas et la recherche de la racine par la méthode de Newton pourra alors être lancée et l'animation dessinera la recherche. Chacune de ces étapes fait l'objet d'une fonction dans le code.</p>
+<h2>Méthode de la tangente ou méthode de Newton</h2>
+<p>L'algorithme de la méthode de Newton est le suivant : </p>
+<p>Pour toute fonction f(x) on peut choisir un point sur l'abscisse et trouver son image si x est dans le domaine de définition de la fonction.
+    On cherche ensuite la pente au niveau de ce point (par la dérivée ou par la méthode de Lagrange).
+    On prolonge cette pente (qui deviendra donc une tangente au point (x,f(x))) jusqu'à croiser à nouveau l'abscisse et l'on recommence les étapes précédentes jusqu'à trouver une image f(x) qui soit égal à (ou suffisamment proche de) 0.
+    Cette méthode a toutefois un énorme inconvénient, il est possible qu'avec un mauvais choix de graine cette méthode diverge fortement ou finisse par créer une boucle infinie.
+    Ces problèmes de convergence se produisent notamment lorsque la graine donne une image f(x) où la pente de la courbe est très proche de 0, lorsqu'une graine intermédiaire n'est pas dans le domaine de la fonction ou lorsque l'algorithme tombe plusieurs fois sur la même graine.</p>
+<p>Dans ce programme nous utilisons une méthode d'approximation de la pente plus simple. Dans notre cas nous demandons à l'utilisateur d'entrer la précision avec laquelle il aimerait estimer sa pente et la calculons en fonction de cela.
+    Nous ajoutons a notre x la valeur de la précision et calculons la pente entre les deux points ainsi créés.</p>
+<p>Afin de constater les conséquences que peut causer cette précision, vous pouvez tester les valeurs suivantes:
+    sur la fonction 2 et pour une graine égale à 7.6, lancer "Dessiner animation" avec comme valeurs de précision 1e-1, 1e-2 et 1e-8.</p>
+>>>>>>> ac3b52fc3e11788d0e58bcb23c9a250f83faffb6
 <p>A cause des variations de précision, la pente calculée est différente et la méthode converge toujours mais vers des points différents pour chaque précision.</p>
 </html>
