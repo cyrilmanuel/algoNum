@@ -7,11 +7,14 @@
 <body>
 
     <p>
-        <button type="button" name="LoadFile" id="LoadFile">Charger un Fichier JSon</button>
-        <button type="button" name="Process" id="Process">Process !</button>
+        <input type="file" id="hiddenfile"/>
     </p>
+    <p>
+        <button type="button" name="Process" id="Process"  onclick="process()" disabled>Process !</button>
+    </p>
+    <div id="footer"></div>
 
-<script>
+<script type="text/javascript">
 
     //-------------------------------------------------------------------
     //-------------------------------------------------------------------
@@ -19,12 +22,48 @@
     //-------------------------------------------------------------------
     //-------------------------------------------------------------------
 
-    document.getElementById("LoadFile").addEventListener("click", function () {
-    });
-    document.getElementById("Process").addEventListener("click", function () {
-    });
-    
-    </script>
+    var matrixSpecs;
+
+    document.getElementById('hiddenfile').addEventListener('change', handleFileSelect, false);
+    var footer = document.getElementById('footer');
+
+    function handleFileSelect(evt) {
+        var files = evt.target.files; // FileList object
+
+        // files is a FileList of File objects. List some properties.
+        var output = [];
+        for (var i = 0, f; f = files[i]; i++) {
+            var reader = new FileReader();
+
+            // Closure to capture the file information.
+            reader.onload = (function (theFile) {
+                return function (e) {
+                    try {
+                        matrixSpecs = JSON.parse(e.target.result);
+                        document.getElementById('Process').disabled = false;
+                    } catch (ex) {
+                        alert('ex when trying to parse matrixSpecs = ' + ex);
+                    }
+                }
+            })(f);
+            reader.readAsText(f);
+        }
+    }
+
+    function process() {
+        insertParagraphAtEnd("Ordre de la matrice : " + matrixSpecs.n);
+        insertParagraphAtEnd("Matrice : " + matrixSpecs.A);
+        insertParagraphAtEnd("Vecteur : " + matrixSpecs.B);
+    }
+
+    function insertParagraphAtEnd(t) {
+        var para = document.createElement("p");
+        var text = document.createTextNode(t);
+        para.appendChild(text);
+        document.body.insertBefore(para, footer);
+    }
+</script>
+
 </body>
 
 </html>
