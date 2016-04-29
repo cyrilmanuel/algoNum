@@ -5,7 +5,7 @@
     <title>AN_Labo4_Equipe3</title>
 </head>
 <body>
-    <h1>Labortaoire 4</h1>
+    <h1>Laboratoire 4</h1>
     <h2> Calcul et visualisation du cosinus et de ses 2 premières dérivées</h2>
     <p><canvas id="Canvas" width="800" height="600">Votre navigateur ne supporte pas les Canvas. Veuillez utiliser un navigateur plus récent.</canvas></p>
     <p>Les boutons ci-dessous permette l'affichage des différentes courbes:</p>
@@ -25,7 +25,7 @@
     var sc = c.width/20;
     drawGraph(c, context);
     drawQuadrille(c, context);
-    drawCosinus(c, context);
+    //drawCosinus(c, context);
 
     //Dessine les axes et les graduations
     function drawGraph(canvas, context){
@@ -61,7 +61,7 @@
     //Dessine le quadrillage
     function drawQuadrille(canvas, context){
         context.strokeStyle = "#777";
-        //context.beginPath();
+        context.beginPath();
         context.lineWidth = 0.5;
 
         //Ligne horizontales
