@@ -23,9 +23,16 @@
     </p>
     <p>
         <label for="precision">Réglage de la précision des dérivations</label>
-        <input type="number" name = "precision" id = "precision"/>
+        <input type="number" name = "precision" id = "precision" value="0.8"/>
+    </p>
+    <p>
+        <label for="terme">Nombre de terme dans la série de Taylor</label>
+        <input type="number" name="terme" id="terme" value="100"/>
     </p>
 
+    <p>
+        <button type ="button" name="Effacer" id="Effacer">Effacer tout</button>
+    </p>
 
 <script>
     document.getElementById("f(x)").addEventListener("click", function(){
@@ -36,6 +43,9 @@
     })
     document.getElementById("f''(x)").addEventListener("click", function(){
         drawDeriveSeconde();
+    })
+    document.getElementById("Effacer").addEventListener("click", function(){
+        effacer();
     })
 
     function Graph(config) {
@@ -192,10 +202,10 @@
 
     var myGraph = new Graph({
         canvasId: 'myCanvas',
-        minX: -10,
-        minY: -10,
-        maxX: 10,
-        maxY: 10,
+        minX: -7,
+        minY: -3,
+        maxX: 7,
+        maxY: 3,
         unitsPerTick: 1
     });
 
@@ -220,23 +230,32 @@
     }
 
     function drawCosinus(){
+        var t = parseInt(document.getElementById("terme").value);
         myGraph.drawEquation(function(x) {
-            return cosTaylor(x, 100);
+            return cosTaylor(x, t);
         }, 'green', 2);
     }
 
     function drawDerive(){
         var h = parseFloat(document.getElementById("precision").value);
+        var t = parseInt(document.getElementById("terme").value);
         myGraph.drawEquation(function(x){
-            return derive(x,100, h);
+            return derive(x,t,h);
         }, 'blue', 2);
     }
 
     function drawDeriveSeconde(){
         var h = parseFloat(document.getElementById("precision").value);
+        var t = parseInt(document.getElementById("terme").value);
         myGraph.drawEquation(function(x){
-            return deriveSeconde(x, 100, h);
+            return deriveSeconde(x, t, h);
         }, 'red', 2);
+    }
+
+    function effacer(){
+        myGraph.context.clearRect(0,0, myGraph.canvas.width, myGraph.canvas.height);
+        myGraph.drawXAxis();
+        myGraph.drawYAxis();
     }
 
 </script>

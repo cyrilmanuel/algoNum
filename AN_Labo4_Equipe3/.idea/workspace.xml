@@ -21,35 +21,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AN_Labo4_Equipe3.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AN_Labo4_Equipe3.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="8" selection-end-column="79" />
-              <folding>
-                <element signature="e#1289#2249#0" expanded="false" />
-                <element signature="e#2322#2889#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="16" column="67" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
+            <state relative-caret-position="264">
+              <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
               <folding>
-                <element signature="e#1260#2374#0" expanded="false" />
-                <element signature="e#2419#3959#0" expanded="false" />
-                <element signature="e#4005#5549#0" expanded="false" />
-                <element signature="e#5624#6169#0" expanded="false" />
-                <element signature="e#6222#6583#0" expanded="false" />
-                <element signature="e#6614#6749#0" expanded="false" />
-                <element signature="e#6781#6958#0" expanded="false" />
-                <element signature="e#6988#7101#0" expanded="false" />
-                <element signature="e#7279#7331#0" expanded="false" />
-                <element signature="e#7359#7471#0" expanded="false" />
+                <element signature="e#1632#2746#0" expanded="false" />
+                <element signature="e#2791#4331#0" expanded="false" />
+                <element signature="e#4377#5921#0" expanded="false" />
+                <element signature="e#5996#6541#0" expanded="false" />
+                <element signature="e#6594#6955#0" expanded="false" />
+                <element signature="e#7149#7326#0" expanded="false" />
+                <element signature="e#7356#7469#0" expanded="false" />
+                <element signature="e#7506#7618#0" expanded="false" />
+                <element signature="e#7647#7699#0" expanded="false" />
+                <element signature="e#7727#7903#0" expanded="false" />
+                <element signature="e#7930#8174#0" expanded="false" />
+                <element signature="e#8208#8460#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -80,7 +69,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-1" />
     <option name="y" value="27" />
-    <option name="width" value="1922" />
+    <option name="width" value="962" />
     <option name="height" value="1054" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -108,7 +97,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -129,6 +117,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -207,17 +196,18 @@
       <updated>1461911933128</updated>
       <workItem from="1461911934237" duration="9085000" />
       <workItem from="1461926308391" duration="11154000" />
+      <workItem from="1461949271386" duration="2811000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20239000" />
+    <option name="totallyTimeSpent" value="23050000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="27" width="1922" height="1054" extended-state="6" />
-    <editor active="false" />
+    <frame x="-1" y="27" width="962" height="1054" extended-state="4" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12291667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16979167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -248,48 +238,38 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="11" />
+      <option name="time" value="14" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/AN_Labo4_Equipe3.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#1289#2249#0" expanded="false" />
-            <element signature="e#2322#2889#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AN_Labo4_Equipe3.html">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="8" selection-end-column="79" />
-          <folding>
-            <element signature="e#1289#2249#0" expanded="false" />
-            <element signature="e#2322#2889#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/AN_Labo4_Equipe3.html" />
+    <entry file="file://$PROJECT_DIR$/AN_Labo4_Equipe3.html" />
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="16" column="67" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
+        <state relative-caret-position="264">
+          <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
           <folding>
-            <element signature="e#1260#2374#0" expanded="false" />
-            <element signature="e#2419#3959#0" expanded="false" />
-            <element signature="e#4005#5549#0" expanded="false" />
-            <element signature="e#5624#6169#0" expanded="false" />
-            <element signature="e#6222#6583#0" expanded="false" />
-            <element signature="e#6614#6749#0" expanded="false" />
-            <element signature="e#6781#6958#0" expanded="false" />
-            <element signature="e#6988#7101#0" expanded="false" />
-            <element signature="e#7279#7331#0" expanded="false" />
-            <element signature="e#7359#7471#0" expanded="false" />
+            <element signature="e#1632#2746#0" expanded="false" />
+            <element signature="e#2791#4331#0" expanded="false" />
+            <element signature="e#4377#5921#0" expanded="false" />
+            <element signature="e#5996#6541#0" expanded="false" />
+            <element signature="e#6594#6955#0" expanded="false" />
+            <element signature="e#7149#7326#0" expanded="false" />
+            <element signature="e#7356#7469#0" expanded="false" />
+            <element signature="e#7506#7618#0" expanded="false" />
+            <element signature="e#7647#7699#0" expanded="false" />
+            <element signature="e#7727#7903#0" expanded="false" />
+            <element signature="e#7930#8174#0" expanded="false" />
+            <element signature="e#8208#8460#0" expanded="false" />
           </folding>
         </state>
       </provider>
