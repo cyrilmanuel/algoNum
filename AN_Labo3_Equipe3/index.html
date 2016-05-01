@@ -6,13 +6,13 @@
 </head>
 <body>
 
-    <p>
-        <input type="file" id="hiddenfile"/>
-    </p>
-    <p>
-        <button type="button" name="Process" id="Process"  onclick="process()" disabled>Process !</button>
-    </p>
-    <div id="footer"></div>
+<p>
+    <input type="file" id="hiddenfile"/>
+</p>
+<p>
+    <button type="button" name="Process" id="Process" onclick="process()" disabled>Process !</button>
+</p>
+<div id="footer"></div>
 
 <script type="text/javascript">
 
@@ -51,9 +51,96 @@
     }
 
     function process() {
-        insertParagraphAtEnd("Ordre de la matrice : " + matrixSpecs.n);
-        insertParagraphAtEnd("Matrice : " + matrixSpecs.A);
-        insertParagraphAtEnd("Vecteur : " + matrixSpecs.B);
+        var n = matrixSpecs.n[0];
+        var A = matrixSpecs.A;
+        var B = matrixSpecs.B;
+        var vector = new Array(n);
+
+        insertParagraphAtEnd("Ordre de la matrice : " + n);
+        insertParagraphAtEnd("Matrice : " + A);
+        insertParagraphAtEnd("Vecteur : " + B);
+
+        //création de la matrice
+        var matrix = new Array(n);
+        for (var k = 0; k < n; k++) {
+            matrix[k] = new Array(n);
+        }
+
+        //Remplissage de la matrice
+        for (var i = 0; i < n * n; i += n) {
+            for (var j = 0; j < n; j++) {
+                matrix[parseInt(i / n)][parseInt(j)] = A[parseInt(i + j)];
+            }
+            insertParagraphAtEnd(matrix[parseInt(i / n)] + " = " + B[parseInt(i / n)]);
+        }
+
+        vector = gauss(matrix, B);
+        vector.forEach(function(entry) {
+            alert(entry*5);
+        });
+    }
+
+    var abs = Math.abs;
+    function gauss(A, x) {
+
+        var i, k, j;
+
+        // Just make a single matrix
+        for (i = 0; i < A.length; i++) {
+            A[i].push(x[i]);
+        }
+        var n = A.length;
+
+        for (i = 0; i < n; i++) {
+            // Search for maximum in this column
+            var maxEl = abs(A[i][i]),
+                    maxRow = i;
+            for (k = i + 1; k < n; k++) {
+                if (abs(A[k][i]) > maxEl) {
+                    maxEl = abs(A[k][i]);
+                    maxRow = k;
+                }
+            }
+
+
+            // Swap maximum row with current row (column by column)
+            for (k = i; k < n + 1; k++) {
+                var tmp = A[maxRow][k];
+                A[maxRow][k] = A[i][k];
+                A[i][k] = tmp;
+            }
+
+            // Make all rows below this one 0 in current column
+            for (k = i + 1; k < n; k++) {
+                var c = -A[k][i] / A[i][i];
+                for (j = i; j < n + 1; j++) {
+                    if (i === j) {
+                        A[k][j] = 0;
+                    } else {
+                        A[k][j] += c * A[i][j];
+                    }
+                }
+            }
+
+            // Solve equation Ax=b for an upper triangular matrix A
+            x = array_fill(0, n, 0);
+            for (i = n - 1; i > -1; i--) {
+                x[i] = A[i][n] / A[i][i];
+                for (k = i - 1; k > -1; k--) {
+                    A[k][n] -= A[k][i] * x[i];
+                }
+            }
+
+            return x;
+        }
+    }
+
+    function array_fill(i, n, v) {
+        var a = [];
+        for (; i < n; i++) {
+            a.push(v);
+        }
+        return a;
     }
 
     function insertParagraphAtEnd(t) {
