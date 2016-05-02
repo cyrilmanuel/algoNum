@@ -22,11 +22,11 @@
         <button type="Button" name="f''(x)" id="f''(x)">f''(x): Derive seconde du cosinus</button>
     </p>
     <p>
-        <label for="precision">Réglage de la précision des dérivations</label>
+        <label for="precision">R?glage de la pr?cision des d?rivations</label>
         <input type="number" name = "precision" id = "precision" value="0.8"/>
     </p>
     <p>
-        <label for="terme">Nombre de terme dans la série de Taylor</label>
+        <label for="terme">Nombre de terme dans la s?rie de Taylor</label>
         <input type="number" name="terme" id="terme" value="100"/>
     </p>
 
@@ -259,5 +259,19 @@
     }
 
 </script>
+<h1>Derivation numerique</h1>
+
+    Sarah Groell, Cyril Jeanneret, Alexandre Serex et Nicolas Sommer Inf2 dlm?a
+
+    <h2>Structure du programme</h2>
+
+    Sur cette page nous permettons a l'utilisateur de choisir d'afficher la fonction cosinus, sa premiere derive ainsi que sa seconde derive sur un canvas html5. il pourra aussi determiner la precision de la derivation (H) ainsi que le nombre de thermes calculer dans la serie de Taylor.
+    Suite a cela notre page va donc chercher ces informations dans les differents input et construire le graphe en fonction des informations demande par l'utilisateur. en cliquant sur les differents bouttons, la courbe sera dessinee sur le canvas.
+    <h2>Polynome du 4eme degre </h2>
+    la restriction de ce laboratoire etait de ne pas utiliser de fonction trigonometrique. nous avons utiliser la methode de Lewis Richardson : Polyn?me du 4?me degr?.
+    nous avons utiliser la methode de Richardson car elle permet de determiner une erreur d'ordre 4. soit de O(h<SUP>4</SUP>). ce qui la rend plus precise que la methode de la diff?rence centr? ou de la diff?rence progressive.
+    aussi, le calcul de la seconde derive peut etre fait en utilisant 2 fois la methode de Richardson.
+
+
 </body>
 </html>
