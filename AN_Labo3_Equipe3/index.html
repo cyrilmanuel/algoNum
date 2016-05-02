@@ -56,6 +56,7 @@
         var B = matrixSpecs.B;
         var vector = new Array(n);
 
+
         insertParagraphAtEnd("Ordre de la matrice : " + n);
         insertParagraphAtEnd("Matrice : " + A);
         insertParagraphAtEnd("Vecteur : " + B);
@@ -74,27 +75,30 @@
             insertParagraphAtEnd(matrix[parseInt(i / n)] + " = " + B[parseInt(i / n)]);
         }
 
-        vector = gauss(matrix, B);
-        vector.forEach(function(entry) {
-            alert(entry*5);
-        });
+        vector = gauss(matrix, B, n);
+        var solution = "";
+        for(var i = 0; i < n; i++) {
+            solution += "x" + i + " = " + vector[i] + ", ";
+        }
+        insertParagraphAtEnd(solution);
     }
 
-    var abs = Math.abs;
-    function gauss(A, x) {
+    function gauss(A, B, n) {
 
+        var abs = Math.abs;
         var i, k, j;
+        var sol = new Array(n);
 
-        // Just make a single matrix
+        // Aggrégation du vecteur résultat (de l'autre coté du '=') avec la matrice.
         for (i = 0; i < A.length; i++) {
-            A[i].push(x[i]);
+            A[i].push(B[i]);
         }
-        var n = A.length;
-
-        for (i = 0; i < n; i++) {
-            // Search for maximum in this column
-            var maxEl = abs(A[i][i]),
-                    maxRow = i;
+        i = 0;
+        // On prend comme pivot le premier élément de la matrice.
+        var maxEl = abs(A[i][i]),
+                maxRow = i;
+        if(maxEl === 0) {
+            //Si cet élément est nul, on recherche l'élément maximum de la colonne.
             for (k = i + 1; k < n; k++) {
                 if (abs(A[k][i]) > maxEl) {
                     maxEl = abs(A[k][i]);
@@ -102,45 +106,47 @@
                 }
             }
 
-
-            // Swap maximum row with current row (column by column)
+            // On place échange la ligne de l'élément max. avec la ligne de l'élément nul.
             for (k = i; k < n + 1; k++) {
                 var tmp = A[maxRow][k];
                 A[maxRow][k] = A[i][k];
                 A[i][k] = tmp;
             }
+        }
 
-            // Make all rows below this one 0 in current column
-            for (k = i + 1; k < n; k++) {
-                var c = -A[k][i] / A[i][i];
-                for (j = i; j < n + 1; j++) {
-                    if (i === j) {
-                        A[k][j] = 0;
-                    } else {
-                        A[k][j] += c * A[i][j];
-                    }
+        // Triangularise la matrice (triangulaire supérieure)
+        for (k = i + 1; k < n; k++) {
+            if(A[i][i] === 0) {
+                //Si un élément diagonal est nul, alors la recherche du maximum à renvoyé un élément nul.
+                //Ceci signifie qu'un colonne était entièrement nulle.
+                alert("Une colonne est nulle : impossible de résoudre le système.");
+                return sol;
+            }
+            //Facteur multiplicatif pour la tranformation ligne-équivalente
+            //permettant de mettre à 0 les éléments de la colonne sous la diagonale.
+            var c = (-A[k][i]) / (A[i][i]);
+
+            for (j = i; j < n + 1; j++) {
+                if (i === j) {
+                    //Si dans la même colonne.
+                    A[k][j] = 0;
+                } else {
+                    //Opération ligne-équivalente
+                    A[k][j] += c * A[i][j];
                 }
             }
+        }
 
-            // Solve equation Ax=b for an upper triangular matrix A
-            x = array_fill(0, n, 0);
-            for (i = n - 1; i > -1; i--) {
-                x[i] = A[i][n] / A[i][i];
-                for (k = i - 1; k > -1; k--) {
-                    A[k][n] -= A[k][i] * x[i];
-                }
+        // Résolution d'une matrice triangulaire supérieure.
+        for (i = n - 1; i > -1; i--) {
+            sol[i] = A[i][n] / A[i][i];
+            for (k = i - 1; k > -1; k--) {
+                //On soustrait ici les valeurs connues par opération ligne-équivalente afin de
+                //n'avoir que les éléments recherché sur la diagonale et le reste nul.
+                A[k][n] -= A[k][i] * sol[i];
             }
-
-            return x;
         }
-    }
-
-    function array_fill(i, n, v) {
-        var a = [];
-        for (; i < n; i++) {
-            a.push(v);
-        }
-        return a;
+        return sol;
     }
 
     function insertParagraphAtEnd(t) {
