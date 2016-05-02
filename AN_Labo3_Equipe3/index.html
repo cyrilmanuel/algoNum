@@ -12,7 +12,64 @@
 <p>
     <button type="button" name="Process" id="Process" onclick="process()" disabled>Process !</button>
 </p>
+
 <div id="footer"></div>
+
+<p>
+    <h1>Méthode employée</h1>
+    La méthode enployée ici est celle du Pivot de Gauss. Le marche à suivre appliquée est la suivante :
+</p>
+<p>
+    <ul>
+    <h3>Préparation : </h3>
+    <li>
+        Sélection et Parsing du fichier JSon.
+    </li>
+    <li>
+        Distribution des variables JSon vers des variables JavaScript.
+    </li>
+    <h3>Début du Process</h3>
+    <li>
+        Création d'un tableeau à deux dimensions pour effectuer les opéraitons matricielles.
+    </li>
+    <h3>Méthode de Gauss</h3>
+    <li>
+        On attache le vecteur B à droite de la matrice.
+    </li>
+    <li>
+        On définit le pivot comme étant l'élément [1][1] de la matrice. Si cet élément est nul on cherche le maximum de la colonne et on échange les lignes.
+    </li>
+    <li>
+        On effectue ensuite des opérations ligne-équivalente sur l'ensemble de la matrice pour nullifier la partie inférieure de celle-ci et la triangulariser.
+    </li>
+    <li>
+        On résoud ensuite la matrice triangulaire supérieure en commençant avec l'élément isolé (l'élément [n][n]). Par opération ligne-équivalente, on soustrait cette ligne avec les suivantes afin de ne laisser que les valeurs inconnues sur la diagonale (à un facteur prêt). On peut ainsi trouver les éléments de la matrice par éléminiation.
+    </li>
+</ul>
+
+</p>
+
+<p>
+    <h2>Problèmes générés par cette méthode</h2>
+</p>
+<p>
+    Le premier problème à gérer par cette méthode est le cas ou un élément est nul sur la diagonale. Ce problème est résolu par la recherche du maximum dans la colonne et anticipé par une condition avant d'effectuer ce qui serait une division par 0.
+</p>
+<p>
+    Le second problème de cette méthode est sa précision. Au vu du grand nombre d'opérations ligne-équivalente (notamment sur les dernières lignes de la matrice), une petite imprécision (directement dépendante du codage des nombres) peut se multiplier et se propager tout au long de l'algorithme, amenant à des imprécisions de l'ordre de 0.1 pour une simple matrice 3x3.
+</p>
+<p>
+    Le dernier problème de cette méthode est sa performance. Quoique très efficace en comparaison d'une méthode de Cramer (d'ordre factorielle), cette méthode ici est d'ordre O(n<SUP>4</SUP>) et ne descend pas, même dans d'autres implémentations, en dessous de O(n<SUP>3</SUP>).
+</p>
+<p>
+    <h2>Sources :</h2>
+</p>
+<p>
+    Le code pour la méthode de Gauss est en grande partie inspiré par le travail situé à <a href="https://github.com/itsravenous/gaussian-elimination">cette adresse. </a>
+</p>
+<p>
+    Ce code était pourtant largement imparfait et nous l'avons compris puis poli pour pouvoir l'intégrer proprement et plus efficacement à notre code.
+</p>
 
 <script type="text/javascript">
 
@@ -42,7 +99,7 @@
                         matrixSpecs = JSON.parse(e.target.result);
                         document.getElementById('Process').disabled = false;
                     } catch (ex) {
-                        alert('ex when trying to parse matrixSpecs = ' + ex);
+                        alert('exception when trying to parse matrixSpecs = ' + ex);
                     }
                 }
             })(f);
