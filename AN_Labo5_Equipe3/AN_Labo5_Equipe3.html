@@ -53,7 +53,9 @@
     function start(){
         var fonctionEnA, fonctionEnB;
         var pi=Math.PI, e=Math.E;
-        var piwiki = 3.14159265358979323846;
+        var piwiki1 = "1415926535";
+        var piwiki2 = "8979323846";
+
         var a, b, n;
         var res, resPi;
 
@@ -75,8 +77,8 @@
         if(fonc == "1/(1+pow(x,2))"){
             document.getElementById("textarea").value += "\n\nLa fonction que vous avez entré permet d'approximer la valeur de pi grâce a une simple multiplication par 4";
             document.getElementById("textarea").value += "\nLa valeur de pi approximer vaut    : " + resPi.toFixed(20);
-            document.getElementById("textarea").value += "\nLa valeur de pi de JavaScript vaut : " + pi.toFixed(20);
-            document.getElementById("textarea").value += "\nLa valeur de pi selon wikipédia    : " + pi.toFixed(20);
+            document.getElementById("textarea").value += "\nLa valeur de pi de JavaScript vaut : " + Math.PI.toFixed(20);
+            document.getElementById("textarea").value += "\nLa valeur de pi selon le lien vaut : 3." + piwiki1 + piwiki2;
         }
     }
 
@@ -130,7 +132,7 @@
             var h=(b-a)/n;
             var j=fonctionEnA;
 
-            for(i=1;i<=n-2;i=i+2){
+            for(i=1;i<=n-2;i+=2){
                 x=a+i*h;
                 j=j+4*f(x)+2*f(x+h);
             }
