@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>AN_Labo5_Equipe3</title>
+</head>
+<body>
+
+</body>
+<script language="JavaScript">
+
+    var formule = "1/(1+pow(x,2))";
+    var fonc = "1/(1+pow(x,2))";
+    var pi=Math.PI, e=Math.E;
+    var a = "0", b = "1", n=100;
+    var fonctionEnA, fonctionEnB;
+    var res;
+
+    start();
+    res = sim();
+
+    alert("Integrale de " + fonc + " = " + res)
+
+    if(fonc == "1/(1+pow(x,2))"){
+        alert("La valeur de pi est de: " + res*4 );
+    }
+
+    function start(){
+        fonc=prompt("Entrez votre fonction :", formule);
+        if(fonc==null){
+            alert("La fonction donnée est invalide");
+            start();
+        }else{
+            recuperationBorne();
+        }
+    }
+
+    function recuperationBorne() {
+        a = eval(prompt("Entrez la borne inferieur :", a));
+        b = eval(prompt("Entrez la borne inferieur :", b));
+
+        fonctionEnA = (f(a));
+        fonctionEnB = (f(b));
+
+        if (a == null || isNaN(fonctionEnA) || fonctionEnA == Infinity) {
+            alert("Erreur sur la borne inférieur !!");
+            recuperationBorne();
+        } else if (b == null || isNaN(fonctionEnA) || fonctionEnA == Infinity) {
+            alert("Erreur sur la borne supérieur !!");
+            recuperationBorne();
+        }
+
+        recuperationNbPoint();
+    }
+
+    function f(x)
+    {
+        with(Math){y=eval(fonc); return y}
+    }
+
+    function recuperationNbPoint(){
+        n=prompt("Nombre de points n pair = ",n);
+        if (n==null){
+            alert("Erreur sur le nombre de point !!");
+            recuperationNbPoint();
+        }else{
+            n =eval(n)
+        }
+    }
+
+    function sim()
+    {
+        with (Math)
+        {
+            var x;
+            var h=(b-a)/n;
+            var j=fonctionEnA;
+
+            for(i=1;i<=n-2;i=i+2){
+                x=a+i*h;j=j+4*f(x)+2*f(x+h)
+            }
+
+            j=j+4*f(b-h)+f(b);
+
+            return j*h/3;
+        }
+    }
+
+
+</script>
+</html>
