@@ -26,8 +26,13 @@
     alert("Integrale de " + fonc + " = " + res );
     alert("Il a fallu: " + timeTot + "milliseconde pour le calculer");
 
+    resPi = resPi-3;
+    var truc = resPi.toString();
+    var tmp = truc.split(".");
+    alert("La valeur de pi est de: 3." + tmp[1] );
+
     if(fonc == "1/(1+pow(x,2))"){
-        alert("La valeur de pi est de: " + resPi );
+        alert("La valeur de pi est de: 3," + tmp[2] );
     }
 
     function start(){
@@ -46,6 +51,7 @@
 
         fonctionEnA = (f(a));
         fonctionEnB = (f(b));
+        alert(fonctionEnA + "    " + fonctionEnB);
 
         if (a == null || isNaN(fonctionEnA) || fonctionEnA == Infinity) {
             alert("Erreur sur la borne inférieur !!");
@@ -87,7 +93,8 @@
 
             j=j+4*f(b-h)+f(b);
 
-            return j*h/3;
+            //alert("Pi vaut " + (j*h/3)*4);
+            return j*h/3 ;
         }
     }
 
