@@ -5,63 +5,111 @@
     <title>AN_Labo5_Equipe3</title>
 </head>
 <body>
+    <h1>Intégration numérique</h1>
+    <h2>Application:</h2>
+
+    <div id="entree">
+        <p>
+            <label id="expression" for="formule">Expression à integrer: </label>
+            <input type="text" id="formule" value="1/(1+pow(x,2))"/>
+
+        </p>
+        <p>
+            <label id="a" for="borneA">Borne inférieur: </label>
+            <input type="number" id="borneA" value="0"/>
+        </p>
+        <p>
+            <label id="b" for="BorneB">Borne supérieur: </label>
+            <input type="number" id="borneB" value="1"/>
+        </p>
+        <p>
+            <label id="n" for="nb">Nombre d'itération: </label>
+            <input type="number" id="nb" value="100"/>
+        </p>
+        <p>
+            <button type="button" id="start">Start process !</button>
+        </p>
+    </div>
+    <div id="ta">
+        <textarea rows="10" cols="100" id="textarea"></textarea>
+    </div>
+
 
 </body>
 <script language="JavaScript">
 
-    var formule = "1/(1+pow(x,2))";
-    var fonc = "1/(1+pow(x,2))";
-    var pi=Math.PI, e=Math.E;
-    var a = "0", b = "1", n=100;
-    var fonctionEnA, fonctionEnB;
-    var res;
+    var fonc;
 
-    start();
-    var time1 = performance.now();
-    res = sim();
-    resPi = res*4;
-    var time2 = performance.now();
-    var timeTot = time2-time1;
-
-    alert("Integrale de " + fonc + " = " + res );
-    alert("Il a fallu: " + timeTot + "milliseconde pour le calculer");
-
-    resPi = resPi-3;
-    var truc = resPi.toString();
-    var tmp = truc.split(".");
-    alert("La valeur de pi est de: 3." + tmp[1] );
-
-    if(fonc == "1/(1+pow(x,2))"){
-        alert("La valeur de pi est de: 3," + tmp[2] );
-    }
+    document.getElementById("start").addEventListener("click", function (){start();});
+    document.getElementById("nb").addEventListener("change", function (){start();});
+    document.getElementById("borneA").addEventListener("change", function (){start();});
+    document.getElementById("borneB").addEventListener("change", function (){start();});
 
     function start(){
-        fonc=prompt("Entrez votre fonction :", formule);
-        if(fonc==null){
-            alert("La fonction donnée est invalide");
-            start();
-        }else{
-            recuperationBorne();
+        var fonctionEnA, fonctionEnB;
+        var pi=Math.PI, e=Math.E;
+        var piwiki = 3.14159265358979323846;
+        var a, b, n;
+        var res, resPi;
+
+        a = eval(document.getElementById("borneA").value);
+        b = eval(document.getElementById("borneB").value);
+
+        fonc = recuperationExpression();
+        fonctionEnA = recuperationBorne(a, b);
+        n = recuperationNbPoint();
+
+        var time1 = performance.now();
+        res = sim(fonctionEnA, a, b, n);
+        resPi = res*4;
+        var time2 = performance.now();
+        var timeTot = time2-time1;
+
+        document.getElementById("textarea").value += "\n\nValeur de l'intégrale défini: " + res;
+        document.getElementById("textarea").value += "\nTemps de calcul: " + timeTot + "milliseconde !";
+        if(fonc == "1/(1+pow(x,2))"){
+            document.getElementById("textarea").value += "\n\nLa fonction que vous avez entré permet d'approximer la valeur de pi grâce a une simple multiplication par 4";
+            document.getElementById("textarea").value += "\nLa valeur de pi approximer vaut    : " + resPi.toFixed(20);
+            document.getElementById("textarea").value += "\nLa valeur de pi de JavaScript vaut : " + pi.toFixed(20);
+            document.getElementById("textarea").value += "\nLa valeur de pi selon wikipédia    : " + pi.toFixed(20);
         }
     }
 
-    function recuperationBorne() {
-        a = eval(prompt("Entrez la borne inferieur :", a));
-        b = eval(prompt("Entrez la borne inferieur :", b));
+    function recuperationExpression(){
+        fonc = document.getElementById("formule").value;
+        if(fonc==null){
+            document.getElementById("textarea").value = "L'expression à intégrer est vide!";
+            start();
+        }else{
+            document.getElementById("textarea").value = "Valeur de l'expression a intégrer: " + fonc.toString();
+        }
+        return fonc;
+    }
 
-        fonctionEnA = (f(a));
-        fonctionEnB = (f(b));
-        alert(fonctionEnA + "    " + fonctionEnB);
+    function recuperationBorne(a, b, fonc) {
+        fonctionEnA = f(a);
+        fonctionEnB = f(b);
 
         if (a == null || isNaN(fonctionEnA) || fonctionEnA == Infinity) {
-            alert("Erreur sur la borne inférieur !!");
-            recuperationBorne();
+            document.getElementById("textarea").value = "La borne inférieur est inutilisable !";
         } else if (b == null || isNaN(fonctionEnA) || fonctionEnA == Infinity) {
-            alert("Erreur sur la borne supérieur !!");
-            recuperationBorne();
+            document.getElementById("textarea").value = "La borne inférieur est inutilisable !";
         }
+        document.getElementById("textarea").value += "\nLa borne inférieur vaut: " + a;
+        document.getElementById("textarea").value += "\nLa borne supérieur vaut: " + b;
+        return fonctionEnA;
+    }
 
-        recuperationNbPoint();
+    function recuperationNbPoint(){
+        n=document.getElementById("nb").value;
+        if (n==null){
+            document.getElementById("textarea").value += "\nLe nombre de point est nul !";
+            recuperationNbPoint();
+        }else{
+            n =eval(n);
+            document.getElementById("textarea").value += "\nLe nombre de point pair: " + n;
+            return n;
+        }
     }
 
     function f(x)
@@ -69,17 +117,7 @@
         with(Math){y=eval(fonc); return y}
     }
 
-    function recuperationNbPoint(){
-        n=prompt("Nombre de points n pair = ",n);
-        if (n==null){
-            alert("Erreur sur le nombre de point !!");
-            recuperationNbPoint();
-        }else{
-            n =eval(n)
-        }
-    }
-
-    function sim()
+    function sim(fonctionEnA, a, b, n)
     {
         with (Math)
         {
@@ -88,12 +126,10 @@
             var j=fonctionEnA;
 
             for(i=1;i<=n-2;i=i+2){
-                x=a+i*h;j=j+4*f(x)+2*f(x+h)
+                x=a+i*h;
+                j=j+4*f(x)+2*f(x+h);
             }
-
             j=j+4*f(b-h)+f(b);
-
-            //alert("Pi vaut " + (j*h/3)*4);
             return j*h/3 ;
         }
     }
