@@ -17,12 +17,17 @@
     var res;
 
     start();
+    var time1 = performance.now();
     res = sim();
+    resPi = res*4;
+    var time2 = performance.now();
+    var timeTot = time2-time1;
 
-    alert("Integrale de " + fonc + " = " + res)
+    alert("Integrale de " + fonc + " = " + res );
+    alert("Il a fallu: " + timeTot + "milliseconde pour le calculer");
 
     if(fonc == "1/(1+pow(x,2))"){
-        alert("La valeur de pi est de: " + res*4 );
+        alert("La valeur de pi est de: " + resPi );
     }
 
     function start(){
