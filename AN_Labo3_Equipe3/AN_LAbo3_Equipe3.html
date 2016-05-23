@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Labo 3</title>
+    <title>AN_Labo3_Equipe3</title>
 </head>
 <body>
 
@@ -56,7 +56,7 @@
     Le premier problème à gérer par cette méthode est le cas ou un élément est nul sur la diagonale. Ce problème est résolu par la recherche du maximum dans la colonne et anticipé par une condition avant d'effectuer ce qui serait une division par 0.
 </p>
 <p>
-    Le second problème de cette méthode est sa précision. Au vu du grand nombre d'opérations ligne-équivalente (notamment sur les dernières lignes de la matrice), une petite imprécision (directement dépendante du codage des nombres) peut se multiplier et se propager tout au long de l'algorithme, amenant à des imprécisions de l'ordre de 0.1 pour une simple matrice 3x3.
+    Le second problème de cette méthode est sa précision. Au vu du grand nombre d'opérations ligne-équivalente (notamment sur les dernières lignes de la matrice), une petite imprécision (directement dépendante du codage des nombres) peut se multiplier et se propager tout au long de l'algorithme, amenant à des imprécisions de l'ordre de 0.02 pour une simple matrice 3x3.
 </p>
 <p>
     Le dernier problème de cette méthode est sa performance. Quoique très efficace en comparaison d'une méthode de Cramer (d'ordre factorielle), cette méthode ici est d'ordre O(n<SUP>4</SUP>) et ne descend pas, même dans d'autres implémentations, en dessous de O(n<SUP>3</SUP>).
@@ -129,18 +129,22 @@
             for (var j = 0; j < n; j++) {
                 matrix[parseInt(i / n)][parseInt(j)] = A[parseInt(i + j)];
             }
-            insertParagraphAtEnd(matrix[parseInt(i / n)] + " = " + B[parseInt(i / n)]);
+            //insertParagraphAtEnd(matrix[parseInt(i / n)] + " = " + B[parseInt(i / n)]);
         }
 
+
         vector = gauss(matrix, B, n);
+
         var solution = "";
-        for(var i = 0; i < n; i++) {
+        /*for(var i = 0; i < n; i++) {
             solution += "x" + i + " = " + vector[i] + ", ";
-        }
-        insertParagraphAtEnd(solution);
+        }*/
+        //insertParagraphAtEnd(solution);
+
     }
 
     function gauss(A, B, n) {
+        var t1 = performance.now();
 
         var abs = Math.abs;
         var i, k, j;
@@ -203,6 +207,11 @@
                 A[k][n] -= A[k][i] * sol[i];
             }
         }
+
+        var t2 = performance.now();
+        var tGauss = t2 - t1;
+        insertParagraphAtEnd("Performance en millisecondes : " + tGauss);
+
         return sol;
     }
 
