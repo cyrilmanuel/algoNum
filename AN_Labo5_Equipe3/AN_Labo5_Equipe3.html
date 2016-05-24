@@ -67,7 +67,8 @@
 	<li>La deuxième est la valeur de pi de JavaScript (Math.PI).</li>
 	<li>La troisième est la valeur de pi utilisée lors des tests et trouvée sur le site (lien plus haut).</li>
 	</ul>
-	
+	<h2>PI graphiquement</h2>
+    <img src="source/pi.gif" align="center">
 	</p>
 	<p>	Sarah Groell, Cyril Jeanneret, Alexandre Serrex - Inf2-dlma</p>
 
@@ -104,7 +105,7 @@
         var timeTot = time2-time1;
 
         document.getElementById("textarea").value += "\n\nValeur de l'intégrale définie : " + res;
-        document.getElementById("textarea").value += "\nTemps de calcul: " + timeTot + " milliseconde !";
+        document.getElementById("textarea").value += "\nTemps de calcul: " + timeTot + " ms !";
         if(fonc == "1/(1+pow(x,2))"){
             document.getElementById("textarea").value += "\n\nLa fonction que vous avez entré permet d'approximer la valeur de pi grâce a une simple multiplication par 4";
             document.getElementById("textarea").value += "\nLa valeur de pi approximée vaut    : " + resPi.toFixed(20);
