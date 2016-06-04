@@ -26,36 +26,42 @@
     <input type="number" name="mass1" id="mass1" value="1"/>
 
     <label for="mass2">Masse 2</label>
-    <input type="number" name="mass2" id="mass2" value="1.5"/>
+    <input type="number" name="mass2" id="mass2" value="1"/>
     </p>
 
     <p>
     <h4>Longueurs en mètres.</h4>
     <label for="len1">Longueur 1</label>
-    <input type="number" name="len1" id="len1" value="0.2"/>
+    <input type="number" name="len1" id="len1" value="1"/>
 
     <label for="len2">Longueur 2</label>
-    <input type="number" name="len2" id="len2" value="0.2"/>
+    <input type="number" name="len2" id="len2" value="1"/>
     </p>
 
     <p>
     <h4>Angles de depart avec la verticale (sens trigo, en nombre de fois Pi).</h4>
     <label for="theta1">Angle 1</label>
-    <input type="number" name="theta1" id="theta1" value="0.5"/>
+    <input type="number" name="theta1" id="theta1" value="0"/>
 
     <label for="theta2">Angle 2</label>
-    <input type="number" name="theta2" id="theta2" value="0"/>
+    <input type="number" name="theta2" id="theta2" value="0.5"/>
     </p>
 
     <p>
-    <h4>Intervalle de temps entre chaque étape (en millisecondes, plus petit -> plus précis)</h4>
+    <h4>Intervalle de temps entre chaque étape (en secondes, plus petit -> plus précis)</h4>
     <label for="dt">Intervalle </label>
-    <input type="number" name="dt" id="dt" value="100"/>
+    <input type="number" name="dt" id="dt" value="0.01"/>
     </p>
 
     <p>
+
         <button type="button" name="start" id="start" onclick="start()">Start !</button>
         <button type="button" name="stop" id="stop" onclick="stop()">Stop !</button>
+    </p>
+    <p>
+        <button type="button" name="init" id="init" onclick="init()">Init !</button>
+        <button type="button" name="continue" id="continue" onclick="continueLoop()" disabled>Continue !</button>
+        <button type="button" name="step" id="step" onclick="step()" disabled>Step !</button>
     </p>
 
 </div>
@@ -90,17 +96,14 @@
     var theta1, theta2;
     var w1, w2;
 
-    //Timer
+    //uses
     var timer;
-
-    //textarea
     var textarea;
+    var isRunning;
 
-    function stop() {
-        window.clearInterval(timer);
-    }
+    function init() {
+        console.log("Start !");
 
-    function start() {
         w1 = 0;
         w2 = 0;
 
@@ -113,11 +116,32 @@
         dt = document.getElementById("dt").value;
         textarea = document.getElementById("textarea");
 
-        timer = window.setInterval(loop, dt);
+        display();
+
+        document.getElementById("step").disabled = false;
+        document.getElementById("continue").disabled = false;
+    }
+
+    function start() {
+        init();
+        continueLoop();
+    }
+
+    function stop() {
+        isRunning = false;
+        window.clearInterval(timer);
+    }
+
+    function step() {
+        if(!isRunning) loop();
+    }
+
+    function continueLoop() {
+        isRunning = true;
+        timer = window.setInterval(loop, dt * 1000);
     }
 
     function loop() {
-        //variables d'abord définies comme condition initiale par l'utilisateur puis mises à jour.
 
         var w1_next = RK4(true);
         var w2_next = RK4(false);
@@ -126,7 +150,11 @@
         theta1 = omegaToTheta(w1);
         theta2 = omegaToTheta(w2);
 
-        textarea.value = "theta 1 = " + theta1 + "\ntheta2 = " + theta2 + "\n" + dt + " millisecondes.";
+        display();
+    }
+
+    function display() {
+        textarea.value = "theta 1 = " + theta1 + "\ntheta 2 = " + theta2 + "\n" + dt + " secondes.";
     }
 
     function angleToPos1() {
@@ -184,30 +212,22 @@
     }
 
     function RK4(isPendule1) {
-        /*
         console.log("Enter RK4");
         console.log("theta1 : " + theta1);
         console.log("theta2 : " + theta2);
         console.log("w1 : " + w1);
         console.log("w2 : " + w2);
-        */
 
         var _k1 = k1(isPendule1);
         var _k2 = k2(isPendule1, _k1);
         var _k3 = k3(isPendule1, _k2);
         var _k4 = k4(isPendule1, _k3);
 
-        /*
         console.log("Juste before final calculus in RK4");
         console.log("theta1 : " + theta1);
         console.log("theta2 : " + theta2);
         console.log("w1 : " + w1);
         console.log("w2 : " + w2);
-        console.log("k1 : " + _k1);
-        console.log("k2 : " + _k2);
-        console.log("k3 : " + _k3);
-        console.log("k4 : " + _k4);
-        */
 
         var out;
         if (isPendule1) out = (w1 + (dt / 6) * (_k1 + 2 * _k2 + 2 * _k3 + _k4));

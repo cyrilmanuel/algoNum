@@ -24,9 +24,12 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.4364302">
-              <caret line="172" column="74" selection-start-line="172" selection-start-column="74" selection-end-line="172" selection-end-column="74" />
-              <folding />
+            <state vertical-scroll-proportion="1.4938875">
+              <caret line="104" column="31" selection-start-line="104" selection-start-column="31" selection-end-line="104" selection-end-column="31" />
+              <folding>
+                <element signature="e#4162#4170#0" expanded="false" />
+                <element signature="e#4199#4207#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -284,9 +287,12 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.4364302">
-          <caret line="172" column="74" selection-start-line="172" selection-start-column="74" selection-end-line="172" selection-end-column="74" />
-          <folding />
+        <state vertical-scroll-proportion="1.4938875">
+          <caret line="104" column="31" selection-start-line="104" selection-start-column="31" selection-end-line="104" selection-end-column="31" />
+          <folding>
+            <element signature="e#4162#4170#0" expanded="false" />
+            <element signature="e#4199#4207#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
