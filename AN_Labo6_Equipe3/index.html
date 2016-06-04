@@ -95,6 +95,7 @@
     //variables allant évoluer au cours de la simulation
     var theta1, theta2;
     var w1, w2;
+    var x1, y1, x2, y2;
 
     //uses
     var timer;
@@ -149,20 +150,28 @@
         w2 = w2_next;
         theta1 = omegaToTheta(w1);
         theta2 = omegaToTheta(w2);
+        angleToPos();
 
         display();
     }
 
     function display() {
-        textarea.value = "theta 1 = " + theta1 + "\ntheta 2 = " + theta2 + "\n" + dt + " secondes.";
+        textarea.value = " theta 1 = " + theta1 +
+                        "\n x1 = " + x1 +
+                        " y1 = " + y1 +
+                        "\n x2 = " + x2 +
+                        " y2 = " + y2 +
+                        "\n theta 2 = " + theta2 +
+                        "\n " + dt + " secondes.";
+
     }
 
-    function angleToPos1() {
+    function angleToPos() {
+        x1 = len1*sin(theta1);
+        y1 = -(len1*cos(theta1));
 
-    }
-
-    function angleToPos2() {
-
+        x2 = len2*sin(theta2) + x1;
+        y2 = -(len2*cos(theta2) + y1);
     }
 
     function mvmtPendule1(th1, th2, omega1, omega2) {
