@@ -15,11 +15,11 @@
 
         </p>
         <p>
-            <label id="a" for="borneA">Borne inférieur: </label>
+            <label id="a" for="borneA">Borne inférieure: </label>
             <input type="number" id="borneA" value="0"/>
         </p>
         <p>
-            <label id="b" for="BorneB">Borne supérieur: </label>
+            <label id="b" for="BorneB">Borne supérieure: </label>
             <input type="number" id="borneB" value="1"/>
         </p>
         <p>
@@ -39,6 +39,38 @@
         <a href="http://www.gecif.net/articles/mathematiques/pi/pi_decimales.html">http://www.gecif.net/articles/mathematiques/pi/pi_decimales.html</a>
     </p>
 
+	<p>
+	<h2>Structure de l'interface</h2>
+	L'application contient différents champs qui sont détaillés dans ce chapitre:
+	<ul>
+	<li><b>Expression à intégrer:</b> l'utilisateur peut saisir l'expression qu'il veut intégrer. Cette expression doit respecter la syntaxe de la bibliothèque Math de JavaScript.
+	</li>
+	<li><b>Borne inférieure :</b> correspond à la borne inférieure de la plage sur laquelle on veut intégrer.
+	</li>
+	<li><b>Borne supérieure :</b> correspond à la borne supérieure de la plage sur laquelle on veut intégrer.
+	</li>
+	<li><b>Nombre d'itération :</b> correspond au nombre d'itération désiré (correspond au n de la formule de Simpson).
+	</li>
+	<li><b>Le bouton "Start Process"</b> lance simplement le calcul et le résultat sera affiché dans la zone de texte en dessous.
+	</li>
+	</ul>
+	</p>
+	<p>
+	<h2>Fonctionnement de l'application</h2>
+	Dans un premier temps, les valeurs saisies par l'utilisateur sont récupérées, différents tests sont effectués afin de s'assurer de la validité de ces données.</br>
+	On lance ensuite le chronomètre qui va mesurer le temps de calcul en microsecondes. Puis on appelle la fonction de calcul de l'intégrale avec pour paramètres la fonction donnée, 
+	l'intervalle et le nombre d'itération.</br>
+	Une fois cette fonction terminée, le chronomètre est arrêté et les valeurs calculées sont affichées dans la zone de texte.</br>
+	3 valeurs de pi sont affichées :
+	<ul>
+	<li>La première représente la valeur approximée avec la méthode de Simpson.</li>
+	<li>La deuxième est la valeur de pi de JavaScript (Math.PI).</li>
+	<li>La troisième est la valeur de pi utilisée lors des tests et trouvée sur le site (lien plus haut).</li>
+	</ul>
+	<h2>PI graphiquement</h2>
+    <img src="source/pi.gif" align="center">
+	</p>
+	<p>	Sarah Groell, Cyril Jeanneret, Alexandre Serrex - Inf2-dlma</p>
 
 </body>
 <script language="JavaScript">
@@ -72,11 +104,11 @@
         var time2 = performance.now();
         var timeTot = time2-time1;
 
-        document.getElementById("textarea").value += "\n\nValeur de l'intégrale défini: " + res;
-        document.getElementById("textarea").value += "\nTemps de calcul: " + timeTot + "milliseconde !";
+        document.getElementById("textarea").value += "\n\nValeur de l'intégrale définie : " + res;
+        document.getElementById("textarea").value += "\nTemps de calcul: " + timeTot + " ms !";
         if(fonc == "1/(1+pow(x,2))"){
             document.getElementById("textarea").value += "\n\nLa fonction que vous avez entré permet d'approximer la valeur de pi grâce a une simple multiplication par 4";
-            document.getElementById("textarea").value += "\nLa valeur de pi approximer vaut    : " + resPi.toFixed(20);
+            document.getElementById("textarea").value += "\nLa valeur de pi approximée vaut    : " + resPi.toFixed(20);
             document.getElementById("textarea").value += "\nLa valeur de pi de JavaScript vaut : " + Math.PI.toFixed(20);
             document.getElementById("textarea").value += "\nLa valeur de pi selon le lien vaut : 3." + piwiki1 + piwiki2;
         }
@@ -98,12 +130,12 @@
         fonctionEnB = f(b);
 
         if (a == null || isNaN(fonctionEnA) || fonctionEnA == Infinity) {
-            document.getElementById("textarea").value = "La borne inférieur est inutilisable !";
+            document.getElementById("textarea").value = "La borne inférieure est inutilisable !";
         } else if (b == null || isNaN(fonctionEnA) || fonctionEnA == Infinity) {
-            document.getElementById("textarea").value = "La borne inférieur est inutilisable !";
+            document.getElementById("textarea").value = "La borne inférieure est inutilisable !";
         }
-        document.getElementById("textarea").value += "\nLa borne inférieur vaut: " + a;
-        document.getElementById("textarea").value += "\nLa borne supérieur vaut: " + b;
+        document.getElementById("textarea").value += "\nLa borne inférieure vaut: " + a;
+        document.getElementById("textarea").value += "\nLa borne supérieure vaut: " + b;
         return fonctionEnA;
     }
 
