@@ -59,9 +59,6 @@
     Le second problème de cette méthode est sa précision. Au vu du grand nombre d'opérations ligne-équivalente (notamment sur les dernières lignes de la matrice), une petite imprécision (directement dépendante du codage des nombres) peut se multiplier et se propager tout au long de l'algorithme, amenant à des imprécisions de l'ordre de 0.02 pour une simple matrice 3x3.
 </p>
 <p>
-    Le dernier problème de cette méthode est sa performance. Quoique très efficace en comparaison d'une méthode de Cramer (d'ordre factorielle), cette méthode ici est d'ordre O(n<SUP>4</SUP>) et ne descend pas, même dans d'autres implémentations, en dessous de O(n<SUP>3</SUP>).
-</p>
-<p>
     <h2>Sources :</h2>
 </p>
 <p>
@@ -136,10 +133,10 @@
         vector = gauss(matrix, B, n);
 
         var solution = "";
-        /*for(var i = 0; i < n; i++) {
-            solution += "x" + i + " = " + vector[i] + ", ";
-        }*/
-        //insertParagraphAtEnd(solution);
+        for(var i = 0; i < n; i++) {
+            solution += "x" + i + " = " + (vector[i]) + ", ";
+        }
+        insertParagraphAtEnd(solution);
 
     }
 
@@ -201,6 +198,9 @@
         // Résolution d'une matrice triangulaire supérieure.
         for (i = n - 1; i > -1; i--) {
             sol[i] = A[i][n] / A[i][i];
+            alert(A[i][n]);
+            alert(A[i][i]);
+            alert("Sol[i] : " + sol[i]);
             for (k = i - 1; k > -1; k--) {
                 //On soustrait ici les valeurs connues par opération ligne-équivalente afin de
                 //n'avoir que les éléments recherché sur la diagonale et le reste nul.

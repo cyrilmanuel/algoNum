@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Labo 6 Equipe 3</title>
+
+    <style>
+        input[type=number] {
+            width: 50px;
+        }
+
+        .topleftConfig {
+            position: relative;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<div class="topleftConfig">
+    <p>
+    <h2>Conditions initiales</h2>
+    </p>
+    <p>
+    <h4>Masses, en Kg</h4>
+    <label for="mass1">Masse 1</label>
+    <input type="number" name="mass1" id="mass1" value="1"/>
+
+    <label for="mass2">Masse 2</label>
+    <input type="number" name="mass2" id="mass2" value="1.5"/>
+    </p>
+
+    <p>
+    <h4>Longueurs en mètres.</h4>
+    <label for="len1">Longueur 1</label>
+    <input type="number" name="len1" id="len1" value="0.2"/>
+
+    <label for="len2">Longueur 2</label>
+    <input type="number" name="len2" id="len2" value="0.2"/>
+    </p>
+
+    <p>
+    <h4>Angles de depart avec la verticale (sens trigo, en nombre de fois Pi).</h4>
+    <label for="theta1">Angle 1</label>
+    <input type="number" name="theta1" id="theta1" value="0.5"/>
+
+    <label for="theta2">Angle 2</label>
+    <input type="number" name="theta2" id="theta2" value="0"/>
+    </p>
+
+    <p>
+    <h4>Intervalle de temps entre chaque étape (en millisecondes, plus petit -> plus précis)</h4>
+    <label for="dt">Intervalle </label>
+    <input type="number" name="dt" id="dt" value="100"/>
+    </p>
+
+    <p>
+        <button type="button" name="start" id="start" onclick="start()">Start !</button>
+        <button type="button" name="stop" id="stop" onclick="stop()">Stop !</button>
+    </p>
+
+</div>
+
+<div class="topleft">
+    <p>
+            <textarea rows="4" cols="50" name="textarea" id="textarea" readonly> Choisissez vos valeurs initiales en pressez sur start.
+            </textarea>
+    </p>
+</div>
+</body>
+
+<script>
+
+    /*
+     Toutes les variables importantes sont globales parce que le JS est un langage magnifique =)
+     */
+
+    //Accélération due à l'attraction terrestre.
+    const G = 9.81;
+
+    //Fonctions mathématiques (sucre syntaxique)
+    var sin = Math.sin;
+    var cos = Math.cos;
+    var pow = Math.pow;
+    var PI = Math.PI;
+
+    //variables définies par l'utilisateur, constants durant toute la simulation.
+    var mass1, mass2, len1, len2, dt;
+
+    //variables allant évoluer au cours de la simulation
+    var theta1, theta2;
+    var w1, w2;
+
+    //Timer
+    var timer;
+
+    //textarea
+    var textarea;
+
+    function stop() {
+        window.clearInterval(timer);
+    }
+
+    function start() {
+        w1 = 0;
+        w2 = 0;
+
+        mass1 = document.getElementById("mass1").value;
+        mass2 = document.getElementById("mass2").value;
+        len1 = document.getElementById("len1").value;
+        len2 = document.getElementById("len2").value;
+        theta1 = document.getElementById("theta1").value * PI;
+        theta2 = document.getElementById("theta2").value * PI;
+        dt = document.getElementById("dt").value;
+        textarea = document.getElementById("textarea");
+
+        timer = window.setInterval(loop, dt);
+    }
+
+    function loop() {
+        //variables d'abord définies comme condition initiale par l'utilisateur puis mises à jour.
+
+        var w1_next = RK4(true);
+        var w2_next = RK4(false);
+        w1 = w1_next;
+        w2 = w2_next;
+        theta1 = omegaToTheta(w1);
+        theta2 = omegaToTheta(w2);
+
+        textarea.value = "theta 1 = " + theta1 + "\ntheta2 = " + theta2 + "\n" + dt + " millisecondes.";
+    }
+
+    function angleToPos1() {
+
+    }
+
+    function angleToPos2() {
+
+    }
+
+    function mvmtPendule1(th1, th2, omega1, omega2) {
+        var out;
+        if ((len1 * ((2 * mass1) + mass2 - (mass2 * cos(2 * th1 - 2 * th2)))) != 0) {
+            out = (((-G * ((2 * mass1) + mass2) * sin(th1)) -
+            (mass2 * G * sin(th1 - (2 * th2))) -
+            (2 * sin(th1 - th2) * mass2 * (pow(omega2, 2) * len2 + pow(omega1, 2) * len1 * cos(th1 - th2))))
+            /
+            (len1 * ((2 * mass1) + mass2 - (mass2 * cos(2 * th1 - 2 * th2)))));
+        }
+        else alert("Division par 0 au pendule 1! changez vos conditions initales.");
+        return out;
+    }
+
+    function mvmtPendule2(th1, th2, omega1, omega2) {
+        var out;
+        if ((len1 * ((2 * mass1) + mass2 - (mass2 * cos(2 * th1 - 2 * th2)))) != 0) {
+            out = ((2 * sin(th1 - th2) * (pow(omega1, 2) * len1 * (mass1 + mass2) +
+            G * (mass1 + mass2) * cos(th1) +
+            pow(omega2, 2) * len2 * mass2 * cos(th1 - th2)))
+            /
+            (len1 * ((2 * mass1) + mass2 - (mass2 * cos(2 * th1 - 2 * th2)))));
+        }
+        else alert("Division par 0 au pendule 2! changez vos conditions initales.");
+        return out;
+    }
+
+    function k1(isPendule1) {
+        if (isPendule1) return mvmtPendule1(theta1, theta2, w1, w2);
+        else return mvmtPendule2(theta1, theta2, w1, w2);
+    }
+
+    function k2(isPendule1, _k1) {
+        if (isPendule1) return mvmtPendule1(theta1, theta2, w1 + _k1 * (dt / 2), w2);
+        else return mvmtPendule2(theta1, theta2, w1, w2 + _k1 * (dt / 2));
+    }
+
+    function k3(isPendule1, _k2) {
+        if (isPendule1) return mvmtPendule1(theta1, theta2, w1 + _k2 * (dt / 2), w2);
+        else return mvmtPendule2(theta1, theta2, w1, w2 + _k2 * (dt / 2));
+    }
+
+    function k4(isPendule1, _k3) {
+        if (isPendule1) return mvmtPendule1(theta1, theta2, w1 + _k3 * dt, w2);
+        else return mvmtPendule2(theta1, theta2, w1, w2 + _k3 * dt);
+    }
+
+    function RK4(isPendule1) {
+        /*
+        console.log("Enter RK4");
+        console.log("theta1 : " + theta1);
+        console.log("theta2 : " + theta2);
+        console.log("w1 : " + w1);
+        console.log("w2 : " + w2);
+        */
+
+        var _k1 = k1(isPendule1);
+        var _k2 = k2(isPendule1, _k1);
+        var _k3 = k3(isPendule1, _k2);
+        var _k4 = k4(isPendule1, _k3);
+
+        /*
+        console.log("Juste before final calculus in RK4");
+        console.log("theta1 : " + theta1);
+        console.log("theta2 : " + theta2);
+        console.log("w1 : " + w1);
+        console.log("w2 : " + w2);
+        console.log("k1 : " + _k1);
+        console.log("k2 : " + _k2);
+        console.log("k3 : " + _k3);
+        console.log("k4 : " + _k4);
+        */
+
+        var out;
+        if (isPendule1) out = (w1 + (dt / 6) * (_k1 + 2 * _k2 + 2 * _k3 + _k4));
+        else out = (w2 + (dt / 6) * (_k1 + 2 * _k2 + 2 * _k3 + _k4));
+        return out;
+    }
+
+    function omegaToTheta(w) {
+        return w * dt;
+    }
+
+
+</script>
+
+</html>
