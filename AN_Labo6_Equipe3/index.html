@@ -68,8 +68,14 @@
 
 <div class="topleft">
     <p>
-            <textarea rows="4" cols="50" name="textarea" id="textarea" readonly> Choisissez vos valeurs initiales en pressez sur start.
-            </textarea>
+        <h4>Repère polaire : </h4>
+        <textarea rows="6" cols="50" name="polar" id="polar" readonly> Choisissez vos valeurs initiales en pressez sur start.
+        </textarea>
+    </p>
+    <p>
+        <h4>Repère cartésien : </h4>
+        <textarea rows="6" cols="50" name="polar" id="cartesian" readonly> Choisissez vos valeurs initiales en pressez sur start.
+        </textarea>
     </p>
 </div>
 </body>
@@ -99,14 +105,17 @@
 
     //uses
     var timer;
-    var textarea;
+    var polar;
+    var cartesian;
     var isRunning;
+    var totalTime;
 
     function init() {
         console.log("Start !");
 
         w1 = 0;
         w2 = 0;
+        totalTime = 0;
 
         mass1 = document.getElementById("mass1").value;
         mass2 = document.getElementById("mass2").value;
@@ -115,7 +124,8 @@
         theta1 = document.getElementById("theta1").value * PI;
         theta2 = document.getElementById("theta2").value * PI;
         dt = document.getElementById("dt").value;
-        textarea = document.getElementById("textarea");
+        polar = document.getElementById("polar");
+        cartesian = document.getElementById("cartesian");
 
         display();
 
@@ -148,21 +158,27 @@
         var w2_next = RK4(false);
         w1 = w1_next;
         w2 = w2_next;
-        theta1 = omegaToTheta(w1);
-        theta2 = omegaToTheta(w2);
+        theta1 += omegaToTheta(w1);
+        theta2 += omegaToTheta(w2);
+
         angleToPos();
+        totalTime += parseFloat(dt);
 
         display();
     }
 
     function display() {
-        textarea.value = " theta 1 = " + theta1 +
-                        "\n x1 = " + x1 +
-                        " y1 = " + y1 +
-                        "\n x2 = " + x2 +
-                        " y2 = " + y2 +
+        polar.value = " theta 1 = " + theta1 +
                         "\n theta 2 = " + theta2 +
-                        "\n " + dt + " secondes.";
+                        "\n\n omega 1 = " + w1 +
+                        "\n omega 2 = " + w2 +
+                        "\n " + totalTime.toFixed(3) + " secondes.";
+
+        cartesian.value= " x1 = " + x1 +
+                        "\n y1 = " + y1 +
+                        "\n\n x2 = " + x2 +
+                        "\n y2 = " + y2 +
+                        "\n " + totalTime.toFixed(3) + " secondes.";
 
     }
 
@@ -190,9 +206,9 @@
     function mvmtPendule2(th1, th2, omega1, omega2) {
         var out;
         if ((len1 * ((2 * mass1) + mass2 - (mass2 * cos(2 * th1 - 2 * th2)))) != 0) {
-            out = ((2 * sin(th1 - th2) * (pow(omega1, 2) * len1 * (mass1 + mass2) +
-            G * (mass1 + mass2) * cos(th1) +
-            pow(omega2, 2) * len2 * mass2 * cos(th1 - th2)))
+            out = ((2 * sin(th1 - th2) * ((pow(omega1, 2) * len1 * (mass1 + mass2)) +
+            (G * (mass1 + mass2) * cos(th1)) +
+            (pow(omega2, 2) * len2 * mass2 * cos(th1 - th2))))
             /
             (len1 * ((2 * mass1) + mass2 - (mass2 * cos(2 * th1 - 2 * th2)))));
         }
@@ -221,11 +237,6 @@
     }
 
     function RK4(isPendule1) {
-        console.log("Enter RK4");
-        console.log("theta1 : " + theta1);
-        console.log("theta2 : " + theta2);
-        console.log("w1 : " + w1);
-        console.log("w2 : " + w2);
 
         var _k1 = k1(isPendule1);
         var _k2 = k2(isPendule1, _k1);
