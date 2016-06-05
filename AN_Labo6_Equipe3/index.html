@@ -56,7 +56,7 @@
     <p>
     <h4>Intervalle de temps entre chaque étape (en secondes, plus petit -> plus précis)</h4>
     <label for="dt">Intervalle </label>
-    <input type="number" name="dt" id="dt" value="0.01"/>
+    <input type="number" name="dt" id="dt" value="0.001"/>
     </p>
 
     <p>
@@ -84,6 +84,13 @@
         </textarea>
     </p>
 </div>
+
+
+<canvas id="myCanvas" width="1000" height="500">
+    <!-- Message pour les navigateurs ne supportant pas encore canvas. -->
+    Votre navigateur ne supporte pas encore les canvas. Essayez de metre-à-jour votre navigateur
+    ou de changer de navigateur.
+</canvas>
 
 <div class="doc">
     <p>
@@ -149,6 +156,30 @@
     /*
      Toutes les variables importantes sont globales parce que le JS est un langage magnifique =)
      */
+    var context;
+
+    position = {x: 200, y: 200};
+    canvas = document.getElementById('myCanvas');
+    context = canvas.getContext('2d');
+
+    pm = 100;
+    rangeX = 20;
+    rangeY = 20;
+
+
+    function pixelToMeter(x, y){
+        x *= pm;
+        y *= pm;
+        var poscan;
+        return poscan={x:x,y:y};
+    }
+
+    // définition du centrage des axes X Y sur le canevas.
+    this.centerY = Math.round(canvas.height/2);
+    this.centerX = Math.round(canvas.width/2);
+
+    this.scaleX = this.canvas.width / this.rangeX;
+    this.scaleY = this.canvas.height / this.rangeY;
 
     //Accélération due à l'attraction terrestre.
     const G = 9.81;
@@ -196,6 +227,7 @@
 
         document.getElementById("step").disabled = false;
         document.getElementById("continue").disabled = false;
+        myMove();
     }
 
     /*
@@ -250,6 +282,7 @@
         totalTime += parseFloat(dt);
 
         display();
+        draw();
     }
 
     /*
@@ -281,10 +314,10 @@
      */
     function angleToPos() {
         x1 = len1 * sin(theta1);
-        y1 = -(len1 * cos(theta1));
+        y1 = (len1 * cos(theta1));
 
         x2 = len2 * sin(theta2) + x1;
-        y2 = -(len2 * cos(theta2)) + y1;
+        y2 = (len2 * cos(theta2)) + y1;
     }
 
     /*
@@ -388,6 +421,58 @@
     }
 
 
+  // Animation pendule et move
+    // teste si le canvas et le context sont OK
+
+
+
+    function myMove() {
+        context.save();
+        transformContext();
+        var radius = 5;
+
+        context.beginPath();
+        context.arc(0, 0, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = "black";
+        context.fill();
+        context.lineWidth = 1;
+        context.strokeStyle = "black";
+        context.stroke();
+        context.closePath();
+
+        context.restore();
+    }
+
+
+    function draw(){
+
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "rgb(150,29,28)";
+        context.save();
+        transformContext();
+
+        context.beginPath();
+        var poscan1 = pixelToMeter(x1,y1);
+        var poscan2 = pixelToMeter(x2,y2);
+        context.arc(poscan1.x,poscan1.y, 5, 0, Math.PI * 2, true);
+        context.arc(poscan2.x,poscan2.y, 5, 0, Math.PI * 2, true);
+
+       /* context.arc(x1*10,(0+len1), 5, 0, Math.PI * 2, true);
+
+        context.arc(x2*10,(0+len2+len1), 5, 0, Math.PI * 2, true);*/
+        //context.arc(x2, y2, 10, 0, Math.PI * 2, true);
+        context.fill();
+
+        context.restore();
+        context.closePath();
+    }
+
+    function transformContext() {
+
+        // move context to center of canvas
+        context.translate(centerX,centerY);
+    }
 </script>
 
 </html>
