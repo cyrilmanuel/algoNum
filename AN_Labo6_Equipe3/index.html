@@ -56,7 +56,7 @@
     <p>
     <h4>Intervalle de temps entre chaque étape (en secondes, plus petit -> plus précis)</h4>
     <label for="dt">Intervalle </label>
-    <input type="number" name="dt" id="dt" value="0.001"/>
+    <input type="number" name="dt" id="dt" value="0.01"/>
     </p>
 
     <p>
@@ -80,7 +80,7 @@
     </p>
     <p>
     <h4>Repère cartésien : </h4>
-        <textarea rows="6" cols="50" name="polar" id="cartesian" readonly> Choisissez vos valeurs initiales en pressez sur start.
+        <textarea rows="9" cols="50" name="polar" id="cartesian" readonly> Choisissez vos valeurs initiales en pressez sur start.
         </textarea>
     </p>
 </div>
@@ -205,6 +205,10 @@
     var isRunning;
     var totalTime;
 
+    //energies
+    var eCinTot;
+    var ePotTot;
+
     /*
      Initialise les variables avec les données de l'utilisateur, ou à leurs valeur par défaut.
      */
@@ -277,12 +281,28 @@
         theta2 += omegaToTheta(w2);
 
         //Calcul des coordonnées cartésiennes en fonction des coordonnées polaires.
+        var oldX1 = x1, oldX2 = x2, oldY1 = y1, oldY2 = y2;
         angleToPos();
+        //calcul des energies
+        energies(oldX1, oldY1, oldX2, oldY2);
+
         //Update du temps total de simulation.
         totalTime += parseFloat(dt);
 
         display();
         draw();
+    }
+
+    /*
+    Calcul les energies cinétiques et potentielles du système.
+    */
+    function energies(oldx1, oldy1, oldx2, oldy2) {
+        if(oldx1 != undefined && oldx2 != undefined && oldy1 != undefined && oldy2 != undefined) {
+            var v1 = (Math.sqrt(pow(x1, 2) + pow(y1, 2)) - Math.sqrt(pow(oldx1, 2) + pow(oldy1, 2))) / dt;
+            var v2 = (Math.sqrt(pow(x2, 2) + pow(y2, 2)) - Math.sqrt(pow(oldx2, 2) + pow(oldy2, 2))) / dt;
+            eCinTot = (0.5 * mass1 * pow(v1, 2)) + (0.5 * mass1 * pow(v2, 2));
+            ePotTot = mass1 * G * (y1 + len1) + mass2 * G * (y2 + len1 + len2);
+        }
     }
 
     /*
@@ -299,6 +319,8 @@
                 "\n y1 = " + y1.toFixed(3) +
                 "\n\n x2 = " + x2.toFixed(3) +
                 "\n y2 = " + y2.toFixed(3) +
+                "\n\n E. Cinétique = " + eCinTot.toFixed(3) +
+                "\n E. Potentielle = " + ePotTot.toFixed(3) +
                 "\n " + totalTime.toFixed(3) + " secondes.";
 
     }
