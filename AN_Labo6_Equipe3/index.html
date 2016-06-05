@@ -163,23 +163,11 @@
     context = canvas.getContext('2d');
 
     pm = 100;
-    rangeX = 20;
-    rangeY = 20;
 
-
-    function pixelToMeter(x, y){
-        x *= pm;
-        y *= pm;
-        var poscan;
-        return poscan={x:x,y:y};
-    }
 
     // définition du centrage des axes X Y sur le canevas.
     this.centerY = Math.round(canvas.height/2);
     this.centerX = Math.round(canvas.width/2);
-
-    this.scaleX = this.canvas.width / this.rangeX;
-    this.scaleY = this.canvas.height / this.rangeY;
 
     //Accélération due à l'attraction terrestre.
     const G = 9.81;
@@ -209,6 +197,7 @@
     var eCinTot;
     var ePotTot;
 
+
     /*
      Initialise les variables avec les données de l'utilisateur, ou à leurs valeur par défaut.
      */
@@ -231,7 +220,7 @@
 
         document.getElementById("step").disabled = false;
         document.getElementById("continue").disabled = false;
-        myMove();
+        draw();
     }
 
     /*
@@ -447,25 +436,6 @@
     // teste si le canvas et le context sont OK
 
 
-
-    function myMove() {
-        context.save();
-        transformContext();
-        var radius = 5;
-
-        context.beginPath();
-        context.arc(0, 0, radius, 0, 2 * Math.PI, false);
-        context.fillStyle = "black";
-        context.fill();
-        context.lineWidth = 1;
-        context.strokeStyle = "black";
-        context.stroke();
-        context.closePath();
-
-        context.restore();
-    }
-
-
     function draw(){
 
 
@@ -480,20 +450,37 @@
         context.arc(poscan1.x,poscan1.y, 5, 0, Math.PI * 2, true);
         context.arc(poscan2.x,poscan2.y, 5, 0, Math.PI * 2, true);
 
-       /* context.arc(x1*10,(0+len1), 5, 0, Math.PI * 2, true);
-
-        context.arc(x2*10,(0+len2+len1), 5, 0, Math.PI * 2, true);*/
-        //context.arc(x2, y2, 10, 0, Math.PI * 2, true);
         context.fill();
+        context.closePath();
+
+
+        context.beginPath();
+        context.fillStyle = "blue";
+        context.rect(canvas.width/2-50,0,30,eCinTot);
+        context.fill();
+        context.closePath();
+
+
+        context.beginPath();
+        context.fillStyle = "red";
+        context.rect(canvas.width/2-50,eCinTot+ePotTot,30,-ePotTot);
+        context.fill();
+        context.closePath();
 
         context.restore();
-        context.closePath();
     }
 
     function transformContext() {
 
         // move context to center of canvas
         context.translate(centerX,centerY);
+    }
+
+    function pixelToMeter(x, y){
+        x *= pm;
+        y *= pm;
+        var poscan;
+        return poscan={x:x,y:y};
     }
 </script>
 
