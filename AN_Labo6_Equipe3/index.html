@@ -13,6 +13,12 @@
             position: relative;
             float: left;
         }
+
+        .doc {
+            position: relative;
+            float: left;
+            clear: both;
+        }
     </style>
 </head>
 <body>
@@ -68,15 +74,73 @@
 
 <div class="topleft">
     <p>
-        <h4>Repère polaire : </h4>
+    <h4>Repère polaire : </h4>
         <textarea rows="6" cols="50" name="polar" id="polar" readonly> Choisissez vos valeurs initiales en pressez sur start.
         </textarea>
     </p>
     <p>
-        <h4>Repère cartésien : </h4>
+    <h4>Repère cartésien : </h4>
         <textarea rows="6" cols="50" name="polar" id="cartesian" readonly> Choisissez vos valeurs initiales en pressez sur start.
         </textarea>
     </p>
+</div>
+
+<div class="doc">
+    <p>
+    <h2>Double pendule avec Runge-Kutta 4</h2>
+    Ce programme permet d'afficher le mouvement d'un double pendule en approximant son mouvement grâce
+    à la méthode de Runge-Kutta 4 (RK4) qui permet de résoudre les équations différentielles numériquement.
+    </p>
+    <p>
+    <h3>Valeurs initiales</h3>
+    Les valeurs initiales à sélectionner sont, pour chaque pendule :
+    <ul>
+        <li>sa masse</li>
+        <li>sa longueur</li>
+        <li>son angle de départ avec l'horizontale en nombre de fois pi.</li>
+    </ul>
+    Le pas utilisé pour effectuer les opérations est également à définir. Plus le pas est petit, plus la simulation est
+    précise.
+    </p>
+    <p>
+    <h3>Fonctionnement de l'algorithme</h3>
+    L'algorithme RK4 permet d'approximer une équation différentielle de type y' = f(t, y) numériquement, sachant que
+    l'on cherche y.
+    Le principe est de diviser le problème en n étapes.
+    </p>
+    <p>
+        On calculera y<SUB>n+1</SUB> ainsi : y<SUB>n+1</SUB> = y<SUB>n</SUB> + (dt / 6) * (k1 + 2 * k2 + 2 * k3 + k4
+    </p>
+    <p>
+    <ul>
+        <li>dt est l'intervalle de temps sur lequel on passe de l'étape n à l'étape n+1.</li>
+        <li>k1 est la pente à l'étape n, c'est à dire k1 = f(t<SUB>n</SUB>, y<SUB>n</SUB>)</li>
+        <li>k2 est une pente estimée au milieu de l'intervalle {t<SUB>n</SUB>, t<SUB>n+1</SUB>}, calculée grâce à k1
+            grâce
+            à une méthode d'euler classique (une approximation linéaire), c'est à dire f(t<SUB>n</SUB> + dt/2,
+            y<SUB>n</SUB> + k1 * dt / 2).
+        </li>
+        <li>k3 est la même chose que k2 mais avec k2 plutôt que k1, c'est à dire f(t<SUB>n</SUB> + dt/2, y<SUB>n</SUB> +
+            k2 * dt / 2)
+        </li>
+        <li>Finalement, k4 est une méthode d'Euler (une approximation linéaire encore une fois) sur tout l'intervalle dt
+            avec comme valeur de pente k3,
+            c'est à dire f(t<SUB>n</SUB> + dt, y<SUB>n</SUB> + k3 * dt).
+        </li>
+    </ul>
+    </p>
+    <p>
+        RK4 est une moyenne pondérée de ces valeurs, en donnant une plus grande importance au valeurs au centre de
+        l'intervalle.
+        On ajoute cette moyenne au y<SUB>n</SUB> pour trouver y<SUB>n + 1</SUB> et on itère ainsi tout les dt pour
+        progresser dans le temps.
+    </p>
+    <p>
+        Dans notre cas, y' = w', l'accéleration angulaire, et y = w, la vitesse angulaire.
+        Ne connaissant pas w', on calcule la variation de w grâce à RK4. Lorsque w est calculé, il suffit d'appliquer
+        la définition de la vitesse angulaire pour déduire la variation de l'angle theta d'un pendule : theta += w * dt.
+    </p>
+
 </div>
 </body>
 
@@ -110,6 +174,9 @@
     var isRunning;
     var totalTime;
 
+    /*
+     Initialise les variables avec les données de l'utilisateur, ou à leurs valeur par défaut.
+     */
     function init() {
         console.log("Start !");
 
@@ -127,69 +194,102 @@
         polar = document.getElementById("polar");
         cartesian = document.getElementById("cartesian");
 
-        display();
-
         document.getElementById("step").disabled = false;
         document.getElementById("continue").disabled = false;
     }
 
+    /*
+     Lance la simulation.
+     */
     function start() {
         init();
         continueLoop();
     }
 
+    /*
+     Arrête la simulation en cours.
+     */
     function stop() {
         isRunning = false;
         window.clearInterval(timer);
     }
 
+    /*
+     Execute une seule étape du loop.
+     */
     function step() {
-        if(!isRunning) loop();
+        if (!isRunning) loop();
     }
 
+    /*
+     Lance la simulation en continu.
+     */
     function continueLoop() {
         isRunning = true;
         timer = window.setInterval(loop, dt * 1000);
     }
 
+    /*
+     Execute une iteration de l'algorithme.
+     */
     function loop() {
 
+        //Calcul les vitesses angulaires n+1 selon Runge-Kutta 4.
         var w1_next = RK4(true);
         var w2_next = RK4(false);
+        //Update des vitesses angulaires selon les nouvelles valeurs calculées.
         w1 = w1_next;
         w2 = w2_next;
+        //Update des angles selon leur vitesse angulaire respective.
         theta1 += omegaToTheta(w1);
         theta2 += omegaToTheta(w2);
 
+        //Calcul des coordonnées cartésiennes en fonction des coordonnées polaires.
         angleToPos();
+        //Update du temps total de simulation.
         totalTime += parseFloat(dt);
 
         display();
     }
 
+    /*
+     Permet d'afficher dans les textArea les valeurs intéressantes de la simulation.
+     */
     function display() {
-        polar.value = " theta 1 = " + theta1 +
-                        "\n theta 2 = " + theta2 +
-                        "\n\n omega 1 = " + w1 +
-                        "\n omega 2 = " + w2 +
-                        "\n " + totalTime.toFixed(3) + " secondes.";
+        polar.value = " theta 1 = " + theta1.toFixed(3) +
+                "\n theta 2 = " + theta2.toFixed(3) +
+                "\n\n omega 1 = " + w1.toFixed(3) +
+                "\n omega 2 = " + w2.toFixed(3) +
+                "\n " + totalTime.toFixed(3) + " secondes.";
 
-        cartesian.value= " x1 = " + x1 +
-                        "\n y1 = " + y1 +
-                        "\n\n x2 = " + x2 +
-                        "\n y2 = " + y2 +
-                        "\n " + totalTime.toFixed(3) + " secondes.";
+        cartesian.value = " x1 = " + x1.toFixed(3) +
+                "\n y1 = " + y1.toFixed(3) +
+                "\n\n x2 = " + x2.toFixed(3) +
+                "\n y2 = " + y2.toFixed(3) +
+                "\n " + totalTime.toFixed(3) + " secondes.";
 
     }
 
+    /*
+     Converti les coordonnées polaires en coordonnées cartésienne.
+     L'origine des deux repères est à la base du premier pendule (au point d'ancrage du système).
+
+     Le repère cartésien est orienté comme d'habitude (x horizontal, positif à droite et y vertical, positif en haut).
+
+     Le repère polaire est orienté différement.
+     L'angle theta est l'angle de chaque pendule avec la verticale (pas l'horizontale), sens trigonométrique.
+     */
     function angleToPos() {
-        x1 = len1*sin(theta1);
-        y1 = -(len1*cos(theta1));
+        x1 = len1 * sin(theta1);
+        y1 = -(len1 * cos(theta1));
 
-        x2 = len2*sin(theta2) + x1;
-        y2 = -(len2*cos(theta2) + y1);
+        x2 = len2 * sin(theta2) + x1;
+        y2 = -(len2 * cos(theta2)) + y1;
     }
 
+    /*
+     Equation du mouvement du pendule 1.
+     */
     function mvmtPendule1(th1, th2, omega1, omega2) {
         var out;
         if ((len1 * ((2 * mass1) + mass2 - (mass2 * cos(2 * th1 - 2 * th2)))) != 0) {
@@ -203,6 +303,9 @@
         return out;
     }
 
+    /*
+     Equation du mouvement du pendule 2.
+     */
     function mvmtPendule2(th1, th2, omega1, omega2) {
         var out;
         if ((len1 * ((2 * mass1) + mass2 - (mass2 * cos(2 * th1 - 2 * th2)))) != 0) {
@@ -216,26 +319,48 @@
         return out;
     }
 
+    /*
+     Fonction k1 de Runge Kutta 4.
+     Calcule la pente de la fonction à l'étape n.
+     */
     function k1(isPendule1) {
         if (isPendule1) return mvmtPendule1(theta1, theta2, w1, w2);
         else return mvmtPendule2(theta1, theta2, w1, w2);
     }
 
+    /*
+     Fonction k2 de Runge Kutta 4.
+     Approxime la pente au milieu de l'intervalle {tn, tn+1} en utilisant la méthode d'Euler avec k1 comme pente.
+     */
+    functi
     function k2(isPendule1, _k1) {
         if (isPendule1) return mvmtPendule1(theta1, theta2, w1 + _k1 * (dt / 2), w2);
         else return mvmtPendule2(theta1, theta2, w1, w2 + _k1 * (dt / 2));
     }
 
+    /*
+     Fonction k3 de Runge Kutta 4.
+     Approxime la pente au milieu de l'intervalle {tn, tn+1} en utilisant la méthode d'Euler avec k2 comme pente.
+     */
     function k3(isPendule1, _k2) {
         if (isPendule1) return mvmtPendule1(theta1, theta2, w1 + _k2 * (dt / 2), w2);
         else return mvmtPendule2(theta1, theta2, w1, w2 + _k2 * (dt / 2));
     }
 
+    /*
+     Fonction k4 de Runge Kutta 4.
+     Approxime la pente en tn+1 en utilisant la méthode d'Euler avec k3 comme pente.
+     */
     function k4(isPendule1, _k3) {
         if (isPendule1) return mvmtPendule1(theta1, theta2, w1 + _k3 * dt, w2);
         else return mvmtPendule2(theta1, theta2, w1, w2 + _k3 * dt);
     }
 
+    /*
+     fonction principale de Runge Kutta 4.
+     Execute une moyenne pondérée des différentes pentes k1, k2, k3 et k4 afin
+     d'approximer au mieux la valeur wn+1.
+     */
     function RK4(isPendule1) {
 
         var _k1 = k1(isPendule1);
@@ -255,6 +380,9 @@
         return out;
     }
 
+    /*
+     Calcul la variation de theta durant un intervalle dt en fonction de de la vitesse angulaire .
+     */
     function omegaToTheta(w) {
         return w * dt;
     }
