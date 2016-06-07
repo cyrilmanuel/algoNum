@@ -421,12 +421,25 @@
         context.save();
         transformContext();
 
-        context.beginPath();
         var poscan1 = pixelToMeter(x1,y1);
         var poscan2 = pixelToMeter(x2,y2);
+
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(poscan1.x, poscan1.y);
+        context.stroke();
+        context.closePath();
+
+        context.beginPath();
+        context.moveTo(poscan1.x, poscan1.y);
+        context.lineTo(poscan2.x, poscan2.y);
+        context.stroke();
+        context.closePath();
+
+
+        context.beginPath();
         context.arc(poscan1.x,poscan1.y, 5, 0, Math.PI * 2, true);
         context.arc(poscan2.x,poscan2.y, 5, 0, Math.PI * 2, true);
-
         context.fill();
         context.closePath();
 
